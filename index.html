@@ -130,6 +130,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 [data-ref]{position:relative}
 .ref-copy-btn{position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:5px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;font-size:12px;display:none;align-items:center;justify-content:center;z-index:10;color:var(--t3);transition:.15s;opacity:0.7}
 [data-ref]:hover > .ref-copy-btn{display:flex}
+[data-ref]:has([data-ref]:hover) > .ref-copy-btn{display:none !important}
 .ref-copy-btn:hover{opacity:1;border-color:var(--accent);color:var(--accent)}
 .ref-copy-btn.copied{color:var(--accent);opacity:1}
 
