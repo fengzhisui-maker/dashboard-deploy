@@ -198,6 +198,58 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 .pending-status.queued{background:rgba(234,179,8,0.15);color:var(--warn)}
 .pending-status.processing{background:var(--accent-bg);color:var(--accent)}
 </style>
+<script>
+// AUTH MODULE - isolated from all other scripts
+(function() {
+  var PWD_HASH = 'ac50201d8b39de3e403adc70ae473c786d0ccc46c694ba8d68c84b0e1633c71e';
+  var SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000;
+  function sha256(str) {
+    var buffer = new TextEncoder().encode(str);
+    return crypto.subtle.digest('SHA-256', buffer).then(function(hash) {
+      var hexArr = Array.from(new Uint8Array(hash));
+      return hexArr.map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
+    });
+  }
+  function doLogin() {
+    var pwd = document.getElementById('pwd-input');
+    var err = document.getElementById('pwd-err');
+    if (!pwd || !pwd.value) return;
+    sha256(pwd.value).then(function(h) {
+      if (h === PWD_HASH) {
+        localStorage.setItem('wd_auth', (Date.now() + SEVEN_DAYS).toString());
+        document.getElementById('pwd-gate').style.display = 'none';
+      } else {
+        if (err) err.style.display = 'block';
+        pwd.value = '';
+        pwd.focus();
+      }
+    });
+  }
+  function initAuth() {
+    var gate = document.getElementById('pwd-gate');
+    var btn = document.getElementById('pwd-btn');
+    var input = document.getElementById('pwd-input');
+    if (!gate) return;
+    // Auto-login check
+    var a = localStorage.getItem('wd_auth');
+    if (a && parseInt(a) > Date.now()) {
+      gate.style.display = 'none';
+    } else {
+      localStorage.removeItem('wd_auth');
+    }
+    // Bind events
+    if (btn) btn.addEventListener('click', doLogin);
+    if (input) input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') doLogin();
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAuth);
+  } else {
+    initAuth();
+  }
+})();
+</script>
 </head>
 <body>
 <div id="pwd-gate" style="position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999">
@@ -263,45 +315,6 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 <script src="up_stats.js"></script>
 <script src="cat_stats.js"></script>
 <script>
-// PASSWORD - simple hash check, 7 day expiry
-var PWD_HASH = 'ac50201d8b39de3e403adc70ae473c786d0ccc46c694ba8d68c84b0e1633c71e';
-var SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000;
-function sha256(str) {
-  var buffer = new TextEncoder().encode(str);
-  return crypto.subtle.digest('SHA-256', buffer).then(function(hash) {
-    var hexArr = Array.from(new Uint8Array(hash));
-    return hexArr.map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
-  });
-}
-function doLogin() {
-  var pwd = document.getElementById('pwd-input').value;
-  if (!pwd) return;
-  sha256(pwd).then(function(h) {
-    if (h === PWD_HASH) {
-      localStorage.setItem('wd_auth', (Date.now() + SEVEN_DAYS).toString());
-      document.getElementById('pwd-gate').style.display = 'none';
-    } else {
-      document.getElementById('pwd-err').style.display = 'block';
-      document.getElementById('pwd-input').value = '';
-      document.getElementById('pwd-input').focus();
-    }
-  });
-}
-// Bind events
-document.getElementById('pwd-btn').addEventListener('click', doLogin);
-document.getElementById('pwd-input').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') doLogin();
-});
-// Auto-login check
-(function() {
-  var a = localStorage.getItem('wd_auth');
-  if (a && parseInt(a) > Date.now()) {
-    document.getElementById('pwd-gate').style.display = 'none';
-  } else {
-    localStorage.removeItem('wd_auth');
-  }
-})();
-// THEME
 function toggleTheme() {
   var current = document.documentElement.getAttribute('data-theme');
   var next = current === 'light' ? 'dark' : 'light';
