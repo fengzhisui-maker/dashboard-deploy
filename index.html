@@ -116,7 +116,9 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
   <div class="s-logo"><h1>&#x1F4CA; 金融研究仪表盘</h1><p>wudaoseng.com</p></div>
   <div class="s-nav">
     <div class="s-section">核心模块</div>
-    <div class="s-item active" onclick="setMod('transcript')"><span class="ic">&#x1F3A4;</span>转录库</div>
+    <div class="s-item" onclick="setMod('transcript')"><span class="ic">&#x1F3A4;</span>转录库</div>
+    <div class="s-item active" onclick="setMod('project')"><span class="ic">&#x1F4CB;</span>项目控制台</div>
+    <div class="s-section">扩展模块</div>
     <div class="s-item off" title="开发中"><span class="ic">&#x1F4E1;</span>数据采集</div>
     <div class="s-item off" title="开发中"><span class="ic">&#x1F52C;</span>分析工具</div>
     <div class="s-item off" title="开发中"><span class="ic">&#x1F4C8;</span>可视化</div>
@@ -147,11 +149,13 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
     <div id="tc-tasks" style="display:none"></div>
     <div id="tc-browse" style="display:none"></div>
     <div id="tc-factors" style="display:none"></div>
+    <div id="tc-project" style="display:none"></div>
   </div>
 </div>
 
 <div class="detail" id="detail"><div class="dh"><h3 id="detTitle">详情</h3><button class="btn btn-o btn-s" onclick="closeDet()">&#x2715;</button></div><div class="db" id="detBody"></div></div>
 
+<script src="project_data.js"></script>
 <script src="videos_data.js"></script>
 <script src="up_stats.js"></script>
 <script src="cat_stats.js"></script>
@@ -237,6 +241,7 @@ function render(t) {
   else if (t === 'tasks') rTasks();
   else if (t === 'browse') rBrowse();
   else if (t === 'factors') rFactors();
+  else if (t === 'project') rProject();
 }
 
 function catCls(c) {
@@ -356,9 +361,98 @@ function exportData() {
   var b = new Blob([JSON.stringify(d,null,2)], {type:'application/json'}), u = URL.createObjectURL(b), a = document.createElement('a');
   a.href = u; a.download = 'transcript_data.json'; a.click();
 }
-function setMod(m) {}
+
+// PROJECT CONSOLE
+function rProject() {
+  if (typeof PROJECT === 'undefined') {
+    document.getElementById('tc-project').innerHTML = '<div style="padding:20px;color:var(--t3)">加载项目数据中...</div>';
+    return;
+  }
+  var p = PROJECT;
+  
+  // Calculate progress
+  var doneCnt = p.milestones.filter(function(m){return m.status==='done'}).length;
+  var partialCnt = p.milestones.filter(function(m){return m.status==='partial'}).length;
+  var totalCnt = p.milestones.length;
+  var pct = Math.round((doneCnt + partialCnt*0.5) / totalCnt * 100);
+  
+  // Milestone timeline
+  var msHtml = '';
+  p.milestones.forEach(function(m) {
+    var icon = m.status === 'done' ? '&#x2705;' : m.status === 'partial' ? '&#x26A0;&#xFE0F;' : '&#x1F532;';
+    var cls = m.status === 'done' ? 'style="color:var(--accent)"' : m.status === 'partial' ? 'style="color:var(--warn)"' : 'style="color:var(--t4)"';
+    msHtml += '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)"><span ' + cls + ' style="font-size:16px">' + icon + '</span><div style="flex:1"><div style="font-size:12px;font-weight:500">' + m.name + '</div>' + (m.date ? '<div style="font-size:10px;color:var(--t4)">' + m.date + '</div>' : '') + '</div><span style="font-size:9px;color:var(--t4)">' + m.id + '</span></div>';
+  });
+  
+  // Task Kanban
+  var kanbanCols = [
+    {key:'backlog', icon:'&#x1F4CB;', label:'待办', color:'var(--t3)'},
+    {key:'inProgress', icon:'&#x1F504;', label:'进行中', color:'var(--info)'},
+    {key:'done', icon:'&#x2705;', label:'已完成', color:'var(--accent)'},
+    {key:'blocked', icon:'&#x26A0;&#xFE0F;', label:'阻塞', color:'var(--danger)'}
+  ];
+  var kanbanHtml = '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">';
+  kanbanCols.forEach(function(col) {
+    var tasks = p.tasks[col.key] || [];
+    var taskItems = tasks.map(function(t) { return '<div style="font-size:11px;padding:6px 8px;background:var(--bg4);border-radius:4px;margin-bottom:6px">' + t + '</div>'; }).join('');
+    kanbanHtml += '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px"><div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border)"><span style="font-size:14px">' + col.icon + '</span><span style="font-size:11px;font-weight:600;color:' + col.color + '">' + col.label + '</span><span style="margin-left:auto;font-size:10px;background:var(--bg4);padding:1px 6px;border-radius:8px;color:var(--t4)">' + tasks.length + '</span></div>' + taskItems + '</div>';
+  });
+  kanbanHtml += '</div>';
+  
+  // Decisions
+  var decHtml = '';
+  p.decisions.forEach(function(d) {
+    decHtml += '<div style="padding:10px 0;border-bottom:1px solid var(--border)"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:10px;background:var(--accent-bg);color:var(--accent);padding:2px 8px;border-radius:4px">' + d.date + '</span><span style="font-size:12px;font-weight:600;color:var(--accent2)">' + d.decision + '</span></div><div style="font-size:11px;color:var(--t3);margin-bottom:4px"><span style="color:var(--t4)">原因:</span> ' + d.reason + '</div><div style="font-size:10px;color:var(--t4)"><span style="color:var(--warn)">备选:</span> ' + d.alt + '</div></div>';
+  });
+  
+  // Scope
+  var scopeIn = p.scope.inScope.map(function(s) { return '<span style="font-size:10px;padding:3px 8px;background:var(--accent-bg);color:var(--accent);border-radius:4px;margin:2px;display:inline-block">' + s + '</span>'; }).join('');
+  var scopeOut = p.scope.outOfScope.map(function(s) { return '<span style="font-size:10px;padding:3px 8px;background:rgba(100,100,100,0.15);color:var(--t4);border-radius:4px;margin:2px;display:inline-block">' + s + '</span>'; }).join('');
+  
+  // Assemble
+  document.getElementById('tc-project').innerHTML = 
+    '<div style="margin-bottom:16px"><span style="font-size:11px;color:var(--t4)">最后更新: ' + p.lastUpdate + '</span></div>' +
+    
+    '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:16px">' +
+    '<h3 style="font-size:13px;margin-bottom:12px">&#x1F680; 当前阶段</h3>' +
+    '<div style="font-size:16px;font-weight:600;color:var(--accent2);margin-bottom:12px">' + p.phase + '</div>' +
+    '<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px"><div style="flex:1;height:6px;background:var(--input-bg);border-radius:3px;overflow:hidden"><div style="height:100%;background:var(--accent);width:' + pct + '%"></div></div><span style="font-size:12px;font-weight:600;color:var(--accent)">' + pct + '%</span></div>' +
+    '<div style="font-size:10px;color:var(--t4)">里程碑进度: ' + doneCnt + ' 已完成, ' + partialCnt + ' 进行中, ' + (totalCnt - doneCnt - partialCnt) + ' 待开始</div>' +
+    '</div>' +
+    
+    '<h3 style="font-size:13px;margin-bottom:10px">&#x1F4C5; 里程碑时间线</h3>' +
+    '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:16px">' + msHtml + '</div>' +
+    
+    '<h3 style="font-size:13px;margin-bottom:10px">&#x1F4BC; 任务看板</h3>' +
+    kanbanHtml +
+    
+    '<h3 style="font-size:13px;margin:16px 0 10px">&#x1F4DC; 关键决策日志</h3>' +
+    '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:16px">' + decHtml + '</div>' +
+    
+    '<h3 style="font-size:13px;margin-bottom:10px">&#x1F30D; 范围边界</h3>' +
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px"><div style="font-size:11px;font-weight:600;color:var(--accent);margin-bottom:8px">&#x2705; 在范围内</div>' + scopeIn + '</div><div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px"><div style="font-size:11px;font-weight:600;color:var(--t4);margin-bottom:8px">&#x274C; 不在范围内</div>' + scopeOut + '</div></div>';
+}
+function setMod(m) {
+  document.querySelectorAll('.s-item').forEach(function(x) { x.classList.remove('active'); });
+  if (m === 'transcript') {
+    document.querySelector('.s-item:nth-child(2)').classList.add('active');
+    document.getElementById('tabs').style.display = '';
+    document.getElementById('topTitle').textContent = '转录库';
+    document.querySelector('.btn-p').style.display = '';
+    swTab('overview');
+  } else if (m === 'project') {
+    document.querySelector('.s-item:nth-child(3)').classList.add('active');
+    document.getElementById('tabs').style.display = 'none';
+    document.getElementById('topTitle').textContent = '项目控制台';
+    document.querySelector('.btn-p').style.display = 'none';
+    document.querySelectorAll('[id^="tc-"]').forEach(function(x) { x.style.display = 'none'; });
+    document.getElementById('tc-project').style.display = '';
+    rProject();
+  }
+}
 
 render('overview');
+setMod('project');
 </script>
 </body>
 </html>
