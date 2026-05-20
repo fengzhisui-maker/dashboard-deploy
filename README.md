@@ -1,2 +1,3 @@
-# dashboard-deploy
-dashboard-deploy
+# Financial Research Dashboard
+
+Visit: https://research.wudaoseng.com
