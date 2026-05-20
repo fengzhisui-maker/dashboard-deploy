@@ -188,18 +188,18 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 <script>
 // ====== PASSWORD (7 day expiry) ======
 function checkPwd(){const p=document.getElementById('pwd-input').value;if(!p)return;
-crypto.subtle.digest('SHA-256',new TextEncoder().encode(p)).then(buf=>{{
+crypto.subtle.digest('SHA-256',new TextEncoder().encode(p)).then(buf=>{
 const h=Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
-if(h==='ac50201d8b39de3e403adc70ae473c786d0ccc46c694ba8d68c84b0e1633c71e'){{
-const exp=Date.now()+7*24*60*60*1000;localStorage.setItem('wd_auth',exp.toString());document.getElementById('pwd-gate').style.display='none'}}
-else{{document.getElementById('pwd-err').style.display='block';document.getElementById('pwd-input').value='';document.getElementById('pwd-input').focus()}}
+if(h==='ac50201d8b39de3e403adc70ae473c786d0ccc46c694ba8d68c84b0e1633c71e'){
+const exp=Date.now()+7*24*60*60*1000;localStorage.setItem('wd_auth',exp.toString());document.getElementById('pwd-gate').style.display='none'}
+else{document.getElementById('pwd-err').style.display='block';document.getElementById('pwd-input').value='';document.getElementById('pwd-input').focus()}
 }})}}
-(function checkAuth(){const a=localStorage.getItem('wd_auth');if(a&&parseInt(a)>Date.now()){{document.getElementById('pwd-gate').style.display='none'}}else{{localStorage.removeItem('wd_auth')}}})();
+(function checkAuth(){const a=localStorage.getItem('wd_auth');if(a&&parseInt(a)>Date.now()){document.getElementById('pwd-gate').style.display='none'}else{localStorage.removeItem('wd_auth')})();
 
 // ====== THEME ======
 function toggleTheme(){const t=document.documentElement.getAttribute('data-theme');const n=t==='light'?'dark':'light';
 document.documentElement.setAttribute('data-theme',n);localStorage.setItem('wd_theme',n);document.getElementById('themeBtn').textContent=n==='light'?'☀️':'🌙'}
-(function(){const t=localStorage.getItem('wd_theme');if(t){{document.documentElement.setAttribute('data-theme',t);document.getElementById('themeBtn').textContent=t==='light'?'☀️':'🌙'}}})();
+(function(){const t=localStorage.getItem('wd_theme');if(t){document.documentElement.setAttribute('data-theme',t);document.getElementById('themeBtn').textContent=t==='light'?'☀️':'🌙'}})();
 
 let cTab='overview',cPage=1;const PG=20;let fV=[...VIDEOS],selV=new Set();
 
