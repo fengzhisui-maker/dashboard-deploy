@@ -6,7 +6,7 @@ var PENDING_QUEUE = [
     "name": "期神附体-期货",
     "upId": "1473394951",
     "url": "https://space.bilibili.com/1473394951",
-    "limitCount": 500,
+    "limitCount": 320,
     "limitDays": 365,
     "autoTrack": true,
     "status": "processing",
