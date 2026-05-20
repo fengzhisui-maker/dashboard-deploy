@@ -197,9 +197,6 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 .pending-status{font-size:9px;padding:2px 6px;border-radius:3px}
 .pending-status.queued{background:rgba(234,179,8,0.15);color:var(--warn)}
 .pending-status.processing{background:var(--accent-bg);color:var(--accent)}
-/* 设置面板 */
-.settings-panel{position:fixed;top:0;right:-320px;width:300px;height:100%;background:var(--bg2);border-left:1px solid var(--border);z-index:400;transition:right .3s;padding:20px;overflow-y:auto}
-.settings-panel.open{right:0}
 </style>
 </head>
 <body>
@@ -366,7 +363,7 @@ function filterPlat(plat, btn) {
 }
 
 function openAddUpModal(prefillName) {
-  var html = '<div class="add-up-modal" onclick="if(event.target===this)this.remove()"><div class="add-up-panel"><div class="add-up-header"><div class="add-up-title">添加UP主</div><button class="btn btn-o btn-s" onclick="this.closest(\'\'.add-up-modal\'\').remove()">✕</button></div><div class="add-up-body"><div class="add-up-field"><label>平台</label><select id="addUpPlat"><option value="bilibili">B站 (Bilibili)</option><option value="youtube">YouTube</option><option value="other">其他</option></select></div><div class="add-up-field"><label>UP主名称</label><input id="addUpName" placeholder="输入UP主名称" value="' + (prefillName || '') + '"></div><div class="add-up-field"><label>主页链接</label><input id="addUpUrl" placeholder="https://space.bilibili.com/xxx 或 https://youtube.com/@xxx"></div><div class="add-up-field"><label>转录数量（可选，留空=全部）</label><input id="addUpCount" type="number" placeholder="留空转录全部视频" min="1"></div><div class="add-up-footer"><button class="btn btn-o" onclick="this.closest(\'\'.add-up-modal\'\').remove()">取消</button><button class="btn btn-p" onclick="submitUpTask()">提交</button></div></div></div></div>';
+  var html = '<div class="add-up-modal" onclick="if(event.target===this)this.remove()"><div class="add-up-panel"><div class="add-up-header"><div class="add-up-title">添加UP主</div><button class="btn btn-o btn-s" onclick="this.closest('.add-up-modal').remove()">✕</button></div><div class="add-up-body"><div class="add-up-field"><label>平台</label><select id="addUpPlat"><option value="bilibili">B站 (Bilibili)</option><option value="youtube">YouTube</option><option value="other">其他</option></select></div><div class="add-up-field"><label>UP主名称</label><input id="addUpName" placeholder="输入UP主名称" value="' + (prefillName || '') + '"></div><div class="add-up-field"><label>UP主ID</label><input id="addUpId" placeholder="B站UID如 12345 或 YouTube频道ID如 @xxx"></div><div class="add-up-footer"><button class="btn btn-o" onclick="this.closest('.add-up-modal').remove()">取消</button><button class="btn btn-p" onclick="submitUpTask()">提交</button></div></div></div></div>';
   document.body.insertAdjacentHTML('beforeend', html);
   if (prefillName) {
     document.getElementById('addUpPlat').value = 'bilibili';
@@ -376,11 +373,10 @@ function openAddUpModal(prefillName) {
 function submitUpTask() {
   var plat = document.getElementById('addUpPlat').value;
   var name = document.getElementById('addUpName').value.trim();
-  var url = document.getElementById('addUpUrl').value.trim();
-  var count = document.getElementById('addUpCount').value;
+  var upId = document.getElementById('addUpId').value.trim();
   
   if (!name) { alert('请输入UP主名称'); return; }
-  if (!url) { alert('请输入主页链接'); return; }
+  if (!upId) { alert('请输入UP主ID'); return; }
   
   var token = localStorage.getItem('gh_token');
   if (!token) {
@@ -394,8 +390,8 @@ function submitUpTask() {
     action: 'add_up',
     platform: plat,
     name: name,
-    url: url,
-    count: count ? parseInt(count) : 'all',
+    upId: upId,
+    url: plat === 'bilibili' ? 'https://space.bilibili.com/' + upId : plat === 'youtube' ? 'https://youtube.com/' + upId : '',
     status: 'queued',
     createdAt: new Date().toISOString()
   };
@@ -477,23 +473,19 @@ function rOverview() {
   initRefSystem();
 }
 function rUps() {
-  // 平台筛选器
   var filterHtml = '<div class="plat-filter"><button class="active" onclick="filterPlat(\'all\',this)">全部</button><button onclick="filterPlat(\'bilibili\',this)">B站</button><button onclick="filterPlat(\'youtube\',this)">YouTube</button><button onclick="filterPlat(\'other\',this)">其他</button></div>';
   
-  // UP主卡片 - 添加平台标签
   var upCards = '';
   Object.keys(UP_STATS).forEach(function(n) {
     var i = UP_STATS[n];
     var cats = '';
     Object.keys(i.categories).forEach(function(c) { cats += '<span class="tag ' + catCls(c) + '">' + c + ' ' + i.categories[c] + '</span>'; });
-    // 判断平台（默认bilibili，已有数据都算B站）
     var platform = i.platform || 'bilibili';
     var platLabel = platform === 'bilibili' ? 'B站' : platform === 'youtube' ? 'YouTube' : '其他';
     var platClass = platform === 'bilibili' ? 'bili' : platform === 'youtube' ? 'yt' : 'other';
     upCards += '<div class="up-c" data-platform="' + platform + '"><div class="up-h"><div style="display:flex;align-items:center;gap:6px"><span class="plat-tag ' + platClass + '">' + platLabel + '</span><div class="up-n">' + n + '</div></div><div class="up-d">最新: ' + i.latest + '</div></div><div style="display:flex;gap:16px;margin-bottom:8px"><div style="text-align:center"><div style="font-size:16px;font-weight:700;color:var(--accent2)">' + i.total + '</div><div style="font-size:9px;color:var(--t4)">视频</div></div></div><div style="margin-bottom:10px">' + cats + '</div><div style="display:flex;gap:6px"><button class="btn btn-o btn-s" onclick="openAddUpModal(\'' + n + '\')">追加转录</button><button class="btn btn-o btn-s" onclick="browseUp(\'' + n + '\')">浏览内容</button></div></div>';
   });
   
-  // 待处理队列
   var pendingHtml = '';
   if (typeof PENDING_QUEUE !== 'undefined' && PENDING_QUEUE.length > 0) {
     pendingHtml = '<div class="pending-section"><h3 style="font-size:12px;margin-bottom:8px;color:var(--warn)">⏳ 待处理任务 (' + PENDING_QUEUE.length + ')</h3>';
