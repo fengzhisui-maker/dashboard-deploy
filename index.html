@@ -606,13 +606,17 @@ function rUps() {
       var platClass = task.platform === 'bilibili' ? 'bili' : task.platform === 'youtube' ? 'yt' : 'other';
       var statusClass = task.status === 'done' ? 'done' : task.status === 'processing' ? 'processing' : task.status === 'error' ? 'error' : 'queued';
       var statusLabel = task.status === 'done' ? '✓ 完成' : task.status === 'processing' ? '执行中' : task.status === 'error' ? '✗ 失败' : '排队中';
-      var progressHtml = '';
-      if (task.status === 'processing' && task.progress) {
-        progressHtml = '<div class="task-progress"><div class="task-progress-bar" style="width:' + task.progress + '%"></div></div>';
+      var vTotal = task.limitCount || 500;
+      var vDone = task.videosDone || 0;
+      var vPct = vTotal > 0 ? Math.round(vDone / vTotal * 100) : 0;
+      var videoProgressHtml = '';
+      if (task.status === 'processing') {
+        videoProgressHtml = '<div style="margin-top:4px"><div style="display:flex;justify-content:space-between;font-size:9px;color:var(--t3);margin-bottom:2px"><span>' + vDone + '/' + vTotal + ' 视频</span><span>' + vPct + '%</span></div><div class="task-progress"><div class="task-progress-bar" style="width:' + vPct + '%"></div></div></div>';
+      } else if (task.status === 'done') {
+        videoProgressHtml = '<div style="font-size:9px;color:#22c55e;margin-top:2px">' + vDone + '/' + vTotal + ' 视频已转录</div>';
       }
-      pendingHtml += '<div class="pending-item"><span class="plat-tag ' + platClass + '">' + platLabel + '</span><span style="flex:1">' + task.name + progressHtml + '</span><span class="pending-status ' + statusClass + '">' + statusLabel + '</span></div>';
+      pendingHtml += '<div class="pending-item" style="flex-wrap:wrap"><span class="plat-tag ' + platClass + '">' + platLabel + '</span><span style="flex:1;min-width:0">' + task.name + videoProgressHtml + '</span><span class="pending-status ' + statusClass + '">' + statusLabel + '</span></div>';
     });
-    pendingHtml += '</div>';
   }
   
   document.getElementById('tc-ups').innerHTML = '<div data-ref="transcript-ups" style="position:relative"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><h3 style="font-size:13px">UP主管理</h3><button class="btn btn-p" onclick="openAddUpModal()">➕ 添加UP主</button></div>' + filterHtml + '<div class="up-g" id="upGrid">' + upCards + '</div>' + pendingHtml + '</div>';
