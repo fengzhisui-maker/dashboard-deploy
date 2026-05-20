@@ -93,10 +93,42 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 .pag{display:flex;justify-content:center;gap:4px;margin-top:14px}
 .pb{padding:5px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:4px;color:var(--t2);cursor:pointer;font-size:11px}
 .pb.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+/* 架构蓝图 */
+.layer-card{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px;transition:background .2s,border .2s}
+.layer-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.layer-indicator{width:4px;height:36px;border-radius:2px;flex-shrink:0}
+.layer-title{font-size:14px;font-weight:700}
+.layer-subtitle{font-size:10px;color:var(--t4)}
+.layer-desc{font-size:11px;color:var(--t3)}
+.mod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+.mod-card{background:var(--bg4);border:1px solid var(--border);border-radius:6px;padding:10px;transition:.15s}
+.mod-card.active{border-style:solid}
+.mod-card.placeholder{border-style:dashed;opacity:.5}
+.mod-card.planned{border-style:dashed;opacity:.7}
+.mod-name{font-size:12px;font-weight:600;margin-bottom:4px}
+.mod-desc{font-size:9px;color:var(--t4);line-height:1.4}
+.mod-children{display:flex;flex-wrap:wrap;gap:3px;margin-top:6px}
+.mod-child{font-size:8px;padding:1px 5px;border-radius:3px;background:var(--bg3);color:var(--t3)}
+.status-dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:4px}
+.status-dot.active{background:var(--accent)}
+.status-dot.planned{background:var(--warn)}
+.status-dot.placeholder{background:var(--t4)}
+.restructure-card{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:16px;margin-top:16px}
+.restructure-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.restructure-compare{display:flex;align-items:center;gap:8px;font-size:11px}
+.arrow{color:var(--t3);font-size:14px}
+.step-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.step-item:last-child{border-bottom:none}
+.step-num{width:20px;height:20px;border-radius:50%;background:var(--bg4);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:var(--t3)}
+.step-info{flex:1}
+.step-name{font-size:12px;font-weight:500}
+.step-desc{font-size:10px;color:var(--t4)}
+.priority-tag{font-size:9px;padding:2px 6px;border-radius:3px}
+.priority-high{background:rgba(239,68,68,0.15);color:var(--danger)}
+.priority-medium{background:rgba(234,179,8,0.15);color:var(--warn)}
 </style>
 </head>
 <body>
-
 <div id="pwd-gate" style="position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999">
   <div style="text-align:center;max-width:360px;width:100%;padding:24px">
     <div style="font-size:32px;margin-bottom:8px">&#x1F4CA;</div>
@@ -111,7 +143,6 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
     <p id="pwd-err" style="font-size:11px;color:#ef4444;margin-top:8px;display:none">密码错误，请重试</p>
   </div>
 </div>
-
 <div class="sidebar">
   <div class="s-logo"><h1>&#x1F4CA; 金融研究仪表盘</h1><p>wudaoseng.com</p></div>
   <div class="s-nav">
@@ -126,7 +157,6 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
     <div class="s-item off" title="开发中"><span class="ic">&#x2699;</span>自动化</div>
   </div>
 </div>
-
 <div class="main">
   <div class="topbar">
     <h2 id="topTitle">转录库</h2>
@@ -152,10 +182,9 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
     <div id="tc-project" style="display:none"></div>
   </div>
 </div>
-
 <div class="detail" id="detail"><div class="dh"><h3 id="detTitle">详情</h3><button class="btn btn-o btn-s" onclick="closeDet()">&#x2715;</button></div><div class="db" id="detBody"></div></div>
-
 <script src="project_data.js"></script>
+<script src="framework_data.js"></script>
 <script src="videos_data.js"></script>
 <script src="up_stats.js"></script>
 <script src="cat_stats.js"></script>
@@ -163,7 +192,6 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 // PASSWORD - simple hash check, 7 day expiry
 var PWD_HASH = 'ac50201d8b39de3e403adc70ae473c786d0ccc46c694ba8d68c84b0e1633c71e';
 var SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000;
-
 function sha256(str) {
   var buffer = new TextEncoder().encode(str);
   return crypto.subtle.digest('SHA-256', buffer).then(function(hash) {
@@ -171,7 +199,6 @@ function sha256(str) {
     return hexArr.map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
   });
 }
-
 function doLogin() {
   var pwd = document.getElementById('pwd-input').value;
   if (!pwd) return;
@@ -186,13 +213,11 @@ function doLogin() {
     }
   });
 }
-
 // Bind events
 document.getElementById('pwd-btn').addEventListener('click', doLogin);
 document.getElementById('pwd-input').addEventListener('keydown', function(e) {
   if (e.key === 'Enter') doLogin();
 });
-
 // Auto-login check
 (function() {
   var a = localStorage.getItem('wd_auth');
@@ -202,7 +227,6 @@ document.getElementById('pwd-input').addEventListener('keydown', function(e) {
     localStorage.removeItem('wd_auth');
   }
 })();
-
 // THEME
 function toggleTheme() {
   var current = document.documentElement.getAttribute('data-theme');
@@ -218,10 +242,8 @@ function toggleTheme() {
     document.getElementById('themeBtn').textContent = t === 'light' ? '\u2600\uFE0F' : '\uD83C\uDF19';
   }
 })();
-
 // APP
 var cTab = 'overview', cPage = 1, PG = 20, fV = VIDEOS.slice(), selV = {};
-
 function swTab(t) {
   if (typeof t === 'string') {
     document.querySelectorAll('.tab').forEach(function(x) { x.classList.toggle('active', x.dataset.t === t); });
@@ -243,7 +265,6 @@ function render(t) {
   else if (t === 'factors') rFactors();
   else if (t === 'project') rProject();
 }
-
 function catCls(c) {
   if (c.includes('\u5B8F\u89C2') && c.includes('\u5927\u5B97') && c.includes('\u80A1\u7968')) return 't-other';
   if ((c.includes('\u5B8F\u89C2') && c.includes('\u5927\u5B97')) || (c.includes('\u5B8F\u89C2') && c.includes('\u80A1\u7968')) || (c.includes('\u5927\u5B97') && c.includes('\u80A1\u7968'))) return 't-mix';
@@ -253,7 +274,6 @@ function catCls(c) {
   return 't-other';
 }
 function esc(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
-
 function rOverview() {
   var mc = VIDEOS.filter(function(v) { return v.category.includes('\u5B8F\u89C2'); }).length;
   var cc = VIDEOS.filter(function(v) { return v.category.includes('\u5927\u5B97'); }).length;
@@ -269,7 +289,6 @@ function rOverview() {
   });
   document.getElementById('tc-overview').innerHTML = '<div class="g2"><div class="card"><div class="l">\u8F6C\u5F55\u89C6\u9891</div><div class="v" style="color:var(--accent2)">' + VIDEOS.length + '</div><div class="s">\u5DF2\u5B8C\u6210</div></div><div class="card"><div class="l">UP\u4E3B</div><div class="v" style="color:var(--info)">' + Object.keys(UP_STATS).length + '</div><div class="s">\u5DF2\u6536\u5F55</div></div><div class="card"><div class="l">\u5B8F\u89C2\u7C7B</div><div class="v" style="color:var(--cat-macro)">' + mc + '</div><div class="s">\u542B\u8DE8\u5206\u7C7B</div></div><div class="card"><div class="l">\u5927\u5B97/\u671F\u8D27</div><div class="v" style="color:var(--cat-comm)">' + cc + '</div><div class="s">\u542B\u8DE8\u5206\u7C7B</div></div></div><h3 style="font-size:13px;margin-bottom:10px">\u5DF2\u6536\u5F55UP\u4E3B</h3><div class="up-g">' + upCards + '</div><h3 style="font-size:13px;margin-bottom:10px">\u5206\u7C7B\u5206\u5E03</h3><div style="display:flex;flex-wrap:wrap;gap:8px">' + catCards + '</div>';
 }
-
 function rUps() {
   var upCards = '';
   Object.keys(UP_STATS).forEach(function(n) {
@@ -280,11 +299,9 @@ function rUps() {
   document.getElementById('tc-ups').innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><h3 style="font-size:13px">UP\u4E3B\u7BA1\u7406</h3><button class="btn btn-p" onclick="alert(\'\u8BF7\u5728\u5BF9\u8BDD\u4E2D\u544A\u8BC9\u6211UP\u4E3B\u540D\u79F0\u548CB\u7AD9\u94FE\u63A5\')">\u2795 \u6DFB\u52A0UP\u4E3B</button></div><div class="up-g">' + upCards + '</div>';
 }
 function browseUp(u) { swTab('browse'); setTimeout(function() { document.getElementById('fUp').value = u; applyF(); }, 50); }
-
 function rTasks() {
   document.getElementById('tc-tasks').innerHTML = '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:16px"><h3 style="font-size:13px;margin-bottom:12px">\uD83D\uDCCB \u65B0\u5EFA\u8F6C\u5F55\u4EFB\u52A1</h3><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div><label style="font-size:10px;color:var(--t3);display:block;margin-bottom:4px">UP\u4E3B\u540D\u79F0</label><input style="width:100%;background:var(--input-bg);border:1px solid var(--border);color:var(--t1);padding:7px 10px;border-radius:5px;font-size:12px" placeholder="\u8F93\u5165B\u7AD9UP\u4E3B\u540D\u79F0"></div><div><label style="font-size:10px;color:var(--t3);display:block;margin-bottom:4px">\u4E3B\u9875\u94FE\u63A5</label><input style="width:100%;background:var(--input-bg);border:1px solid var(--border);color:var(--t1);padding:7px 10px;border-radius:5px;font-size:12px" placeholder="https://space.bilibili.com/xxx"></div></div><button class="btn btn-p" style="margin-top:10px" onclick="alert(\'\u8BF7\u5728\u5BF9\u8BDD\u4E2D\u53D1\u9001\u4EFB\u52A1\u4FE1\u606F\uFF0C\u6211\u6765\u6267\u884C\')">\u521B\u5EFA\u4EFB\u52A1</button></div><h3 style="font-size:13px;margin-bottom:10px">\u5386\u53F2\u4EFB\u52A1</h3><div style="background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:12px"><div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:12px;font-weight:500">\u8D85\u80FD\u4FE1\u53F7 - \u5168\u90E8\u89C6\u9891\u8F6C\u5F55</span><span class="tag t-stock">\u5DF2\u5B8C\u6210</span></div><div style="font-size:10px;color:var(--t4);margin-bottom:6px">\u6A21\u5F0F: \u97F3\u9891\u8F6C\u5F55 | \u6570\u91CF: 500 | \u5B8C\u6210: 2026-05-20</div><div style="height:3px;background:var(--input-bg);border-radius:2px;overflow:hidden"><div style="height:100%;background:var(--accent);width:100%"></div></div><div style="display:flex;justify-content:space-between;margin-top:5px;font-size:10px;color:var(--t4)"><span>\u6210\u529F: 500</span><span>\u5931\u8D25: 0</span></div></div>';
 }
-
 function rBrowse() {
   var uo = ''; Object.keys(UP_STATS).forEach(function(u) { uo += '<option value="' + u + '">' + u + '</option>'; });
   document.getElementById('tc-browse').innerHTML = '<div class="fbar"><select id="fUp" onchange="applyF()"><option value="">\u5168\u90E8UP\u4E3B</option>' + uo + '</select><select id="fCat" onchange="applyF()"><option value="">\u5168\u90E8\u5206\u7C7B</option><option value="\u5B8F\u89C2">\u5B8F\u89C2</option><option value="\u5927\u5B97\u5546\u54C1/\u671F\u8D27">\u5927\u5B97/\u671F\u8D27</option><option value="\u80A1\u7968/\u677F\u5757">\u80A1\u7968/\u677F\u5757</option></select><input type="date" id="fFrom" onchange="applyF()" style="width:120px"><span style="color:var(--t4);font-size:11px">\u81F3</span><input type="date" id="fTo" onchange="applyF()" style="width:120px"><input type="text" id="fSearch" placeholder="\uD83D\uDD0D \u641C\u7D22..." oninput="applyF()"><select id="fSort" onchange="applyF()"><option value="dd">\u6700\u65B0\u4F18\u5148</option><option value="da">\u6700\u65E9\u4F18\u5148</option></select></div><div style="font-size:11px;color:var(--t4);margin-bottom:8px">\u5171 <span id="rc">' + fV.length + '</span> \u6761</div><div class="vl" id="vlist"></div><div class="pag" id="pag"></div>';
@@ -329,7 +346,6 @@ function openDet(id) {
   document.getElementById('detail').classList.add('show');
 }
 function closeDet() { document.getElementById('detail').classList.remove('show'); }
-
 function rFactors() {
   var fts = [
     {n:'\u5B8F\u89C2\u56E0\u5B50',t:'macro',kw:['PMI','CPI','PPI','GDP','M2','\u793E\u878D','\u5229\u7387','\u964D\u606F','\u52A0\u606F','\u901A\u80C0','\u901A\u7F29','\u6C47\u7387','\u4EBA\u6C11\u5E01','\u7F8E\u5143']},
@@ -355,13 +371,11 @@ function rFactors() {
   html += '</div>';
   document.getElementById('tc-factors').innerHTML = html;
 }
-
 function exportData() {
   var d = fV.map(function(v) { return {up:v.up,bvid:v.bvid,title:v.title,date:v.date,category:v.category}; });
   var b = new Blob([JSON.stringify(d,null,2)], {type:'application/json'}), u = URL.createObjectURL(b), a = document.createElement('a');
   a.href = u; a.download = 'transcript_data.json'; a.click();
 }
-
 // PROJECT CONSOLE
 function rProject() {
   if (typeof PROJECT === 'undefined') {
@@ -409,6 +423,43 @@ function rProject() {
   var scopeIn = p.scope.inScope.map(function(s) { return '<span style="font-size:10px;padding:3px 8px;background:var(--accent-bg);color:var(--accent);border-radius:4px;margin:2px;display:inline-block">' + s + '</span>'; }).join('');
   var scopeOut = p.scope.outOfScope.map(function(s) { return '<span style="font-size:10px;padding:3px 8px;background:rgba(100,100,100,0.15);color:var(--t4);border-radius:4px;margin:2px;display:inline-block">' + s + '</span>'; }).join('');
   
+  // Architecture Blueprint
+  var bpHtml = '';
+  if (typeof FRAMEWORK !== 'undefined') {
+    var fw = FRAMEWORK;
+    var layerIcons = {'L4': '&#x1F5A5;&#xFE0F;', 'L3': '&#x2699;&#xFE0F;', 'L2': '&#x1F4BE;', 'L1': '&#x1F527;'};
+    var layerIconMap = {'L4': '🖥️', 'L3': '⚙️', 'L2': '💾', 'L1': '🔧'};
+    
+    fw.layers.forEach(function(layer) {
+      var modCards = '';
+      layer.modules.forEach(function(mod) {
+        var statusIcon = mod.status === 'active' ? 'active' : mod.status === 'planned' ? 'planned' : 'placeholder';
+        var childrenHtml = '';
+        if (mod.children && mod.children.length > 0) {
+          childrenHtml = '<div class="mod-children">';
+          mod.children.forEach(function(child) {
+            childrenHtml += '<span class="mod-child">' + child + '</span>';
+          });
+          childrenHtml += '</div>';
+        }
+        var descHtml = mod.desc ? '<div class="mod-desc">' + mod.desc + '</div>' : '';
+        modCards += '<div class="mod-card ' + mod.status + '"><div class="mod-name"><span class="status-dot ' + statusIcon + '"></span>' + mod.name + '</div>' + (childrenHtml || descHtml) + '</div>';
+      });
+      
+      bpHtml += '<div class="layer-card"><div class="layer-header"><div class="layer-indicator" style="background:' + layer.color + '"></div><div><div class="layer-title">' + layerIconMap[layer.id] + ' ' + layer.id + ': ' + layer.name + ' (' + layer.nameEn + ')</div><div class="layer-desc">' + layer.desc + '</div></div></div><div class="mod-grid">' + modCards + '</div></div>';
+    });
+    
+    // Restructure Plan
+    var rp = fw.restructurePlan;
+    var stepHtml = '';
+    rp.steps.forEach(function(step) {
+      var priorityCls = step.priority === 'high' ? 'priority-high' : 'priority-medium';
+      stepHtml += '<div class="step-item"><div class="step-num">' + step.step + '</div><div class="step-info"><div class="step-name">' + step.name + '</div><div class="step-desc">' + step.desc + '</div></div><span class="priority-tag ' + priorityCls + '">' + (step.priority === 'high' ? '高优' : '中优') + '</span></div>';
+    });
+    
+    bpHtml += '<div class="restructure-card"><div class="restructure-header"><h3 style="font-size:13px;margin:0">&#x1F680; 重构计划</h3></div><div class="restructure-compare"><span style="color:var(--t4)">现状:</span><span>' + rp.current + '</span><span class="arrow">\u2192</span><span style="color:var(--accent)">' + rp.target + '</span></div><div style="margin-top:14px">' + stepHtml + '</div></div>';
+  }
+  
   // Assemble
   document.getElementById('tc-project').innerHTML = 
     '<div style="margin-bottom:16px"><span style="font-size:11px;color:var(--t4)">最后更新: ' + p.lastUpdate + '</span></div>' +
@@ -430,7 +481,10 @@ function rProject() {
     '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:16px">' + decHtml + '</div>' +
     
     '<h3 style="font-size:13px;margin-bottom:10px">&#x1F30D; 范围边界</h3>' +
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px"><div style="font-size:11px;font-weight:600;color:var(--accent);margin-bottom:8px">&#x2705; 在范围内</div>' + scopeIn + '</div><div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px"><div style="font-size:11px;font-weight:600;color:var(--t4);margin-bottom:8px">&#x274C; 不在范围内</div>' + scopeOut + '</div></div>';
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px"><div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px"><div style="font-size:11px;font-weight:600;color:var(--accent);margin-bottom:8px">&#x2705; 在范围内</div>' + scopeIn + '</div><div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px"><div style="font-size:11px;font-weight:600;color:var(--t4);margin-bottom:8px">&#x274C; 不在范围内</div>' + scopeOut + '</div></div>' +
+    
+    '<h3 style="font-size:13px;margin-bottom:10px">&#x1F3AF; 架构蓝图</h3>' +
+    bpHtml;
 }
 function setMod(m) {
   document.querySelectorAll('.s-item').forEach(function(x) { x.classList.remove('active'); });
@@ -450,7 +504,6 @@ function setMod(m) {
     rProject();
   }
 }
-
 render('overview');
 setMod('project');
 </script>
