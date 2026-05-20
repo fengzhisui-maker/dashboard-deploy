@@ -193,7 +193,7 @@ const h=Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).j
 if(h==='ac50201d8b39de3e403adc70ae473c786d0ccc46c694ba8d68c84b0e1633c71e'){
 const exp=Date.now()+7*24*60*60*1000;localStorage.setItem('wd_auth',exp.toString());document.getElementById('pwd-gate').style.display='none'}
 else{document.getElementById('pwd-err').style.display='block';document.getElementById('pwd-input').value='';document.getElementById('pwd-input').focus()}
-}})}}
+}})}
 (function checkAuth(){const a=localStorage.getItem('wd_auth');if(a&&parseInt(a)>Date.now()){document.getElementById('pwd-gate').style.display='none'}else{localStorage.removeItem('wd_auth')})();
 
 // ====== THEME ======
