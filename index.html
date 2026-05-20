@@ -167,6 +167,39 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 /* 侧边栏导航项 - 悬浮显示ref标签 */
 .s-nav{position:relative}
 .s-item[data-ref]:hover::after{content:"#" attr(data-ref);position:absolute;left:60px;top:50%;transform:translateY(-50%);background:var(--bg3);border:1px solid var(--border);padding:2px 8px;border-radius:4px;font-size:10px;color:var(--t3);white-space:nowrap;z-index:100}
+
+/* 平台标签 */
+.plat-tag{display:inline-flex;align-items:center;gap:3px;font-size:9px;padding:2px 7px;border-radius:3px;margin-right:4px}
+.plat-tag.bili{background:#fb7299;background:rgba(251,114,153,0.15);color:#fb7299}
+.plat-tag.yt{background:#ff0000;background:rgba(255,0,0,0.12);color:#ff4444}
+.plat-tag.other{background:rgba(100,100,100,0.15);color:var(--t4)}
+/* 平台筛选器 */
+.plat-filter{display:flex;gap:6px;margin-bottom:12px}
+.plat-filter button{padding:4px 12px;border-radius:5px;font-size:11px;border:1px solid var(--border);background:var(--bg3);color:var(--t3);cursor:pointer;transition:.15s}
+.plat-filter button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.plat-filter button:hover:not(.active){border-color:var(--accent)}
+/* 添加UP主弹窗 */
+.add-up-modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:500;display:flex;align-items:center;justify-content:center;animation:fadeIn .15s}
+.add-up-panel{background:var(--bg2);border:1px solid var(--border);border-radius:12px;width:90%;max-width:480px;animation:slideUp .2s}
+.add-up-header{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--border)}
+.add-up-title{font-size:16px;font-weight:700;flex:1}
+.add-up-body{padding:20px}
+.add-up-field{margin-bottom:14px}
+.add-up-field label{display:block;font-size:11px;color:var(--t3);margin-bottom:4px;font-weight:500}
+.add-up-field input,.add-up-field select{width:100%;background:var(--input-bg);border:1px solid var(--border);color:var(--t1);padding:8px 12px;border-radius:6px;font-size:12px;box-sizing:border-box}
+.add-up-field input:focus,.add-up-field select:focus{outline:none;border-color:var(--accent)}
+.add-up-footer{display:flex;gap:8px;justify-content:flex-end;margin-top:20px}
+.add-up-footer .btn{padding:7px 18px}
+/* 待处理队列 */
+.pending-section{margin-top:16px}
+.pending-item{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;margin-bottom:6px;font-size:11px}
+.pending-item .plat-tag{flex-shrink:0}
+.pending-status{font-size:9px;padding:2px 6px;border-radius:3px}
+.pending-status.queued{background:rgba(234,179,8,0.15);color:var(--warn)}
+.pending-status.processing{background:var(--accent-bg);color:var(--accent)}
+/* 设置面板 */
+.settings-panel{position:fixed;top:0;right:-320px;width:300px;height:100%;background:var(--bg2);border-left:1px solid var(--border);z-index:400;transition:right .3s;padding:20px;overflow-y:auto}
+.settings-panel.open{right:0}
 </style>
 </head>
 <body>
@@ -227,6 +260,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 <script src="project_data.js"></script>
 <script src="framework_data.js"></script>
 <script src="module_details.js"></script>
+<script src="pending_queue.js"></script>
 <script src="code_map.js"></script>
 <script src="videos_data.js"></script>
 <script src="up_stats.js"></script>
@@ -317,6 +351,115 @@ function catCls(c) {
   return 't-other';
 }
 function esc(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+
+
+function filterPlat(plat, btn) {
+  document.querySelectorAll('.plat-filter button').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  document.querySelectorAll('#upGrid .up-c').forEach(function(card) {
+    if (plat === 'all' || card.dataset.platform === plat) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+
+function openAddUpModal(prefillName) {
+  var html = '<div class="add-up-modal" onclick="if(event.target===this)this.remove()"><div class="add-up-panel"><div class="add-up-header"><div class="add-up-title">添加UP主</div><button class="btn btn-o btn-s" onclick="this.closest(\'\'.add-up-modal\'\').remove()">✕</button></div><div class="add-up-body"><div class="add-up-field"><label>平台</label><select id="addUpPlat"><option value="bilibili">B站 (Bilibili)</option><option value="youtube">YouTube</option><option value="other">其他</option></select></div><div class="add-up-field"><label>UP主名称</label><input id="addUpName" placeholder="输入UP主名称" value="' + (prefillName || '') + '"></div><div class="add-up-field"><label>主页链接</label><input id="addUpUrl" placeholder="https://space.bilibili.com/xxx 或 https://youtube.com/@xxx"></div><div class="add-up-field"><label>转录数量（可选，留空=全部）</label><input id="addUpCount" type="number" placeholder="留空转录全部视频" min="1"></div><div class="add-up-footer"><button class="btn btn-o" onclick="this.closest(\'\'.add-up-modal\'\').remove()">取消</button><button class="btn btn-p" onclick="submitUpTask()">提交</button></div></div></div></div>';
+  document.body.insertAdjacentHTML('beforeend', html);
+  if (prefillName) {
+    document.getElementById('addUpPlat').value = 'bilibili';
+  }
+}
+
+function submitUpTask() {
+  var plat = document.getElementById('addUpPlat').value;
+  var name = document.getElementById('addUpName').value.trim();
+  var url = document.getElementById('addUpUrl').value.trim();
+  var count = document.getElementById('addUpCount').value;
+  
+  if (!name) { alert('请输入UP主名称'); return; }
+  if (!url) { alert('请输入主页链接'); return; }
+  
+  var token = localStorage.getItem('gh_token');
+  if (!token) {
+    token = prompt('首次提交需要输入GitHub Token（仅存本地，用于写入任务队列）\n\nToken获取: GitHub → Settings → Developer settings → Personal access tokens → Generate new token (勾选repo权限)');
+    if (!token) return;
+    localStorage.setItem('gh_token', token);
+  }
+  
+  var task = {
+    id: Date.now(),
+    action: 'add_up',
+    platform: plat,
+    name: name,
+    url: url,
+    count: count ? parseInt(count) : 'all',
+    status: 'queued',
+    createdAt: new Date().toISOString()
+  };
+  
+  var repo = 'fengzhisui-maker/dashboard-deploy';
+  fetch('https://api.github.com/repos/' + repo + '/contents/pending_queue.js', {
+    headers: { 'Authorization': 'token ' + token }
+  }).then(function(r) { return r.json(); }).then(function(data) {
+    var content = '';
+    if (data.content) {
+      content = atob(data.content.replace(/\n/g, ''));
+      var match = content.match(/var PENDING_QUEUE = (\[[\s\S]*?\]);/);
+      var arr = match ? JSON.parse(match[1]) : [];
+      arr.push(task);
+      var newContent = 'var PENDING_QUEUE = ' + JSON.stringify(arr, null, 2) + ';';
+      return fetch('https://api.github.com/repos/' + repo + '/contents/pending_queue.js', {
+        method: 'PUT',
+        headers: { 'Authorization': 'token ' + token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: 'queue: add ' + plat + ' UP主 ' + name,
+          content: btoa(unescape(encodeURIComponent(newContent))),
+          sha: data.sha,
+          branch: 'main'
+        })
+      });
+    } else {
+      var newContent = 'var PENDING_QUEUE = ' + JSON.stringify([task], null, 2) + ';';
+      return fetch('https://api.github.com/repos/' + repo + '/contents/pending_queue.js', {
+        method: 'PUT',
+        headers: { 'Authorization': 'token ' + token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: 'queue: add ' + plat + ' UP主 ' + name,
+          content: btoa(unescape(encodeURIComponent(newContent))),
+          branch: 'main'
+        })
+      });
+    }
+  }).then(function(r) {
+    if (r && r.ok) {
+      document.querySelector('.add-up-modal').remove();
+      if (typeof PENDING_QUEUE === 'undefined') PENDING_QUEUE = [];
+      PENDING_QUEUE.push(task);
+      rUps();
+      showToast('✓ 任务已提交，Agent将自动处理');
+      fetch('https://api.github.com/repos/fengzhisui-maker/dashboard-deploy/pages/builds', {
+        method: 'POST',
+        headers: { 'Authorization': 'token ' + token, 'Content-Type': 'application/json' }
+      });
+    } else {
+      alert('提交失败，请检查GitHub Token是否有效');
+    }
+  }).catch(function(e) {
+    alert('提交失败: ' + e.message);
+  });
+}
+
+function showToast(msg) {
+  var t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:10px 20px;border-radius:8px;font-size:12px;z-index:1000;animation:slideUp .3s';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(function() { t.remove(); }, 3000);
+}
+
 function rOverview() {
   var mc = VIDEOS.filter(function(v) { return v.category.includes('\u5B8F\u89C2'); }).length;
   var cc = VIDEOS.filter(function(v) { return v.category.includes('\u5927\u5B97'); }).length;
@@ -324,7 +467,7 @@ function rOverview() {
   Object.keys(UP_STATS).forEach(function(n) {
     var i = UP_STATS[n]; var cats = '';
     Object.keys(i.categories).forEach(function(c) { cats += '<span class="tag ' + catCls(c) + '">' + c + ' ' + i.categories[c] + '</span>'; });
-    upCards += '<div class="up-c"><div class="up-h"><div class="up-n">' + n + '</div><div class="up-d">\u6700\u65B0: ' + i.latest + '</div></div><div style="display:flex;gap:16px;margin-bottom:8px"><div style="text-align:center"><div style="font-size:16px;font-weight:700;color:var(--accent2)">' + i.total + '</div><div style="font-size:9px;color:var(--t4)">\u89C6\u9891</div></div></div><div>' + cats + '</div></div>';
+    upCards += '<div class=\"up-c\"><div class=\"up-h\"><div style=\"display:flex;align-items:center;gap:6px\"><span class=\"plat-tag ' + (i.platform==='youtube'?'yt':i.platform==='other'?'other':'bili') + '\">' + (i.platform==='youtube'?'YouTube':i.platform==='other'?'其他':'B站') + '</span><div class=\"up-n\">' + n + '</div><div class="up-d">\u6700\u65B0: ' + i.latest + '</div></div><div style="display:flex;gap:16px;margin-bottom:8px"><div style="text-align:center"><div style="font-size:16px;font-weight:700;color:var(--accent2)">' + i.total + '</div><div style="font-size:9px;color:var(--t4)">\u89C6\u9891</div></div></div><div>' + cats + '</div></div>';
   });
   var catCards = '';
   Object.entries(CAT_STATS).sort(function(a,b) { return b[1]-a[1]; }).forEach(function(x) {
@@ -334,13 +477,35 @@ function rOverview() {
   initRefSystem();
 }
 function rUps() {
+  // 平台筛选器
+  var filterHtml = '<div class="plat-filter"><button class="active" onclick="filterPlat(\'all\',this)">全部</button><button onclick="filterPlat(\'bilibili\',this)">B站</button><button onclick="filterPlat(\'youtube\',this)">YouTube</button><button onclick="filterPlat(\'other\',this)">其他</button></div>';
+  
+  // UP主卡片 - 添加平台标签
   var upCards = '';
   Object.keys(UP_STATS).forEach(function(n) {
-    var i = UP_STATS[n]; var cats = '';
+    var i = UP_STATS[n];
+    var cats = '';
     Object.keys(i.categories).forEach(function(c) { cats += '<span class="tag ' + catCls(c) + '">' + c + ' ' + i.categories[c] + '</span>'; });
-    upCards += '<div class="up-c"><div class="up-h"><div class="up-n">' + n + '</div><div class="up-d">\u6700\u65B0: ' + i.latest + '</div></div><div style="display:flex;gap:16px;margin-bottom:8px"><div style="text-align:center"><div style="font-size:16px;font-weight:700;color:var(--accent2)">' + i.total + '</div><div style="font-size:9px;color:var(--t4)">\u89C6\u9891</div></div></div><div style="margin-bottom:10px">' + cats + '</div><div style="display:flex;gap:6px"><button class="btn btn-o btn-s" onclick="alert(\'\u8BF7\u544A\u8BC9\u6211\u9700\u8981\u8FFD\u52A0\u591A\u5C11\u4E2A\u89C6\u9891\')">\u8FFD\u52A0\u8F6C\u5F55</button><button class="btn btn-o btn-s" onclick="browseUp(\'' + n + '\')">\u6D4F\u89C8\u5185\u5BB9</button></div></div>';
+    // 判断平台（默认bilibili，已有数据都算B站）
+    var platform = i.platform || 'bilibili';
+    var platLabel = platform === 'bilibili' ? 'B站' : platform === 'youtube' ? 'YouTube' : '其他';
+    var platClass = platform === 'bilibili' ? 'bili' : platform === 'youtube' ? 'yt' : 'other';
+    upCards += '<div class="up-c" data-platform="' + platform + '"><div class="up-h"><div style="display:flex;align-items:center;gap:6px"><span class="plat-tag ' + platClass + '">' + platLabel + '</span><div class="up-n">' + n + '</div></div><div class="up-d">最新: ' + i.latest + '</div></div><div style="display:flex;gap:16px;margin-bottom:8px"><div style="text-align:center"><div style="font-size:16px;font-weight:700;color:var(--accent2)">' + i.total + '</div><div style="font-size:9px;color:var(--t4)">视频</div></div></div><div style="margin-bottom:10px">' + cats + '</div><div style="display:flex;gap:6px"><button class="btn btn-o btn-s" onclick="openAddUpModal(\'' + n + '\')">追加转录</button><button class="btn btn-o btn-s" onclick="browseUp(\'' + n + '\')">浏览内容</button></div></div>';
   });
-  document.getElementById('tc-ups').innerHTML = '<div data-ref="transcript-ups" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><h3 style="font-size:13px">UP\u4E3B\u7BA1\u7406</h3><button class="btn btn-p" onclick="alert(\'\u8BF7\u5728\u5BF9\u8BDD\u4E2D\u544A\u8BC9\u6211UP\u4E3B\u540D\u79F0\u548CB\u7AD9\u94FE\u63A5\')">\u2795 \u6DFB\u52A0UP\u4E3B</button></div><div class="up-g">' + upCards + '</div>';
+  
+  // 待处理队列
+  var pendingHtml = '';
+  if (typeof PENDING_QUEUE !== 'undefined' && PENDING_QUEUE.length > 0) {
+    pendingHtml = '<div class="pending-section"><h3 style="font-size:12px;margin-bottom:8px;color:var(--warn)">⏳ 待处理任务 (' + PENDING_QUEUE.length + ')</h3>';
+    PENDING_QUEUE.forEach(function(task) {
+      var platLabel = task.platform === 'bilibili' ? 'B站' : task.platform === 'youtube' ? 'YouTube' : '其他';
+      var platClass = task.platform === 'bilibili' ? 'bili' : task.platform === 'youtube' ? 'yt' : 'other';
+      pendingHtml += '<div class="pending-item"><span class="plat-tag ' + platClass + '">' + platLabel + '</span><span style="flex:1">' + task.name + '</span><span class="pending-status queued">排队中</span></div>';
+    });
+    pendingHtml += '</div>';
+  }
+  
+  document.getElementById('tc-ups').innerHTML = '<div data-ref="transcript-ups" style="position:relative"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><h3 style="font-size:13px">UP主管理</h3><button class="btn btn-p" onclick="openAddUpModal()">➕ 添加UP主</button></div>' + filterHtml + '<div class="up-g" id="upGrid">' + upCards + '</div>' + pendingHtml + '</div>';
   initRefSystem();
 }
 function browseUp(u) { swTab('browse'); setTimeout(function() { document.getElementById('fUp').value = u; applyF(); }, 50); }
