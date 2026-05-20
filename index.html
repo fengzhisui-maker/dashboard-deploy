@@ -129,12 +129,12 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 /* 引用ID复制按钮 */
 [data-ref]{position:relative}
 .ref-copy-btn{position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:5px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;font-size:12px;display:none;align-items:center;justify-content:center;z-index:10;color:var(--t3);transition:.15s;opacity:0.7}
-[data-ref]:hover .ref-copy-btn{display:flex}
+[data-ref]:hover > .ref-copy-btn{display:flex}
 .ref-copy-btn:hover{opacity:1;border-color:var(--accent);color:var(--accent)}
 .ref-copy-btn.copied{color:var(--accent);opacity:1}
 
 .ref-tooltip{position:absolute;top:100%;right:0;margin-top:4px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;font-size:10px;color:var(--t2);white-space:pre;line-height:1.5;z-index:200;pointer-events:none;display:none;min-width:240px;max-width:360px;box-shadow:0 4px 12px rgba(0,0,0,.3)}
-.ref-copy-btn:hover .ref-tooltip{display:block}
+.ref-copy-btn:hover > .ref-tooltip{display:block}
 /* 侧边栏导航项 - 悬浮显示ref标签 */
 .s-nav{position:relative}
 .s-item[data-ref]:hover::after{content:"#" attr(data-ref);position:absolute;left:60px;top:50%;transform:translateY(-50%);background:var(--bg3);border:1px solid var(--border);padding:2px 8px;border-radius:4px;font-size:10px;color:var(--t3);white-space:nowrap;z-index:100}
