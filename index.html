@@ -489,20 +489,20 @@ function rProject() {
     '<div style="font-size:10px;color:var(--t4)">里程碑进度: ' + doneCnt + ' 已完成, ' + partialCnt + ' 进行中, ' + (totalCnt - doneCnt - partialCnt) + ' 待开始</div>' +
     '</div>' +
     
-    '<h3 data-ref="project-milestones" style="font-size:13px;margin-bottom:10px">&#x1F4C5; 里程碑时间线</h3>' +
+    '<div data-ref="project-milestones" style="position:relative"><h3 style="font-size:13px;margin-bottom:10px">&#x1F4C5; 里程碑时间线</h3>' +
     '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:16px">' + msHtml + '</div>' +
     
-    '<h3 data-ref="project-kanban" style="font-size:13px;margin-bottom:10px">&#x1F4BC; 任务看板</h3>' +
+    '</div><div data-ref="project-kanban" style="position:relative"><h3 style="font-size:13px;margin-bottom:10px">&#x1F4BC; 任务看板</h3>' +
     kanbanHtml +
     
-    '<h3 data-ref="project-decisions" style="font-size:13px;margin:16px 0 10px">&#x1F4DC; 关键决策日志</h3>' +
+    '</div><div data-ref="project-decisions" style="position:relative"><h3 style="font-size:13px;margin:16px 0 10px">&#x1F4DC; 关键决策日志</h3>' +
     '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:16px">' + decHtml + '</div>' +
     
-    '<h3 data-ref="project-scope" style="font-size:13px;margin-bottom:10px">&#x1F30D; 范围边界</h3>' +
+    '</div><div data-ref="project-scope" style="position:relative"><h3 style="font-size:13px;margin-bottom:10px">&#x1F30D; 范围边界</h3>' +
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px"><div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px"><div style="font-size:11px;font-weight:600;color:var(--accent);margin-bottom:8px">&#x2705; 在范围内</div>' + scopeIn + '</div><div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px"><div style="font-size:11px;font-weight:600;color:var(--t4);margin-bottom:8px">&#x274C; 不在范围内</div>' + scopeOut + '</div></div>' +
     
-    '<h3 data-ref="project-blueprint" style="font-size:13px;margin-bottom:10px">&#x1F3AF; 架构蓝图</h3>' +
-    bpHtml;
+    '</div><div data-ref="project-blueprint" style="position:relative"><h3 style="font-size:13px;margin-bottom:10px">&#x1F3AF; 架构蓝图</h3>' +
+    bpHtml + '</div>';
   initRefSystem();
 }
 function setMod(m) {
