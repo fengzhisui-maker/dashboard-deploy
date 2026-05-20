@@ -197,6 +197,11 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 .pending-status{font-size:9px;padding:2px 6px;border-radius:3px}
 .pending-status.queued{background:rgba(234,179,8,0.15);color:var(--warn)}
 .pending-status.processing{background:var(--accent-bg);color:var(--accent)}
+.pending-status.done{background:rgba(34,197,94,0.15);color:#22c55e}
+.pending-status.error{background:rgba(239,68,68,0.15);color:#ef4444}
+.task-progress{height:4px;background:var(--bg3);border-radius:2px;margin:6px 0 2px;overflow:hidden}
+.task-progress-bar{height:100%;background:var(--accent);border-radius:2px;transition:width .3s}
+.task-progress-info{display:flex;justify-content:space-between;font-size:9px;color:var(--t4)}
 </style>
 <script>
 // AUTH MODULE - isolated from all other scripts
@@ -583,12 +588,29 @@ function rUps() {
   });
   
   var pendingHtml = '';
+  var totalTasks = 0, doneTasks = 0, processingTasks = 0, errorTasks = 0;
   if (typeof PENDING_QUEUE !== 'undefined' && PENDING_QUEUE.length > 0) {
-    pendingHtml = '<div class="pending-section"><h3 style="font-size:12px;margin-bottom:8px;color:var(--warn)">⏳ 待处理任务 (' + PENDING_QUEUE.length + ')</h3>';
+    PENDING_QUEUE.forEach(function(t) {
+      totalTasks++;
+      if (t.status === 'done') doneTasks++;
+      else if (t.status === 'processing') processingTasks++;
+      else if (t.status === 'error') errorTasks++;
+    });
+    var pct = totalTasks > 0 ? Math.round(doneTasks / totalTasks * 100) : 0;
+    pendingHtml = '<div class="pending-section">';
+    pendingHtml += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><h3 style="font-size:12px;color:var(--warn);margin:0">⏳ 任务队列</h3><span style="font-size:11px;color:var(--t3)">' + doneTasks + '/' + totalTasks + ' 完成</span></div>';
+    pendingHtml += '<div class="task-progress"><div class="task-progress-bar" style="width:' + pct + '%"></div></div>';
+    pendingHtml += '<div class="task-progress-info"><span>进度 ' + pct + '%</span><span>' + (processingTasks > 0 ? processingTasks + ' 执行中' : '') + (errorTasks > 0 ? ' · ' + errorTasks + ' 失败' : '') + '</span></div>';
     PENDING_QUEUE.forEach(function(task) {
       var platLabel = task.platform === 'bilibili' ? 'B站' : task.platform === 'youtube' ? 'YouTube' : '其他';
       var platClass = task.platform === 'bilibili' ? 'bili' : task.platform === 'youtube' ? 'yt' : 'other';
-      pendingHtml += '<div class="pending-item"><span class="plat-tag ' + platClass + '">' + platLabel + '</span><span style="flex:1">' + task.name + '</span><span class="pending-status queued">排队中</span></div>';
+      var statusClass = task.status === 'done' ? 'done' : task.status === 'processing' ? 'processing' : task.status === 'error' ? 'error' : 'queued';
+      var statusLabel = task.status === 'done' ? '✓ 完成' : task.status === 'processing' ? '执行中' : task.status === 'error' ? '✗ 失败' : '排队中';
+      var progressHtml = '';
+      if (task.status === 'processing' && task.progress) {
+        progressHtml = '<div class="task-progress"><div class="task-progress-bar" style="width:' + task.progress + '%"></div></div>';
+      }
+      pendingHtml += '<div class="pending-item"><span class="plat-tag ' + platClass + '">' + platLabel + '</span><span style="flex:1">' + task.name + progressHtml + '</span><span class="pending-status ' + statusClass + '">' + statusLabel + '</span></div>';
     });
     pendingHtml += '</div>';
   }
