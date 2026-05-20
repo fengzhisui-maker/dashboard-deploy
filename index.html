@@ -105,6 +105,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 .mod-card.active{border-style:solid}
 .mod-card.placeholder{border-style:dashed;opacity:.5}
 .mod-card.planned{border-style:dashed;opacity:.7}
+.mod-card{cursor:pointer}.mod-card:hover{border-color:var(--accent);background:var(--accent-bg);transform:translateY(-1px)}
 .mod-name{font-size:12px;font-weight:600;margin-bottom:4px}
 .mod-desc{font-size:9px;color:var(--t4);line-height:1.4}
 .mod-children{display:flex;flex-wrap:wrap;gap:3px;margin-top:6px}
@@ -126,6 +127,33 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 .priority-tag{font-size:9px;padding:2px 6px;border-radius:3px}
 .priority-high{background:rgba(239,68,68,0.15);color:var(--danger)}
 .priority-medium{background:rgba(234,179,8,0.15);color:var(--warn)}
+/* 模块下钻详情 */
+.bp-drill{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:500;display:flex;align-items:center;justify-content:center;animation:fadeIn .15s}
+.bp-drill-panel{background:var(--bg2);border:1px solid var(--border);border-radius:12px;width:90%;max-width:720px;max-height:80vh;display:flex;flex-direction:column;animation:slideUp .2s}
+.bp-drill-header{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--border)}
+.bp-drill-back{width:32px;height:32px;border-radius:6px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--t3);transition:.15s;flex-shrink:0}
+.bp-drill-back:hover{border-color:var(--accent);color:var(--accent)}
+.bp-drill-title{font-size:16px;font-weight:700;flex:1}
+.bp-drill-status{font-size:10px;padding:2px 8px;border-radius:4px}
+.bp-drill-status.active{background:var(--accent-bg);color:var(--accent)}
+.bp-drill-status.planned{background:rgba(234,179,8,0.15);color:var(--warn)}
+.bp-drill-status.placeholder{background:rgba(100,100,100,0.15);color:var(--t4)}
+.bp-drill-body{overflow-y:auto;padding:16px 20px;flex:1}
+.bp-drill-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.bp-drill-meta-item{font-size:10px;padding:3px 8px;background:var(--bg3);border:1px solid var(--border);border-radius:4px;color:var(--t3)}
+.bp-drill-meta-item strong{color:var(--t2);margin-right:4px}
+.bp-drill-desc{font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:16px;padding:10px 12px;background:var(--bg3);border-radius:6px}
+.bp-drill-subs-title{font-size:12px;font-weight:600;color:var(--t3);margin-bottom:10px}
+.bp-drill-sub{position:relative;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:8px;transition:.15s}
+.bp-drill-sub:hover{border-color:var(--accent)}
+.bp-drill-sub-name{font-size:12px;font-weight:600;margin-bottom:4px}
+.bp-drill-sub-desc{font-size:10px;color:var(--t4);line-height:1.4}
+.bp-drill-sub-status{display:inline-block;font-size:9px;padding:1px 6px;border-radius:3px;margin-left:6px}
+.bp-drill-sub-status.active{background:var(--accent-bg);color:var(--accent)}
+.bp-drill-sub-status.planned{background:rgba(234,179,8,0.15);color:var(--warn)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+
 /* 引用ID复制按钮 */
 [data-ref]{position:relative}
 .ref-copy-btn{position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:5px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;font-size:12px;display:none;align-items:center;justify-content:center;z-index:10;color:var(--t3);transition:.15s;opacity:0.7}
@@ -198,6 +226,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 <div class="detail" id="detail"><div class="dh"><h3 id="detTitle">详情</h3><button class="btn btn-o btn-s" onclick="closeDet()">&#x2715;</button></div><div class="db" id="detBody"></div></div>
 <script src="project_data.js"></script>
 <script src="framework_data.js"></script>
+<script src="module_details.js"></script>
 <script src="code_map.js"></script>
 <script src="videos_data.js"></script>
 <script src="up_stats.js"></script>
@@ -462,7 +491,7 @@ function rProject() {
           childrenHtml += '</div>';
         }
         var descHtml = mod.desc ? '<div class="mod-desc">' + mod.desc + '</div>' : '';
-        modCards += '<div class="mod-card ' + mod.status + '"><div class="mod-name"><span class="status-dot ' + statusIcon + '"></span>' + mod.name + '</div>' + (childrenHtml || descHtml) + '</div>';
+        modCards += '<div data-ref="' + mod.id + '" class="mod-card ' + mod.status + '" onclick="showModuleDetail(\'' + mod.id + '\')"><div class="mod-name"><span class="status-dot ' + statusIcon + '"></span>' + mod.name + '</div>' + (childrenHtml || descHtml) + '</div>';
       });
       
       bpHtml += '<div data-ref="blueprint-' + layer.id + '" class="layer-card"><div class="layer-header"><div class="layer-indicator" style="background:' + layer.color + '"></div><div><div class="layer-title">' + layerIconMap[layer.id] + ' ' + layer.id + ': ' + layer.name + ' (' + layer.nameEn + ')</div><div class="layer-desc">' + layer.desc + '</div></div></div><div class="mod-grid">' + modCards + '</div></div>';
@@ -550,6 +579,71 @@ function generateContext(ref) {
   }
   return lines.join('\n');
 }
+// 模块下钻详情
+function showModuleDetail(modId) {
+  var detail = (typeof MODULE_DETAILS !== 'undefined') ? MODULE_DETAILS[modId] : null;
+  if (!detail) return;
+  var layerMap = {'L4':'展示层','L3':'逻辑层','L2':'数据层','L1':'基础设施层'};
+  var layerId = modId.split('-')[0];
+  
+  // Meta tags
+  var metaHtml = '';
+  metaHtml += '<div class="bp-drill-meta-item"><strong>层级</strong>' + (layerMap[layerId]||layerId) + '</div>';
+  if (detail.archPath) metaHtml += '<div class="bp-drill-meta-item"><strong>架构</strong>' + detail.archPath + '</div>';
+  if (detail.renderer) metaHtml += '<div class="bp-drill-meta-item"><strong>渲染</strong>' + detail.renderer + '</div>';
+  if (detail.dataFile) metaHtml += '<div class="bp-drill-meta-item"><strong>数据</strong>' + detail.dataFile + '</div>';
+  if (detail.codeFile) metaHtml += '<div class="bp-drill-meta-item"><strong>代码</strong>' + detail.codeFile + '</div>';
+  
+  // Sub-modules
+  var subsHtml = '';
+  if (detail.subModules && detail.subModules.length > 0) {
+    detail.subModules.forEach(function(sub) {
+      var statusCls = sub.status === 'active' ? 'active' : 'planned';
+      var statusText = sub.status === 'active' ? '已实现' : '规划中';
+      subsHtml += '<div data-ref="' + sub.id + '" class="bp-drill-sub">';
+      subsHtml += '<div class="bp-drill-sub-name">' + sub.name + '<span class="bp-drill-sub-status ' + statusCls + '">' + statusText + '</span></div>';
+      subsHtml += '<div class="bp-drill-sub-desc">' + (sub.desc || '') + '</div>';
+      if (sub.renderer) subsHtml += '<div style="font-size:9px;color:var(--t4);margin-top:4px">渲染: ' + sub.renderer + '</div>';
+      if (sub.dataFile) subsHtml += '<div style="font-size:9px;color:var(--t4)">数据: ' + sub.dataFile + '</div>';
+      subsHtml += '</div>';
+    });
+  } else {
+    subsHtml = '<div style="font-size:11px;color:var(--t4);text-align:center;padding:20px">暂无子模块定义</div>';
+  }
+  
+  var statusCls = detail.status === 'active' ? 'active' : detail.status === 'planned' ? 'planned' : 'placeholder';
+  var statusText = detail.status === 'active' ? '已实现' : detail.status === 'planned' ? '规划中' : '占位';
+  
+  var html = '<div class="bp-drill" onclick="if(event.target===this)closeModuleDetail()">' +
+    '<div class="bp-drill-panel">' +
+    '<div class="bp-drill-header">' +
+    '<button class="bp-drill-back" onclick="closeModuleDetail()">←</button>' +
+    '<div class="bp-drill-title">' + detail.name + '</div>' +
+    '<span class="bp-drill-status ' + statusCls + '">' + statusText + '</span>' +
+    '</div>' +
+    '<div class="bp-drill-body">' +
+    '<div class="bp-drill-meta">' + metaHtml + '</div>' +
+    '<div class="bp-drill-desc">' + (detail.desc || '') + '</div>' +
+    '<div class="bp-drill-subs-title">子模块 (' + (detail.subModules ? detail.subModules.length : 0) + ')</div>' +
+    subsHtml +
+    '</div></div></div>';
+  
+  document.body.insertAdjacentHTML('beforeend', html);
+  initRefSystem();
+  // ESC键关闭
+  document.addEventListener('keydown', function escHandler(e) {
+    if (e.key === 'Escape') {
+      closeModuleDetail();
+      document.removeEventListener('keydown', escHandler);
+    }
+  });
+}
+
+function closeModuleDetail() {
+  var drill = document.querySelector('.bp-drill');
+  if (drill) drill.remove();
+}
+
 function initRefSystem() {
   // 清除旧的复制按钮
   document.querySelectorAll('.ref-copy-btn').forEach(function(b) { b.remove(); });
