@@ -9,7 +9,8 @@ var PENDING_QUEUE = [
     "limitCount": 500,
     "limitDays": 365,
     "autoTrack": true,
-    "status": "queued",
+    "status": "processing",
+    "videosDone": 0,
     "createdAt": "2026-05-20T16:44:27.695Z"
   }
 ];
