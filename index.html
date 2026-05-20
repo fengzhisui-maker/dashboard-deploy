@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>金融研究仪表盘</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#09090b;--bg2:#111114;--bg3:#18181b;--bg4:#222228;
+  --border:#27272a;--border2:#3f3f46;
+  --t1:#fafafa;--t2:#a1a1aa;--t3:#71717a;--t4:#52525b;
+  --accent:#22c55e;--accent2:#4ade80;--accent-bg:rgba(34,197,94,0.12);
+  --danger:#ef4444;--warn:#eab308;--info:#3b82f6;
+  --cat-macro:#8b5cf6;--cat-comm:#f97316;--cat-stock:#22c55e;--cat-other:#6b7280;--cat-mix:#eab308;
+}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--t1);display:flex;height:100vh;overflow:hidden}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+/* Sidebar */
+.sidebar{width:200px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0}
+.s-logo{padding:20px 14px;border-bottom:1px solid var(--border)}
+.s-logo h1{font-size:13px;font-weight:700;color:var(--accent2);letter-spacing:-0.02em}
+.s-logo p{font-size:10px;color:var(--t4);margin-top:3px}
+.s-nav{padding:8px 6px;flex:1}
+.s-section{font-size:9px;text-transform:uppercase;color:var(--t4);padding:14px 10px 5px;letter-spacing:1px}
+.s-item{display:flex;align-items:center;padding:8px 10px;border-radius:6px;cursor:pointer;font-size:12px;color:var(--t2);margin-bottom:1px;transition:.15s}
+.s-item:hover{background:var(--bg4);color:var(--t1)}
+.s-item.active{background:var(--accent-bg);color:var(--accent2);font-weight:500}
+.s-item.off{opacity:.35;cursor:not-allowed}
+.s-item .ic{margin-right:8px;font-size:14px;width:18px;text-align:center}
+
+/* Main */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{height:44px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;justify-content:space-between;flex-shrink:0}
+.topbar h2{font-size:13px;font-weight:600}
+.btn{padding:5px 14px;border-radius:5px;border:none;cursor:pointer;font-size:11px;font-weight:500;transition:.15s}
+.btn-p{background:var(--accent);color:#000}.btn-p:hover{background:var(--accent2)}
+.btn-o{background:transparent;color:var(--t2);border:1px solid var(--border)}.btn-o:hover{border-color:var(--t3);color:var(--t1)}
+.btn-s{padding:3px 8px;font-size:10px}
+
+.content{flex:1;overflow-y:auto;padding:16px 20px}
+
+/* Tabs */
+.tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:16px}
+.tab{padding:8px 16px;font-size:12px;color:var(--t3);cursor:pointer;border-bottom:2px solid transparent;transition:.15s}
+.tab:hover{color:var(--t1)}.tab.active{color:var(--accent2);border-bottom-color:var(--accent)}
+
+/* Cards */
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:18px}
+.card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px}
+.card .l{font-size:10px;color:var(--t4);margin-bottom:4px}
+.card .v{font-size:22px;font-weight:700}
+.card .s{font-size:10px;color:var(--t3);margin-top:3px}
+
+/* UP cards */
+.up-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px;margin-bottom:18px}
+.up-c{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px}
+.up-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.up-n{font-size:14px;font-weight:600}
+.up-d{font-size:10px;color:var(--t4)}
+.tag{font-size:9px;padding:2px 7px;border-radius:8px;display:inline-block;margin:2px}
+.t-macro{color:var(--cat-macro);background:rgba(139,92,246,.12)}
+.t-comm{color:var(--cat-comm);background:rgba(249,115,22,.12)}
+.t-stock{color:var(--cat-stock);background:rgba(34,197,94,.12)}
+.t-other{color:var(--cat-other);background:rgba(107,114,128,.12)}
+.t-mix{color:var(--cat-mix);background:rgba(234,179,8,.12)}
+
+/* Filter */
+.fbar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+.fbar select,.fbar input{background:var(--bg3);border:1px solid var(--border);color:var(--t1);padding:6px 10px;border-radius:5px;font-size:11px}
+.fbar input{flex:1;min-width:180px}
+.fbar select:focus,.fbar input:focus{outline:none;border-color:var(--accent)}
+
+/* Video list */
+.vl{display:flex;flex-direction:column;gap:6px}
+.vi{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:12px 14px;cursor:pointer;transition:.15s}
+.vi:hover{border-color:var(--accent);background:var(--bg4)}
+.vi .vh{display:flex;justify-content:space-between;align-items:center}
+.vi .vt{font-size:12px;font-weight:500;flex:1}
+.vi .vm{display:flex;gap:10px;font-size:10px;color:var(--t4);align-items:center}
+.vi .vp{font-size:11px;color:var(--t2);line-height:1.6;margin-top:8px;max-height:0;overflow:hidden;transition:max-height .3s}
+.vi.open .vp{max-height:500px;overflow-y:auto}
+
+/* Detail */
+.detail{position:fixed;top:0;right:-560px;width:560px;height:100vh;background:var(--bg2);border-left:1px solid var(--border);z-index:100;transition:right .3s;display:flex;flex-direction:column}
+.detail.show{right:0}
+.detail .dh{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.detail .dh h3{font-size:13px;font-weight:600;flex:1;margin-right:8px}
+.detail .db{flex:1;overflow-y:auto;padding:16px}
+.detail .dm{margin-bottom:12px}.detail .dm span{font-size:10px;color:var(--t4);margin-right:12px}
+.detail .dc{font-size:12px;line-height:1.8;color:var(--t2);white-space:pre-wrap}
+
+/* Pagination */
+.pag{display:flex;justify-content:center;gap:4px;margin-top:14px}
+.pb{padding:5px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:4px;color:var(--t2);cursor:pointer;font-size:11px}
+.pb.active{background:var(--accent);color:#000;border-color:var(--accent)}
+
+/* Placeholder */
+.ph{text-align:center;padding:50px 20px;color:var(--t4)}
+.ph .ic{font-size:36px;margin-bottom:10px}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="s-logo"><h1>📊 金融研究仪表盘</h1><p>wudaoseng.com</p></div>
+  <div class="s-nav">
+    <div class="s-section">核心模块</div>
+    <div class="s-item active" onclick="setMod('transcript')"><span class="ic">🎙️</span>转录库</div>
+    <div class="s-item off" title="开发中"><span class="ic">📡</span>数据采集</div>
+    <div class="s-item off" title="开发中"><span class="ic">🔬</span>分析工具</div>
+    <div class="s-item off" title="开发中"><span class="ic">📈</span>可视化</div>
+    <div class="s-item off" title="开发中"><span class="ic">📝</span>研究笔记</div>
+    <div class="s-item off" title="开发中"><span class="ic">⚙️</span>自动化</div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="topbar">
+    <h2 id="topTitle">转录库</h2>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-o" onclick="exportData()">📥 导出</button>
+      <button class="btn btn-p" onclick="swTab('tasks')">➕ 新建任务</button>
+    </div>
+  </div>
+  <div class="content">
+    <div class="tabs" id="tabs">
+      <div class="tab active" data-t="overview" onclick="swTab(this)">概览</div>
+      <div class="tab" data-t="ups" onclick="swTab(this)">UP主管理</div>
+      <div class="tab" data-t="tasks" onclick="swTab(this)">转录任务</div>
+      <div class="tab" data-t="browse" onclick="swTab(this)">内容浏览</div>
+      <div class="tab" data-t="factors" onclick="swTab(this)">因子提取</div>
+    </div>
+    <div id="tc-overview"></div>
+    <div id="tc-ups" style="display:none"></div>
+    <div id="tc-tasks" style="display:none"></div>
+    <div id="tc-browse" style="display:none"></div>
+    <div id="tc-factors" style="display:none"></div>
+  </div>
+</div>
+
+<div class="detail" id="detail"><div class="dh"><h3 id="detTitle">详情</h3><button class="btn btn-o btn-s" onclick="closeDet()">✕</button></div><div class="db" id="detBody"></div></div>
+
+<script src="videos_data.js"></script>
+<script src="up_stats.js"></script>
+<script src="cat_stats.js"></script>
+<script>
+let cTab='overview',cPage=1;const PG=20;let fV=[...VIDEOS],selV=new Set();
+
+function swTab(t){
+  if(typeof t==='string'){document.querySelectorAll('.tab').forEach(x=>{if(x.dataset.t===t)x.classList.add('active');else x.classList.remove('active')});cTab=t}
+  else{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');cTab=t.dataset.t}
+  document.querySelectorAll('[id^="tc-"]').forEach(x=>x.style.display='none');
+  document.getElementById('tc-'+cTab).style.display='';
+  render(cTab);
+}
+function render(t){switch(t){case'overview':rOverview();break;case'ups':rUps();break;case'tasks':rTasks();break;case'browse':rBrowse();break;case'factors':rFactors();break}}
+
+function catCls(c){
+  if(c.includes('宏观')&&c.includes('大宗')&&c.includes('股票'))return't-other';
+  if((c.includes('宏观')&&c.includes('大宗'))||(c.includes('宏观')&&c.includes('股票'))||(c.includes('大宗')&&c.includes('股票')))return't-mix';
+  if(c.includes('宏观'))return't-macro';if(c.includes('大宗')||c.includes('期货'))return't-comm';
+  if(c.includes('股票'))return't-stock';return't-other';
+}
+function esc(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML}
+
+// OVERVIEW
+function rOverview(){
+  const mc=VIDEOS.filter(v=>v.category.includes('宏观')).length;
+  const cc=VIDEOS.filter(v=>v.category.includes('大宗')).length;
+  document.getElementById('tc-overview').innerHTML=`
+  <div class="g2">
+    <div class="card"><div class="l">转录视频</div><div class="v" style="color:var(--accent2)">${VIDEOS.length}</div><div class="s">已完成</div></div>
+    <div class="card"><div class="l">UP主</div><div class="v" style="color:var(--info)">${Object.keys(UP_STATS).length}</div><div class="s">已收录</div></div>
+    <div class="card"><div class="l">宏观类</div><div class="v" style="color:var(--cat-macro)">${mc}</div><div class="s">含跨分类</div></div>
+    <div class="card"><div class="l">大宗/期货</div><div class="v" style="color:var(--cat-comm)">${cc}</div><div class="s">含跨分类</div></div>
+  </div>
+  <h3 style="font-size:13px;margin-bottom:10px">已收录UP主</h3>
+  <div class="up-g">${Object.entries(UP_STATS).map(([n,i])=>`
+    <div class="up-c"><div class="up-h"><div class="up-n">${n}</div><div class="up-d">最新: ${i.latest}</div></div>
+    <div style="display:flex;gap:16px;margin-bottom:8px"><div style="text-align:center"><div style="font-size:16px;font-weight:700;color:var(--accent2)">${i.total}</div><div style="font-size:9px;color:var(--t4)">视频</div></div><div style="text-align:center"><div style="font-size:16px;font-weight:700;color:var(--cat-stock)">${i.total}</div><div style="font-size:9px;color:var(--t4)">已转录</div></div></div>
+    <div>${Object.entries(i.categories).map(([c,x])=>`<span class="tag ${catCls(c)}">${c} ${x}</span>`).join('')}</div></div>`).join('')}
+  </div>
+  <h3 style="font-size:13px;margin-bottom:10px">分类分布</h3>
+  <div style="display:flex;flex-wrap:wrap;gap:8px">${Object.entries(CAT_STATS).sort((a,b)=>b[1]-a[1]).map(([c,n])=>`
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px 14px;min-width:180px">
+      <div style="font-size:10px;color:var(--t4);margin-bottom:3px">${c}</div>
+      <div style="font-size:18px;font-weight:700;color:var(--accent2)">${n}</div></div>`).join('')}
+  </div>`;
+}
+
+// UP管理
+function rUps(){
+  document.getElementById('tc-ups').innerHTML=`
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+    <h3 style="font-size:13px">UP主管理</h3>
+    <button class="btn btn-p" onclick="alert('请在对话中告诉我UP主名称和B站链接')">➕ 添加UP主</button>
+  </div>
+  <div class="up-g">${Object.entries(UP_STATS).map(([n,i])=>`
+    <div class="up-c"><div class="up-h"><div class="up-n">${n}</div><div class="up-d">最新: ${i.latest}</div></div>
+    <div style="display:flex;gap:16px;margin-bottom:8px"><div style="text-align:center"><div style="font-size:16px;font-weight:700;color:var(--accent2)">${i.total}</div><div style="font-size:9px;color:var(--t4)">视频</div></div></div>
+    <div style="margin-bottom:10px">${Object.entries(i.categories).map(([c,x])=>`<span class="tag ${catCls(c)}">${c} ${x}</span>`).join('')}</div>
+    <div style="display:flex;gap:6px"><button class="btn btn-o btn-s" onclick="alert('请告诉我需要追加多少个视频')">追加转录</button><button class="btn btn-o btn-s" onclick="browseUp('${n}')">浏览内容</button></div></div>`).join('')}
+  </div>
+  <div style="margin-top:16px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px">
+    <h4 style="font-size:12px;margin-bottom:8px">💡 添加新UP主</h4>
+    <p style="font-size:11px;color:var(--t2);line-height:1.8">在对话中告诉我：1. UP主名称 2. B站主页链接 3. 需要转录的视频数量<br>我会自动配置并执行转录任务。</p></div>`;
+}
+function browseUp(u){swTab('browse');setTimeout(()=>{document.getElementById('fUp').value=u;applyF()},50)}
+
+// 任务
+function rTasks(){
+  document.getElementById('tc-tasks').innerHTML=`
+  <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:16px">
+    <h3 style="font-size:13px;margin-bottom:12px">📋 新建转录任务</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div><label style="font-size:10px;color:var(--t3);display:block;margin-bottom:4px">UP主名称</label><input style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--t1);padding:7px 10px;border-radius:5px;font-size:12px" id="tUp" placeholder="输入B站UP主名称"></div>
+      <div><label style="font-size:10px;color:var(--t3);display:block;margin-bottom:4px">主页链接</label><input style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--t1);padding:7px 10px;border-radius:5px;font-size:12px" id="tUrl" placeholder="https://space.bilibili.com/xxx"></div>
+      <div><label style="font-size:10px;color:var(--t3);display:block;margin-bottom:4px">转录数量</label><select style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--t1);padding:7px 10px;border-radius:5px;font-size:12px" id="tCnt"><option value="10">最新10个</option><option value="50">最新50个</option><option value="100">最新100个</option><option value="all">全部视频</option></select></div>
+      <div><label style="font-size:10px;color:var(--t3);display:block;margin-bottom:4px">转录模式</label><select style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--t1);padding:7px 10px;border-radius:5px;font-size:12px"><option>音频转录（推荐）</option><option>字幕提取</option></select></div>
+    </div>
+    <button class="btn btn-p" style="margin-top:10px" onclick="alert('请在对话中发送任务信息，我来执行')">创建任务</button>
+  </div>
+  <h3 style="font-size:13px;margin-bottom:10px">历史任务</h3>
+  <div style="background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:12px">
+    <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:12px;font-weight:500">超能信号 - 全部视频转录</span><span class="tag t-stock">已完成</span></div>
+    <div style="font-size:10px;color:var(--t4);margin-bottom:6px">模式: 音频转录 | 数量: 500 | 完成: 2026-05-20</div>
+    <div style="height:3px;background:var(--bg);border-radius:2px;overflow:hidden"><div style="height:100%;background:var(--accent);width:100%"></div></div>
+    <div style="display:flex;justify-content:space-between;margin-top:5px;font-size:10px;color:var(--t4)"><span>成功: 500</span><span>失败: 0</span></div></div>`;
+}
+
+// BROWSE
+function rBrowse(){
+  const uo=Object.keys(UP_STATS).map(u=>`<option value="${u}">${u}</option>`).join('');
+  document.getElementById('tc-browse').innerHTML=`
+  <div class="fbar">
+    <select id="fUp" onchange="applyF()"><option value="">全部UP主</option>${uo}</select>
+    <select id="fCat" onchange="applyF()"><option value="">全部分类</option><option value="宏观">宏观</option><option value="大宗商品/期货">大宗/期货</option><option value="股票/板块">股票/板块</option><option value="其他/综合">其他</option></select>
+    <input type="date" id="fFrom" onchange="applyF()" style="width:120px"><span style="color:var(--t4);font-size:11px">至</span><input type="date" id="fTo" onchange="applyF()" style="width:120px">
+    <input type="text" id="fSearch" placeholder="🔍 搜索标题或内容..." oninput="applyF()">
+    <select id="fSort" onchange="applyF()"><option value="dd">最新优先</option><option value="da">最早优先</option><option value="t">按标题</option></select>
+  </div>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+    <div style="font-size:11px;color:var(--t4)">共 <span id="rc">${fV.length}</span> 条</div>
+  </div>
+  <div class="vl" id="vlist"></div><div class="pag" id="pag"></div>`;
+  applyF();
+}
+function applyF(){
+  const up=document.getElementById('fUp')?.value||'',cat=document.getElementById('fCat')?.value||'',
+    from=document.getElementById('fFrom')?.value||'',to=document.getElementById('fTo')?.value||'',
+    s=(document.getElementById('fSearch')?.value||'').toLowerCase(),sort=document.getElementById('fSort')?.value||'dd';
+  fV=VIDEOS.filter(v=>{
+    if(up&&v.up!==up)return false;if(cat&&!v.category.includes(cat))return false;
+    if(from&&v.date<from)return false;if(to&&v.date>to)return false;
+    if(s)return v.title.toLowerCase().includes(s)||v.fullText.toLowerCase().includes(s);return true});
+  if(sort==='dd')fV.sort((a,b)=>b.date.localeCompare(a.date));
+  else if(sort==='da')fV.sort((a,b)=>a.date.localeCompare(b.date));
+  else fV.sort((a,b)=>a.title.localeCompare(b.title));
+  cPage=1;document.getElementById('rc').textContent=fV.length;rVList();
+}
+function rVList(){
+  const s=(cPage-1)*PG,e=s+PG,pg=fV.slice(s,e),tp=Math.ceil(fV.length/PG);
+  document.getElementById('vlist').innerHTML=pg.map(v=>`
+    <div class="vi" id="v-${v.bvid}" onclick="togExp('${v.bvid}')">
+      <div class="vh"><div style="display:flex;align-items:center"><div class="vt">${v.title}</div></div>
+      <div class="vm"><span class="tag ${catCls(v.category)}">${v.category}</span><span>${v.date}</span><span>${v.up}</span></div></div>
+      <div class="vp" id="p-${v.bvid}">${esc(v.preview)}...</div></div>`).join('');
+  let ph='';
+  if(cPage>1)ph+=`<div class="pb" onclick="gP(${cPage-1})">‹</div>`;
+  for(let i=1;i<=tp;i++){if(tp>7&&i>2&&i<cPage-1&&i!==1){if(i===3)ph+='<div class="pb" style="cursor:default;border:none">…</div>';continue}
+    if(tp>7&&i<cPage+2&&i>1&&i<tp){}else if(tp>7&&i>2&&i<tp-1&&i>cPage+1){if(i===tp-2)ph+='<div class="pb" style="cursor:default;border:none">…</div>';continue}
+    ph+=`<div class="pb ${i===cPage?'active':''}" onclick="gP(${i})">${i}</div>`}
+  if(cPage<tp)ph+=`<div class="pb" onclick="gP(${cPage+1})">›</div>`;
+  document.getElementById('pag').innerHTML=ph;
+}
+function gP(p){cPage=p;rVList();document.getElementById('vlist').scrollIntoView({behavior:'smooth'})}
+function togExp(id){
+  const el=document.getElementById('v-'+id),pr=document.getElementById('p-'+id),v=VIDEOS.find(x=>x.bvid===id);
+  if(el.classList.contains('open')){el.classList.remove('open');pr.innerHTML=esc(v.preview)+'...'}
+  else{el.classList.add('open');pr.innerHTML=`<div style="margin-bottom:6px"><button class="btn btn-p btn-s" onclick="event.stopPropagation();openDet('${id}')">📄 全文</button> <button class="btn btn-o btn-s" onclick="event.stopPropagation()">🔬 分析</button> <a href="https://www.bilibili.com/video/${id}" target="_blank" class="btn btn-o btn-s" style="text-decoration:none" onclick="event.stopPropagation()">▶️ B站</a></div>`+esc(v.fullText)}
+}
+
+// DETAIL
+function openDet(id){
+  const v=VIDEOS.find(x=>x.bvid===id);
+  document.getElementById('detTitle').textContent=v.title;
+  document.getElementById('detBody').innerHTML=`
+    <div class="dm"><span>UP主: ${v.up}</span><span>日期: ${v.date}</span><span>分类: ${v.category}</span>
+    <a href="https://www.bilibili.com/video/${id}" target="_blank" style="color:var(--accent2)">B站原视频</a></div>
+    <div style="margin-bottom:10px;display:flex;gap:6px"><button class="btn btn-p btn-s">🔬 提取因子</button><button class="btn btn-o btn-s" onclick="navigator.clipboard.writeText(VIDEOS.find(x=>x.bvid==='${id}').fullText).then(()=>alert('已复制'))">📋 复制全文</button></div>
+    <div class="dc">${esc(v.fullText)}</div>`;
+  document.getElementById('detail').classList.add('show');
+}
+function closeDet(){document.getElementById('detail').classList.remove('show')}
+
+// FACTORS
+function rFactors(){
+  const fts=[
+    {n:'宏观因子',t:'macro',c:'var(--cat-macro)',kw:['PMI','CPI','PPI','GDP','M2','社融','利率','降息','加息','通胀','通缩','汇率','人民币','美元','就业','失业','财政','货币','逆回购','LPR']},
+    {n:'供需因子',t:'supply',c:'var(--cat-comm)',kw:['产量','产能','库存','开工率','进口','出口','消费','需求','供给','减产','增产','检修','淡季','旺季','补库','去库','基差','升水','贴水']},
+    {n:'资金因子',t:'capital',c:'var(--cat-stock)',kw:['持仓','持仓量','多头','空头','净多','净空','资金流入','资金流出','增仓','减仓','主力','北向','南向','融资','融券','成交量']},
+    {n:'情绪因子',t:'sentiment',c:'var(--cat-mix)',kw:['恐慌','贪婪','乐观','悲观','超买','超卖','背离','突破','支撑','阻力','回调','反弹','趋势','震荡']}
+  ];
+  const fc={};fts.forEach(ft=>{ft.kw.forEach(kw=>{let cnt=0,src=[];VIDEOS.forEach(v=>{if(v.fullText.includes(kw)){cnt++;if(src.length<3)src.push(v.title.slice(0,20))}});if(cnt>0)fc[kw]={count:cnt,type:ft.t,name:ft.n,color:ft.c,sources:src}})});
+  const sf=Object.entries(fc).sort((a,b)=>b[1].count-a[1].count);
+  document.getElementById('tc-factors').innerHTML=`
+  <h3 style="font-size:13px;margin-bottom:6px">因子提取</h3>
+  <p style="font-size:11px;color:var(--t2);line-height:1.6;margin-bottom:14px">基于转录库全文自动提取的关键因子，按出现频次排序</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px">
+  ${sf.map(([kw,i])=>`<div style="background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px">
+    <div style="font-size:12px;font-weight:600">${kw}</div>
+    <span class="tag ${i.t==='macro'?'t-macro':i.t==='supply'?'t-comm':i.t==='capital'?'t-stock':'t-mix'}">${i.name}</span>
+    <div style="font-size:16px;font-weight:700;margin:6px 0">${i.count} <span style="font-size:10px;color:var(--t4)">个视频提及</span></div>
+    <div style="font-size:10px;color:var(--t4)">来源: ${i.sources.join('、')}</div></div>`).join('')}
+  </div>`;
+}
+
+function exportData(){
+  const d=fV.map(v=>({up:v.up,bvid:v.bvid,title:v.title,date:v.date,category:v.category}));
+  const b=new Blob([JSON.stringify(d,null,2)],{type:'application/json'}),u=URL.createObjectURL(b),a=document.createElement('a');
+  a.href=u;a.download='transcript_data.json';a.click();
+}
+function setMod(m){}
+
+render('overview');
+</script>
+</body>
+</html>
