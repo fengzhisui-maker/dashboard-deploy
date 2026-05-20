@@ -479,31 +479,36 @@ function rProject() {
     bpHtml += '<div data-ref="project-restructure" class="restructure-card"><div class="restructure-header"><h3 style="font-size:13px;margin:0">&#x1F680; 重构计划</h3></div><div class="restructure-compare"><span style="color:var(--t4)">现状:</span><span>' + rp.current + '</span><span class="arrow">\u2192</span><span style="color:var(--accent)">' + rp.target + '</span></div><div style="margin-top:14px">' + stepHtml + '</div></div>';
   }
   
-  // Assemble
-  document.getElementById('tc-project').innerHTML = 
-    '<div style="margin-bottom:16px"><span style="font-size:11px;color:var(--t4)">最后更新: ' + p.lastUpdate + '</span></div>' +
-    
-    '<div data-ref="project-phase" style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:16px">' +
-    '<h3 style="font-size:13px;margin-bottom:12px">&#x1F680; 当前阶段</h3>' +
-    '<div style="font-size:16px;font-weight:600;color:var(--accent2);margin-bottom:12px">' + p.phase + '</div>' +
-    '<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px"><div style="flex:1;height:6px;background:var(--input-bg);border-radius:3px;overflow:hidden"><div style="height:100%;background:var(--accent);width:' + pct + '%"></div></div><span style="font-size:12px;font-weight:600;color:var(--accent)">' + pct + '%</span></div>' +
-    '<div style="font-size:10px;color:var(--t4)">里程碑进度: ' + doneCnt + ' 已完成, ' + partialCnt + ' 进行中, ' + (totalCnt - doneCnt - partialCnt) + ' 待开始</div>' +
+  // Assemble - 新排版: 阶段总览 → 架构蓝图 → 里程碑 → 看板 → 决策 → 范围
+  document.getElementById('tc-project').innerHTML =
+
+    // === 1. 阶段总览 (紧凑横排) ===
+    '<div data-ref="project-phase" style="display:flex;align-items:center;justify-content:space-between;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 16px;margin-bottom:16px;position:relative">' +
+    '<div><div style="font-size:10px;color:var(--t4);margin-bottom:2px">当前阶段</div><div style="font-size:14px;font-weight:600;color:var(--accent2)">' + p.phase + '</div></div>' +
+    '<div style="display:flex;align-items:center;gap:12px"><div style="width:120px;height:6px;background:var(--input-bg);border-radius:3px;overflow:hidden"><div style="height:100%;background:var(--accent);width:' + pct + '%"></div></div><span style="font-size:13px;font-weight:700;color:var(--accent2)">' + pct + '%</span></div>' +
+    '<div style="font-size:10px;color:var(--t4)">更新: ' + p.lastUpdate + '</div>' +
     '</div>' +
-    
-    '<div data-ref="project-milestones" style="position:relative"><h3 style="font-size:13px;margin-bottom:10px">&#x1F4C5; 里程碑时间线</h3>' +
-    '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:16px">' + msHtml + '</div>' +
-    
-    '</div><div data-ref="project-kanban" style="position:relative"><h3 style="font-size:13px;margin-bottom:10px">&#x1F4BC; 任务看板</h3>' +
-    kanbanHtml +
-    
-    '</div><div data-ref="project-decisions" style="position:relative"><h3 style="font-size:13px;margin:16px 0 10px">&#x1F4DC; 关键决策日志</h3>' +
-    '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:16px">' + decHtml + '</div>' +
-    
-    '</div><div data-ref="project-scope" style="position:relative"><h3 style="font-size:13px;margin-bottom:10px">&#x1F30D; 范围边界</h3>' +
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px"><div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px"><div style="font-size:11px;font-weight:600;color:var(--accent);margin-bottom:8px">&#x2705; 在范围内</div>' + scopeIn + '</div><div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px"><div style="font-size:11px;font-weight:600;color:var(--t4);margin-bottom:8px">&#x274C; 不在范围内</div>' + scopeOut + '</div></div>' +
-    
-    '</div><div data-ref="project-blueprint" style="position:relative"><h3 style="font-size:13px;margin-bottom:10px">&#x1F3AF; 架构蓝图</h3>' +
-    bpHtml + '</div>';
+
+    // === 2. 架构蓝图 (上移到第二位) ===
+    '<div data-ref="project-blueprint" style="position:relative;margin-bottom:16px"><h3 style="font-size:13px;margin-bottom:10px">&#x1F3AF; 架构蓝图</h3>' +
+    bpHtml + '</div>' +
+
+    // === 3. 里程碑时间线 ===
+    '<div data-ref="project-milestones" style="position:relative;margin-bottom:16px"><h3 style="font-size:13px;margin-bottom:10px">&#x1F4C5; 里程碑时间线</h3>' +
+    '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px">' + msHtml + '</div></div>' +
+
+    // === 4. 任务看板 ===
+    '<div data-ref="project-kanban" style="position:relative;margin-bottom:16px"><h3 style="font-size:13px;margin-bottom:10px">&#x1F4BC; 任务看板</h3>' +
+    kanbanHtml + '</div>' +
+
+    // === 5. 关键决策日志 ===
+    '<div data-ref="project-decisions" style="position:relative;margin-bottom:16px"><h3 style="font-size:13px;margin-bottom:10px">&#x1F4DC; 关键决策日志</h3>' +
+    '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px">' + decHtml + '</div></div>' +
+
+    // === 6. 范围边界 ===
+    '<div data-ref="project-scope" style="position:relative;margin-bottom:16px"><h3 style="font-size:13px;margin-bottom:10px">&#x1F30D; 范围边界</h3>' +
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px"><div style="font-size:11px;font-weight:600;color:var(--accent);margin-bottom:8px">&#x2705; 在范围内</div>' + scopeIn + '</div><div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px"><div style="font-size:11px;font-weight:600;color:var(--danger);margin-bottom:8px">&#x274C; 不在范围内</div>' + scopeOut + '</div></div></div>';
+
   initRefSystem();
 }
 function setMod(m) {
