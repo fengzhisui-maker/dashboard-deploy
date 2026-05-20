@@ -126,6 +126,15 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 .priority-tag{font-size:9px;padding:2px 6px;border-radius:3px}
 .priority-high{background:rgba(239,68,68,0.15);color:var(--danger)}
 .priority-medium{background:rgba(234,179,8,0.15);color:var(--warn)}
+/* 引用ID复制按钮 */
+[data-ref]{position:relative}
+.ref-copy-btn{position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:5px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;font-size:12px;display:none;align-items:center;justify-content:center;z-index:10;color:var(--t3);transition:.15s;opacity:0.7}
+[data-ref]:hover .ref-copy-btn{display:flex}
+.ref-copy-btn:hover{opacity:1;border-color:var(--accent);color:var(--accent)}
+.ref-copy-btn.copied{color:var(--accent);opacity:1}
+/* 侧边栏导航项 - 悬浮显示ref标签 */
+.s-nav{position:relative}
+.s-item[data-ref]:hover::after{content:"#" attr(data-ref);position:absolute;left:60px;top:50%;transform:translateY(-50%);background:var(--bg3);border:1px solid var(--border);padding:2px 8px;border-radius:4px;font-size:10px;color:var(--t3);white-space:nowrap;z-index:100}
 </style>
 </head>
 <body>
@@ -147,14 +156,14 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
   <div class="s-logo"><h1>&#x1F4CA; 金融研究仪表盘</h1><p>wudaoseng.com</p></div>
   <div class="s-nav">
     <div class="s-section">核心模块</div>
-    <div class="s-item" onclick="setMod('transcript')"><span class="ic">&#x1F3A4;</span>转录库</div>
-    <div class="s-item active" onclick="setMod('project')"><span class="ic">&#x1F4CB;</span>项目控制台</div>
+    <div class="s-item" data-ref="nav-transcript" onclick="setMod('transcript')"><span class="ic">&#x1F3A4;</span>转录库</div>
+    <div class="s-item active" data-ref="nav-project" onclick="setMod('project')"><span class="ic">&#x1F4CB;</span>项目控制台</div>
     <div class="s-section">扩展模块</div>
-    <div class="s-item off" title="开发中"><span class="ic">&#x1F4E1;</span>数据采集</div>
-    <div class="s-item off" title="开发中"><span class="ic">&#x1F52C;</span>分析工具</div>
-    <div class="s-item off" title="开发中"><span class="ic">&#x1F4C8;</span>可视化</div>
-    <div class="s-item off" title="开发中"><span class="ic">&#x1F4DD;</span>研究笔记</div>
-    <div class="s-item off" title="开发中"><span class="ic">&#x2699;</span>自动化</div>
+    <div class="s-item off" data-ref="nav-data" title="开发中"><span class="ic">&#x1F4E1;</span>数据采集</div>
+    <div class="s-item off" data-ref="nav-analysis" title="开发中"><span class="ic">&#x1F52C;</span>分析工具</div>
+    <div class="s-item off" data-ref="nav-visual" title="开发中"><span class="ic">&#x1F4C8;</span>可视化</div>
+    <div class="s-item off" data-ref="nav-notes" title="开发中"><span class="ic">&#x1F4DD;</span>研究笔记</div>
+    <div class="s-item off" data-ref="nav-auto" title="开发中"><span class="ic">&#x2699;</span>自动化</div>
   </div>
 </div>
 <div class="main">
@@ -287,7 +296,8 @@ function rOverview() {
   Object.entries(CAT_STATS).sort(function(a,b) { return b[1]-a[1]; }).forEach(function(x) {
     catCards += '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px 14px;min-width:180px"><div style="font-size:10px;color:var(--t4);margin-bottom:3px">' + x[0] + '</div><div style="font-size:18px;font-weight:700;color:var(--accent2)">' + x[1] + '</div></div>';
   });
-  document.getElementById('tc-overview').innerHTML = '<div class="g2"><div class="card"><div class="l">\u8F6C\u5F55\u89C6\u9891</div><div class="v" style="color:var(--accent2)">' + VIDEOS.length + '</div><div class="s">\u5DF2\u5B8C\u6210</div></div><div class="card"><div class="l">UP\u4E3B</div><div class="v" style="color:var(--info)">' + Object.keys(UP_STATS).length + '</div><div class="s">\u5DF2\u6536\u5F55</div></div><div class="card"><div class="l">\u5B8F\u89C2\u7C7B</div><div class="v" style="color:var(--cat-macro)">' + mc + '</div><div class="s">\u542B\u8DE8\u5206\u7C7B</div></div><div class="card"><div class="l">\u5927\u5B97/\u671F\u8D27</div><div class="v" style="color:var(--cat-comm)">' + cc + '</div><div class="s">\u542B\u8DE8\u5206\u7C7B</div></div></div><h3 style="font-size:13px;margin-bottom:10px">\u5DF2\u6536\u5F55UP\u4E3B</h3><div class="up-g">' + upCards + '</div><h3 style="font-size:13px;margin-bottom:10px">\u5206\u7C7B\u5206\u5E03</h3><div style="display:flex;flex-wrap:wrap;gap:8px">' + catCards + '</div>';
+  document.getElementById('tc-overview').innerHTML = '<div data-ref="transcript-overview" class="g2"><div class="card"><div class="l">\u8F6C\u5F55\u89C6\u9891</div><div class="v" style="color:var(--accent2)">' + VIDEOS.length + '</div><div class="s">\u5DF2\u5B8C\u6210</div></div><div class="card"><div class="l">UP\u4E3B</div><div class="v" style="color:var(--info)">' + Object.keys(UP_STATS).length + '</div><div class="s">\u5DF2\u6536\u5F55</div></div><div class="card"><div class="l">\u5B8F\u89C2\u7C7B</div><div class="v" style="color:var(--cat-macro)">' + mc + '</div><div class="s">\u542B\u8DE8\u5206\u7C7B</div></div><div class="card"><div class="l">\u5927\u5B97/\u671F\u8D27</div><div class="v" style="color:var(--cat-comm)">' + cc + '</div><div class="s">\u542B\u8DE8\u5206\u7C7B</div></div></div><h3 style="font-size:13px;margin-bottom:10px">\u5DF2\u6536\u5F55UP\u4E3B</h3><div class="up-g">' + upCards + '</div><h3 style="font-size:13px;margin-bottom:10px">\u5206\u7C7B\u5206\u5E03</h3><div style="display:flex;flex-wrap:wrap;gap:8px">' + catCards + '</div>';
+  initRefSystem();
 }
 function rUps() {
   var upCards = '';
@@ -296,16 +306,19 @@ function rUps() {
     Object.keys(i.categories).forEach(function(c) { cats += '<span class="tag ' + catCls(c) + '">' + c + ' ' + i.categories[c] + '</span>'; });
     upCards += '<div class="up-c"><div class="up-h"><div class="up-n">' + n + '</div><div class="up-d">\u6700\u65B0: ' + i.latest + '</div></div><div style="display:flex;gap:16px;margin-bottom:8px"><div style="text-align:center"><div style="font-size:16px;font-weight:700;color:var(--accent2)">' + i.total + '</div><div style="font-size:9px;color:var(--t4)">\u89C6\u9891</div></div></div><div style="margin-bottom:10px">' + cats + '</div><div style="display:flex;gap:6px"><button class="btn btn-o btn-s" onclick="alert(\'\u8BF7\u544A\u8BC9\u6211\u9700\u8981\u8FFD\u52A0\u591A\u5C11\u4E2A\u89C6\u9891\')">\u8FFD\u52A0\u8F6C\u5F55</button><button class="btn btn-o btn-s" onclick="browseUp(\'' + n + '\')">\u6D4F\u89C8\u5185\u5BB9</button></div></div>';
   });
-  document.getElementById('tc-ups').innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><h3 style="font-size:13px">UP\u4E3B\u7BA1\u7406</h3><button class="btn btn-p" onclick="alert(\'\u8BF7\u5728\u5BF9\u8BDD\u4E2D\u544A\u8BC9\u6211UP\u4E3B\u540D\u79F0\u548CB\u7AD9\u94FE\u63A5\')">\u2795 \u6DFB\u52A0UP\u4E3B</button></div><div class="up-g">' + upCards + '</div>';
+  document.getElementById('tc-ups').innerHTML = '<div data-ref="transcript-ups" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><h3 style="font-size:13px">UP\u4E3B\u7BA1\u7406</h3><button class="btn btn-p" onclick="alert(\'\u8BF7\u5728\u5BF9\u8BDD\u4E2D\u544A\u8BC9\u6211UP\u4E3B\u540D\u79F0\u548CB\u7AD9\u94FE\u63A5\')">\u2795 \u6DFB\u52A0UP\u4E3B</button></div><div class="up-g">' + upCards + '</div>';
+  initRefSystem();
 }
 function browseUp(u) { swTab('browse'); setTimeout(function() { document.getElementById('fUp').value = u; applyF(); }, 50); }
 function rTasks() {
-  document.getElementById('tc-tasks').innerHTML = '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:16px"><h3 style="font-size:13px;margin-bottom:12px">\uD83D\uDCCB \u65B0\u5EFA\u8F6C\u5F55\u4EFB\u52A1</h3><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div><label style="font-size:10px;color:var(--t3);display:block;margin-bottom:4px">UP\u4E3B\u540D\u79F0</label><input style="width:100%;background:var(--input-bg);border:1px solid var(--border);color:var(--t1);padding:7px 10px;border-radius:5px;font-size:12px" placeholder="\u8F93\u5165B\u7AD9UP\u4E3B\u540D\u79F0"></div><div><label style="font-size:10px;color:var(--t3);display:block;margin-bottom:4px">\u4E3B\u9875\u94FE\u63A5</label><input style="width:100%;background:var(--input-bg);border:1px solid var(--border);color:var(--t1);padding:7px 10px;border-radius:5px;font-size:12px" placeholder="https://space.bilibili.com/xxx"></div></div><button class="btn btn-p" style="margin-top:10px" onclick="alert(\'\u8BF7\u5728\u5BF9\u8BDD\u4E2D\u53D1\u9001\u4EFB\u52A1\u4FE1\u606F\uFF0C\u6211\u6765\u6267\u884C\')">\u521B\u5EFA\u4EFB\u52A1</button></div><h3 style="font-size:13px;margin-bottom:10px">\u5386\u53F2\u4EFB\u52A1</h3><div style="background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:12px"><div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:12px;font-weight:500">\u8D85\u80FD\u4FE1\u53F7 - \u5168\u90E8\u89C6\u9891\u8F6C\u5F55</span><span class="tag t-stock">\u5DF2\u5B8C\u6210</span></div><div style="font-size:10px;color:var(--t4);margin-bottom:6px">\u6A21\u5F0F: \u97F3\u9891\u8F6C\u5F55 | \u6570\u91CF: 500 | \u5B8C\u6210: 2026-05-20</div><div style="height:3px;background:var(--input-bg);border-radius:2px;overflow:hidden"><div style="height:100%;background:var(--accent);width:100%"></div></div><div style="display:flex;justify-content:space-between;margin-top:5px;font-size:10px;color:var(--t4)"><span>\u6210\u529F: 500</span><span>\u5931\u8D25: 0</span></div></div>';
+  document.getElementById('tc-tasks').innerHTML = '<div data-ref="transcript-tasks" style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:16px"><h3 style="font-size:13px;margin-bottom:12px">\uD83D\uDCCB \u65B0\u5EFA\u8F6C\u5F55\u4EFB\u52A1</h3><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div><label style="font-size:10px;color:var(--t3);display:block;margin-bottom:4px">UP\u4E3B\u540D\u79F0</label><input style="width:100%;background:var(--input-bg);border:1px solid var(--border);color:var(--t1);padding:7px 10px;border-radius:5px;font-size:12px" placeholder="\u8F93\u5165B\u7AD9UP\u4E3B\u540D\u79F0"></div><div><label style="font-size:10px;color:var(--t3);display:block;margin-bottom:4px">\u4E3B\u9875\u94FE\u63A5</label><input style="width:100%;background:var(--input-bg);border:1px solid var(--border);color:var(--t1);padding:7px 10px;border-radius:5px;font-size:12px" placeholder="https://space.bilibili.com/xxx"></div></div><button class="btn btn-p" style="margin-top:10px" onclick="alert(\'\u8BF7\u5728\u5BF9\u8BDD\u4E2D\u53D1\u9001\u4EFB\u52A1\u4FE1\u606F\uFF0C\u6211\u6765\u6267\u884C\')">\u521B\u5EFA\u4EFB\u52A1</button></div><h3 style="font-size:13px;margin-bottom:10px">\u5386\u53F2\u4EFB\u52A1</h3><div style="background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:12px"><div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:12px;font-weight:500">\u8D85\u80FD\u4FE1\u53F7 - \u5168\u90E8\u89C6\u9891\u8F6C\u5F55</span><span class="tag t-stock">\u5DF2\u5B8C\u6210</span></div><div style="font-size:10px;color:var(--t4);margin-bottom:6px">\u6A21\u5F0F: \u97F3\u9891\u8F6C\u5F55 | \u6570\u91CF: 500 | \u5B8C\u6210: 2026-05-20</div><div style="height:3px;background:var(--input-bg);border-radius:2px;overflow:hidden"><div style="height:100%;background:var(--accent);width:100%"></div></div><div style="display:flex;justify-content:space-between;margin-top:5px;font-size:10px;color:var(--t4)"><span>\u6210\u529F: 500</span><span>\u5931\u8D25: 0</span></div></div>';
+  initRefSystem();
 }
 function rBrowse() {
   var uo = ''; Object.keys(UP_STATS).forEach(function(u) { uo += '<option value="' + u + '">' + u + '</option>'; });
-  document.getElementById('tc-browse').innerHTML = '<div class="fbar"><select id="fUp" onchange="applyF()"><option value="">\u5168\u90E8UP\u4E3B</option>' + uo + '</select><select id="fCat" onchange="applyF()"><option value="">\u5168\u90E8\u5206\u7C7B</option><option value="\u5B8F\u89C2">\u5B8F\u89C2</option><option value="\u5927\u5B97\u5546\u54C1/\u671F\u8D27">\u5927\u5B97/\u671F\u8D27</option><option value="\u80A1\u7968/\u677F\u5757">\u80A1\u7968/\u677F\u5757</option></select><input type="date" id="fFrom" onchange="applyF()" style="width:120px"><span style="color:var(--t4);font-size:11px">\u81F3</span><input type="date" id="fTo" onchange="applyF()" style="width:120px"><input type="text" id="fSearch" placeholder="\uD83D\uDD0D \u641C\u7D22..." oninput="applyF()"><select id="fSort" onchange="applyF()"><option value="dd">\u6700\u65B0\u4F18\u5148</option><option value="da">\u6700\u65E9\u4F18\u5148</option></select></div><div style="font-size:11px;color:var(--t4);margin-bottom:8px">\u5171 <span id="rc">' + fV.length + '</span> \u6761</div><div class="vl" id="vlist"></div><div class="pag" id="pag"></div>';
+  document.getElementById('tc-browse').innerHTML = '<div data-ref="transcript-browse" class="fbar"><select id="fUp" onchange="applyF()"><option value="">\u5168\u90E8UP\u4E3B</option>' + uo + '</select><select id="fCat" onchange="applyF()"><option value="">\u5168\u90E8\u5206\u7C7B</option><option value="\u5B8F\u89C2">\u5B8F\u89C2</option><option value="\u5927\u5B97\u5546\u54C1/\u671F\u8D27">\u5927\u5B97/\u671F\u8D27</option><option value="\u80A1\u7968/\u677F\u5757">\u80A1\u7968/\u677F\u5757</option></select><input type="date" id="fFrom" onchange="applyF()" style="width:120px"><span style="color:var(--t4);font-size:11px">\u81F3</span><input type="date" id="fTo" onchange="applyF()" style="width:120px"><input type="text" id="fSearch" placeholder="\uD83D\uDD0D \u641C\u7D22..." oninput="applyF()"><select id="fSort" onchange="applyF()"><option value="dd">\u6700\u65B0\u4F18\u5148</option><option value="da">\u6700\u65E9\u4F18\u5148</option></select></div><div style="font-size:11px;color:var(--t4);margin-bottom:8px">\u5171 <span id="rc">' + fV.length + '</span> \u6761</div><div class="vl" id="vlist"></div><div class="pag" id="pag"></div>';
   applyF();
+  initRefSystem();
 }
 function applyF() {
   var up = document.getElementById('fUp').value, cat = document.getElementById('fCat').value,
@@ -362,7 +375,7 @@ function rFactors() {
     });
   });
   var sf = Object.entries(fc).sort(function(a,b) { return b[1].count - a[1].count; });
-  var html = '<h3 style="font-size:13px;margin-bottom:14px">\u56E0\u5B50\u63D0\u53D6</h3><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px">';
+  var html = '<h3 data-ref="transcript-factors" style="font-size:13px;margin-bottom:14px">\u56E0\u5B50\u63D0\u53D6</h3><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px">';
   sf.forEach(function(x) {
     var kw = x[0], i = x[1];
     var cls = i.type === 'macro' ? 't-macro' : i.type === 'supply' ? 't-comm' : i.type === 'capital' ? 't-stock' : 't-mix';
@@ -370,6 +383,7 @@ function rFactors() {
   });
   html += '</div>';
   document.getElementById('tc-factors').innerHTML = html;
+  initRefSystem();
 }
 function exportData() {
   var d = fV.map(function(v) { return {up:v.up,bvid:v.bvid,title:v.title,date:v.date,category:v.category}; });
@@ -400,16 +414,16 @@ function rProject() {
   
   // Task Kanban
   var kanbanCols = [
-    {key:'backlog', icon:'&#x1F4CB;', label:'待办', color:'var(--t3)'},
-    {key:'inProgress', icon:'&#x1F504;', label:'进行中', color:'var(--info)'},
-    {key:'done', icon:'&#x2705;', label:'已完成', color:'var(--accent)'},
-    {key:'blocked', icon:'&#x26A0;&#xFE0F;', label:'阻塞', color:'var(--danger)'}
+    {key:'backlog', icon:'&#x1F4CB;', label:'待办', color:'var(--t3)', ref:'project-kanban-backlog'},
+    {key:'inProgress', icon:'&#x1F504;', label:'进行中', color:'var(--info)', ref:'project-kanban-progress'},
+    {key:'done', icon:'&#x2705;', label:'已完成', color:'var(--accent)', ref:'project-kanban-done'},
+    {key:'blocked', icon:'&#x26A0;&#xFE0F;', label:'阻塞', color:'var(--danger)', ref:'project-kanban-blocked'}
   ];
   var kanbanHtml = '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">';
   kanbanCols.forEach(function(col) {
     var tasks = p.tasks[col.key] || [];
     var taskItems = tasks.map(function(t) { return '<div style="font-size:11px;padding:6px 8px;background:var(--bg4);border-radius:4px;margin-bottom:6px">' + t + '</div>'; }).join('');
-    kanbanHtml += '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px"><div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border)"><span style="font-size:14px">' + col.icon + '</span><span style="font-size:11px;font-weight:600;color:' + col.color + '">' + col.label + '</span><span style="margin-left:auto;font-size:10px;background:var(--bg4);padding:1px 6px;border-radius:8px;color:var(--t4)">' + tasks.length + '</span></div>' + taskItems + '</div>';
+    kanbanHtml += '<div data-ref="' + col.ref + '" style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px"><div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border)"><span style="font-size:14px">' + col.icon + '</span><span style="font-size:11px;font-weight:600;color:' + col.color + '">' + col.label + '</span><span style="margin-left:auto;font-size:10px;background:var(--bg4);padding:1px 6px;border-radius:8px;color:var(--t4)">' + tasks.length + '</span></div>' + taskItems + '</div>';
   });
   kanbanHtml += '</div>';
   
@@ -446,7 +460,7 @@ function rProject() {
         modCards += '<div class="mod-card ' + mod.status + '"><div class="mod-name"><span class="status-dot ' + statusIcon + '"></span>' + mod.name + '</div>' + (childrenHtml || descHtml) + '</div>';
       });
       
-      bpHtml += '<div class="layer-card"><div class="layer-header"><div class="layer-indicator" style="background:' + layer.color + '"></div><div><div class="layer-title">' + layerIconMap[layer.id] + ' ' + layer.id + ': ' + layer.name + ' (' + layer.nameEn + ')</div><div class="layer-desc">' + layer.desc + '</div></div></div><div class="mod-grid">' + modCards + '</div></div>';
+      bpHtml += '<div data-ref="blueprint-' + layer.id + '" class="layer-card"><div class="layer-header"><div class="layer-indicator" style="background:' + layer.color + '"></div><div><div class="layer-title">' + layerIconMap[layer.id] + ' ' + layer.id + ': ' + layer.name + ' (' + layer.nameEn + ')</div><div class="layer-desc">' + layer.desc + '</div></div></div><div class="mod-grid">' + modCards + '</div></div>';
     });
     
     // Restructure Plan
@@ -457,34 +471,35 @@ function rProject() {
       stepHtml += '<div class="step-item"><div class="step-num">' + step.step + '</div><div class="step-info"><div class="step-name">' + step.name + '</div><div class="step-desc">' + step.desc + '</div></div><span class="priority-tag ' + priorityCls + '">' + (step.priority === 'high' ? '高优' : '中优') + '</span></div>';
     });
     
-    bpHtml += '<div class="restructure-card"><div class="restructure-header"><h3 style="font-size:13px;margin:0">&#x1F680; 重构计划</h3></div><div class="restructure-compare"><span style="color:var(--t4)">现状:</span><span>' + rp.current + '</span><span class="arrow">\u2192</span><span style="color:var(--accent)">' + rp.target + '</span></div><div style="margin-top:14px">' + stepHtml + '</div></div>';
+    bpHtml += '<div data-ref="project-restructure" class="restructure-card"><div class="restructure-header"><h3 style="font-size:13px;margin:0">&#x1F680; 重构计划</h3></div><div class="restructure-compare"><span style="color:var(--t4)">现状:</span><span>' + rp.current + '</span><span class="arrow">\u2192</span><span style="color:var(--accent)">' + rp.target + '</span></div><div style="margin-top:14px">' + stepHtml + '</div></div>';
   }
   
   // Assemble
   document.getElementById('tc-project').innerHTML = 
     '<div style="margin-bottom:16px"><span style="font-size:11px;color:var(--t4)">最后更新: ' + p.lastUpdate + '</span></div>' +
     
-    '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:16px">' +
+    '<div data-ref="project-phase" style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:16px">' +
     '<h3 style="font-size:13px;margin-bottom:12px">&#x1F680; 当前阶段</h3>' +
     '<div style="font-size:16px;font-weight:600;color:var(--accent2);margin-bottom:12px">' + p.phase + '</div>' +
     '<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px"><div style="flex:1;height:6px;background:var(--input-bg);border-radius:3px;overflow:hidden"><div style="height:100%;background:var(--accent);width:' + pct + '%"></div></div><span style="font-size:12px;font-weight:600;color:var(--accent)">' + pct + '%</span></div>' +
     '<div style="font-size:10px;color:var(--t4)">里程碑进度: ' + doneCnt + ' 已完成, ' + partialCnt + ' 进行中, ' + (totalCnt - doneCnt - partialCnt) + ' 待开始</div>' +
     '</div>' +
     
-    '<h3 style="font-size:13px;margin-bottom:10px">&#x1F4C5; 里程碑时间线</h3>' +
+    '<h3 data-ref="project-milestones" style="font-size:13px;margin-bottom:10px">&#x1F4C5; 里程碑时间线</h3>' +
     '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:16px">' + msHtml + '</div>' +
     
-    '<h3 style="font-size:13px;margin-bottom:10px">&#x1F4BC; 任务看板</h3>' +
+    '<h3 data-ref="project-kanban" style="font-size:13px;margin-bottom:10px">&#x1F4BC; 任务看板</h3>' +
     kanbanHtml +
     
-    '<h3 style="font-size:13px;margin:16px 0 10px">&#x1F4DC; 关键决策日志</h3>' +
+    '<h3 data-ref="project-decisions" style="font-size:13px;margin:16px 0 10px">&#x1F4DC; 关键决策日志</h3>' +
     '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:16px">' + decHtml + '</div>' +
     
-    '<h3 style="font-size:13px;margin-bottom:10px">&#x1F30D; 范围边界</h3>' +
+    '<h3 data-ref="project-scope" style="font-size:13px;margin-bottom:10px">&#x1F30D; 范围边界</h3>' +
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px"><div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px"><div style="font-size:11px;font-weight:600;color:var(--accent);margin-bottom:8px">&#x2705; 在范围内</div>' + scopeIn + '</div><div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px"><div style="font-size:11px;font-weight:600;color:var(--t4);margin-bottom:8px">&#x274C; 不在范围内</div>' + scopeOut + '</div></div>' +
     
-    '<h3 style="font-size:13px;margin-bottom:10px">&#x1F3AF; 架构蓝图</h3>' +
+    '<h3 data-ref="project-blueprint" style="font-size:13px;margin-bottom:10px">&#x1F3AF; 架构蓝图</h3>' +
     bpHtml;
+  initRefSystem();
 }
 function setMod(m) {
   document.querySelectorAll('.s-item').forEach(function(x) { x.classList.remove('active'); });
@@ -506,6 +521,34 @@ function setMod(m) {
 }
 render('overview');
 setMod('project');
+// 引用ID复制系统
+function initRefSystem() {
+  // 清除旧的复制按钮
+  document.querySelectorAll('.ref-copy-btn').forEach(function(b) { b.remove(); });
+  // 给所有带data-ref的元素添加复制按钮
+  document.querySelectorAll('[data-ref]').forEach(function(el) {
+    // 跳过已处理过的
+    if (el.querySelector('.ref-copy-btn')) return;
+    var btn = document.createElement('button');
+    btn.className = 'ref-copy-btn';
+    btn.textContent = '\uD83D\uDCCB';
+    btn.title = '复制: #' + el.getAttribute('data-ref');
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      var ref = '#' + el.getAttribute('data-ref');
+      navigator.clipboard.writeText(ref).then(function() {
+        btn.textContent = '\u2713';
+        btn.classList.add('copied');
+        setTimeout(function() {
+          btn.textContent = '\uD83D\uDCCB';
+          btn.classList.remove('copied');
+        }, 1500);
+      });
+    });
+    el.appendChild(btn);
+  });
+}
 </script>
 </body>
 </html>
