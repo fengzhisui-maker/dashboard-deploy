@@ -132,6 +132,9 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 [data-ref]:hover .ref-copy-btn{display:flex}
 .ref-copy-btn:hover{opacity:1;border-color:var(--accent);color:var(--accent)}
 .ref-copy-btn.copied{color:var(--accent);opacity:1}
+.ref-copy-btn{position:relative}
+.ref-tooltip{position:absolute;top:100%;right:0;margin-top:4px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;font-size:10px;color:var(--t2);white-space:pre;line-height:1.5;z-index:200;pointer-events:none;display:none;min-width:240px;max-width:360px;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.ref-copy-btn:hover .ref-tooltip{display:block}
 /* 侧边栏导航项 - 悬浮显示ref标签 */
 .s-nav{position:relative}
 .s-item[data-ref]:hover::after{content:"#" attr(data-ref);position:absolute;left:60px;top:50%;transform:translateY(-50%);background:var(--bg3);border:1px solid var(--border);padding:2px 8px;border-radius:4px;font-size:10px;color:var(--t3);white-space:nowrap;z-index:100}
@@ -194,6 +197,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 <div class="detail" id="detail"><div class="dh"><h3 id="detTitle">详情</h3><button class="btn btn-o btn-s" onclick="closeDet()">&#x2715;</button></div><div class="db" id="detBody"></div></div>
 <script src="project_data.js"></script>
 <script src="framework_data.js"></script>
+<script src="code_map.js"></script>
 <script src="videos_data.js"></script>
 <script src="up_stats.js"></script>
 <script src="cat_stats.js"></script>
@@ -522,6 +526,24 @@ function setMod(m) {
 render('overview');
 setMod('project');
 // 引用ID复制系统
+function generateContext(ref) {
+  var lines = ['📋 引用上下文'];
+  lines.push('Ref: #' + ref);
+  var map = (typeof CODE_MAP !== 'undefined') ? CODE_MAP[ref] : null;
+  if (map) {
+    if (map.module) {
+      var modStr = map.module;
+      if (map.subModule) modStr += ' > ' + map.subModule;
+      lines.push('模块: ' + modStr);
+    }
+    if (map.layer) lines.push('层级: ' + map.layer);
+    if (map.archPath) lines.push('架构: ' + map.archPath);
+    if (map.renderer) lines.push('渲染: ' + map.renderer + (map.codeFile ? ' in ' + map.codeFile : ''));
+    if (map.dataFile) lines.push('数据: ' + map.dataFile);
+    if (map.desc) lines.push('描述: ' + map.desc);
+  }
+  return lines.join('\n');
+}
 function initRefSystem() {
   // 清除旧的复制按钮
   document.querySelectorAll('.ref-copy-btn').forEach(function(b) { b.remove(); });
@@ -531,17 +553,23 @@ function initRefSystem() {
     if (el.querySelector('.ref-copy-btn')) return;
     var btn = document.createElement('button');
     btn.className = 'ref-copy-btn';
-    btn.textContent = '\uD83D\uDCCB';
-    btn.title = '复制: #' + el.getAttribute('data-ref');
+    btn.textContent = '📋';
+    var ref = el.getAttribute('data-ref');
+    var contextText = generateContext(ref);
+    btn.title = '复制引用上下文';
+    // 创建tooltip预览
+    var tooltip = document.createElement('div');
+    tooltip.className = 'ref-tooltip';
+    tooltip.textContent = contextText;
+    btn.appendChild(tooltip);
     btn.addEventListener('click', function(e) {
       e.stopPropagation();
       e.preventDefault();
-      var ref = '#' + el.getAttribute('data-ref');
-      navigator.clipboard.writeText(ref).then(function() {
-        btn.textContent = '\u2713';
+      navigator.clipboard.writeText(contextText).then(function() {
+        btn.textContent = '✓';
         btn.classList.add('copied');
         setTimeout(function() {
-          btn.textContent = '\uD83D\uDCCB';
+          btn.textContent = '📋';
           btn.classList.remove('copied');
         }, 1500);
       });
