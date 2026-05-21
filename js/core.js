@@ -4,6 +4,9 @@
    ================================================ */
 
 // 全局状态
+// 全局UP主名称缓存
+var _upNameCache = {};
+
 var AppState = {
   currentView: 'overview', // 'overview' | 'form'
   currentTab: 'overview',
@@ -306,4 +309,39 @@ function platLabel(platform) {
  */
 function exportData() {
   showToast('请使用数据表视图中的导出功能');
+}
+
+/* === 刷新按钮（原在data-service.js，移至逻辑层入口） === */
+function addRefreshButton() {
+  var topbarRight = document.querySelector('.topbar-right');
+  if (!topbarRight) return;
+  
+  if (document.getElementById('refreshBtn')) return;
+  
+  var btn = document.createElement('button');
+  btn.id = 'refreshBtn';
+  btn.className = 'btn btn-o';
+  btn.innerHTML = '🔄 刷新';
+  btn.title = '清除缓存并重新加载数据';
+  btn.onclick = async function() {
+    btn.disabled = true;
+    btn.innerHTML = '⏳ 刷新中...';
+    
+    try {
+      await DataStore.refresh();
+      if (typeof FormState !== 'undefined' && FormState.currentTable) {
+        await renderFormTable();
+      } else if (typeof AppState !== 'undefined' && AppState.currentTab) {
+        render(AppState.currentTab);
+      }
+      showToast('数据已刷新');
+    } catch (e) {
+      showToast('刷新失败: ' + e.message);
+    }
+    
+    btn.disabled = false;
+    btn.innerHTML = '🔄 刷新';
+  };
+  
+  topbarRight.insertBefore(btn, topbarRight.firstChild);
 }
