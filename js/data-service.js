@@ -3,24 +3,10 @@
    通过GitHub API实时拉取数据
    ================================================ */
 
-class DataStore {
+class DataStoreClass {
   constructor() {
     // GitHub API配置
     this.token = this._initToken();
-    
-  _initToken() {
-    // Token从localStorage读取（登录后设置），或从URL参数
-    const stored = localStorage.getItem('wd_github_token');
-    if (stored) return stored;
-    // 首次使用：从密码验证成功后的session中获取
-    const urlParams = new URLSearchParams(window.location.search);
-    const urlToken = urlParams.get('t');
-    if (urlToken) {
-      localStorage.setItem('wd_github_token', urlToken);
-      return urlToken;
-    }
-    return '';
-  }
     this.owner = 'fengzhisui-maker';
     this.repo = 'dashboard-deploy';
     this.branch = 'main';
@@ -35,6 +21,19 @@ class DataStore {
     this.rawBase = 'https://raw.githubusercontent.com';
   }
   
+  _initToken() {
+    // Token从localStorage读取
+    const stored = localStorage.getItem('wd_github_token');
+    if (stored) return stored;
+    // 从URL参数获取
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlToken = urlParams.get('t');
+    if (urlToken) {
+      localStorage.setItem('wd_github_token', urlToken);
+      return urlToken;
+    }
+    return '';
+  }
 
   // 设置Token（密码验证成功后调用）
   setToken(token) {
@@ -68,8 +67,8 @@ class DataStore {
     const url = `${this.apiBase}${path}`;
     const body = {
       message: msg,
-      content: content, // Base64编码
-      sha: sha, // 更新时需要
+      content: content,
+      sha: sha,
       branch: this.branch
     };
     
@@ -117,7 +116,7 @@ class DataStore {
       const data = await this.githubGet(`/repos/${this.owner}/${this.repo}/contents/${path}?ref=${this.branch}`);
       return data.sha;
     } catch (e) {
-      return null; // 文件不存在
+      return null;
     }
   }
   
@@ -125,14 +124,12 @@ class DataStore {
   async fetchJSON(path, skipCache = false) {
     const now = Date.now();
     
-    // 检查缓存
     if (!skipCache && this.cache[path] && this.cacheTime[path]) {
       if (now - this.cacheTime[path] < this.ttl) {
         return this.cache[path];
       }
     }
     
-    // 从GitHub获取
     const url = `${this.rawBase}/${this.owner}/${this.repo}/${this.branch}/${path}`;
     const response = await fetch(url);
     
@@ -141,8 +138,6 @@ class DataStore {
     }
     
     const data = await response.json();
-    
-    // 更新缓存
     this.cache[path] = data;
     this.cacheTime[path] = now;
     
@@ -150,41 +145,34 @@ class DataStore {
   }
   
   async refresh() {
-    // 清除所有缓存，强制重新加载
     this.cache = {};
     this.cacheTime = {};
   }
   
   /* === 数据查询API === */
   
-  // 获取UP主列表
   async getUpMaster() {
     return this.fetchJSON('data/up_master.json');
   }
   
-  // 通过ID获取UP主
   async getUpById(_id) {
     const ups = await this.getUpMaster();
     return ups.find(u => u._id === _id) || null;
   }
   
-  // 获取视频列表（不含fullText）
   async getVideos(upId = null) {
     const videos = await this.fetchJSON('data/transcript_videos.json');
-    
     if (upId) {
       return videos.filter(v => v.up_id === upId);
     }
     return videos;
   }
   
-  // 获取单个视频
   async getVideoById(_id) {
     const videos = await this.getVideos();
     return videos.find(v => v._id === _id) || null;
   }
   
-  // 按需获取fullText
   async getVideoFullText(videoId) {
     const video = await this.getVideoById(videoId);
     if (!video) return null;
@@ -201,54 +189,50 @@ class DataStore {
     }
   }
   
-  // 按分类筛选
   async getVideosByCategory(category) {
     const videos = await this.getVideos();
     return videos.filter(v => v.category === category);
   }
   
-  // 获取分类标签
   async getCategoryTags() {
     return this.fetchJSON('data/category_tags.json');
   }
   
-  // 获取转录任务
   async getTasks() {
     return this.fetchJSON('data/transcript_tasks.json');
   }
   
-  // 获取因子关键词
   async getFactorKeywords() {
     return this.fetchJSON('data/factor_keywords.json');
   }
   
-  // 获取里程碑
   async getMilestones() {
     return this.fetchJSON('data/project_milestones.json');
   }
   
-  // 获取项目任务
   async getProjectTasks() {
     return this.fetchJSON('data/project_tasks.json');
   }
   
-  // 获取错误日志
   async getErrors() {
     return this.fetchJSON('data/project_errors.json');
   }
   
+  // 获取code_map数据（供ref-system使用）
+  getCodeMap() {
+    if (typeof code_map !== 'undefined') return code_map;
+    return {};
+  }
+  
   /* === 计算字段/聚合 === */
   
-  // 动态计算UP主统计
   async getUpStats() {
     const ups = await this.getUpMaster();
     const videos = await this.getVideos();
-    const cats = await this.getCategoryTags();
     
     return ups.map(up => {
       const upVideos = videos.filter(v => v.up_id === up._id);
       
-      // 分类统计
       const categories = {};
       upVideos.forEach(v => {
         if (v.category) {
@@ -256,7 +240,6 @@ class DataStore {
         }
       });
       
-      // 最新日期
       const dates = upVideos.map(v => v.publish_date).filter(d => d).sort();
       const latest = dates.length > 0 ? dates[dates.length - 1] : '';
       
@@ -273,7 +256,6 @@ class DataStore {
     });
   }
   
-  // 动态计算分类统计
   async getCategoryStats() {
     const videos = await this.getVideos();
     const catStats = {};
@@ -287,7 +269,6 @@ class DataStore {
     return catStats;
   }
   
-  // 统计汇总
   async getStatsSummary() {
     const videos = await this.getVideos();
     const ups = await this.getUpStats();
@@ -309,7 +290,6 @@ class DataStore {
     };
   }
   
-  // 全文搜索
   async searchVideos(keyword) {
     if (!keyword || keyword.length < 2) return [];
     
@@ -325,7 +305,6 @@ class DataStore {
   
   /* === 数据写入 === */
   
-  // 写入数据到GitHub
   async writeData(path, data, commitMsg) {
     const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
     const sha = await this.getFileSha(path);
@@ -337,18 +316,15 @@ class DataStore {
       commitMsg
     );
     
-    // 清除相关缓存
     delete this.cache[path];
     delete this.cacheTime[path];
     
     return result;
   }
   
-  // 添加UP主
   async addUpMaster(upData) {
     const ups = await this.getUpMaster();
     
-    // 生成新ID
     const newId = 'up_' + Math.random().toString(36).slice(2, 12);
     const now = new Date().toISOString();
     
@@ -366,13 +342,11 @@ class DataStore {
     };
     
     ups.push(newUp);
-    
     await this.writeData('data/up_master.json', ups, `添加UP主: ${upData.name}`);
     
     return newUp;
   }
   
-  // 添加转录任务
   async addTask(taskData) {
     const tasks = await this.getTasks();
     
@@ -400,13 +374,11 @@ class DataStore {
     };
     
     tasks.push(newTask);
-    
     await this.writeData('data/transcript_tasks.json', tasks, `添加任务: ${taskData.up_id}`);
     
     return newTask;
   }
   
-  // 更新任务状态
   async updateTask(taskId, updates) {
     const tasks = await this.getTasks();
     const idx = tasks.findIndex(t => t._id === taskId);
@@ -415,7 +387,6 @@ class DataStore {
       throw new Error(`任务不存在: ${taskId}`);
     }
     
-    // 合并更新
     tasks[idx] = {
       ...tasks[idx],
       ...updates,
@@ -427,7 +398,6 @@ class DataStore {
     return tasks[idx];
   }
   
-  // 添加视频
   async addVideo(videoData) {
     const videos = await this.getVideos();
     
@@ -449,7 +419,6 @@ class DataStore {
     };
     
     videos.push(newVideo);
-    
     await this.writeData('data/transcript_videos.json', videos, `添加视频: ${videoData.title}`);
     
     return newVideo;
@@ -457,19 +426,16 @@ class DataStore {
 }
 
 // 全局实例
-const DataStore = new DataStore();
-
-// 全局实例
-const DataStore = new DataStore();
+var DataStore = new DataStoreClass();
 
 // 刷新按钮功能
 function addRefreshButton() {
-  const topbarRight = document.querySelector('.topbar-right');
+  var topbarRight = document.querySelector('.topbar-right');
   if (!topbarRight) return;
   
   if (document.getElementById('refreshBtn')) return;
   
-  const btn = document.createElement('button');
+  var btn = document.createElement('button');
   btn.id = 'refreshBtn';
   btn.className = 'btn btn-o';
   btn.innerHTML = '🔄 刷新';
