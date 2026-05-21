@@ -1,0 +1,26 @@
+[
+  {
+    "_id": "up_3d80ddbb83fd",
+    "_createTime": "2026-05-20T00:00:00+08:00",
+    "_updateTime": "2026-05-21T15:00:00+08:00",
+    "_creator": "system",
+    "name": "超能信号",
+    "platform": "bilibili",
+    "platform_uid": "unknown",
+    "avatar_url": "avatars/chaonengxinshao.jpg",
+    "status": "active",
+    "auto_track": true
+  },
+  {
+    "_id": "up_45f731ffbc41",
+    "_createTime": "2026-05-20T16:44:00+08:00",
+    "_updateTime": "2026-05-21T05:33:00+08:00",
+    "_creator": "system",
+    "name": "期神附体-期货",
+    "platform": "bilibili",
+    "platform_uid": "1473394951",
+    "avatar_url": "avatars/qishenfuti.jpg",
+    "status": "active",
+    "auto_track": true
+  }
+]
