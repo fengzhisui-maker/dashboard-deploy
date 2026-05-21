@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mxfile host="app.diagrams.net" version="24.0.0">
-  <diagram id="dashboard_arch_v1_1" name="金融研究仪表盘架构蓝图v1.1">
-    <mxGraphModel dx="2400" dy="1800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2800" pageHeight="2000" background="#ffffff" math="0" shadow="0">
+  <diagram id="dashboard_arch_v1_3" name="金融研究仪表盘架构蓝图v1.3">
+    <mxGraphModel dx="2800" dy="2200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3200" pageHeight="2400" background="#ffffff" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
 
         <!-- Version stamp -->
-        <mxCell id="version_stamp" value="v1.2 · 2026-05-21 · 变更：+L4子层(设计系统/组件库) / 参考专业金融终端架构" style="text;html=1;strokeColor=none;fillColor=#fff2cc;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=12;fontStyle=1;fontColor=#d6b656;spacingLeft=8;spacingRight=8;" vertex="1" parent="1">
-          <mxGeometry x="160" y="-20" width="400" height="30" as="geometry" />
+        <mxCell id="version_stamp" value="v1.3 · 2026-05-21 · 变更：L3重构(状态管理独立/数据适配拆分/错误处理新增) / L4-1+3组件 / L2+数据契约" style="text;html=1;strokeColor=none;fillColor=#fff2cc;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=12;fontStyle=1;fontColor=#d6b656;spacingLeft=8;spacingRight=8;" vertex="1" parent="1">
+          <mxGeometry x="160" y="-20" width="520" height="30" as="geometry" />
         </mxCell>
 
         <!-- Layer Labels -->
@@ -16,23 +16,69 @@
           <mxGeometry x="30" y="260" width="120" height="40" as="geometry" />
         </mxCell>
         <mxCell id="lbl_l3" value="L3 逻辑层" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1;fontColor=#3b82f6;" vertex="1" parent="1">
-          <mxGeometry x="30" y="750" width="120" height="40" as="geometry" />
+          <mxGeometry x="30" y="830" width="120" height="40" as="geometry" />
         </mxCell>
         <mxCell id="lbl_l2" value="L2 数据层" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1;fontColor=#a78bfa;" vertex="1" parent="1">
-          <mxGeometry x="30" y="1220" width="120" height="40" as="geometry" />
+          <mxGeometry x="30" y="1380" width="120" height="40" as="geometry" />
         </mxCell>
         <mxCell id="lbl_l1" value="L1 基础设施" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1;fontColor=#f59e0b;" vertex="1" parent="1">
-          <mxGeometry x="30" y="1670" width="120" height="40" as="geometry" />
+          <mxGeometry x="30" y="1830" width="120" height="40" as="geometry" />
         </mxCell>
 
         <!-- ===== L4 Layer Container ===== -->
         <mxCell id="layer_l4" value="L4 Presentation · 用户看到和交互的一切 · 纯渲染不碰数据" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dcfce7;strokeColor=#22c55e;strokeWidth=2;verticalAlign=top;align=center;spacingTop=6;fontSize=13;fontStyle=1;dashed=1;opacity=50;" vertex="1" parent="1">
-          <mxGeometry x="160" y="20" width="2500" height="500" as="geometry" />
+          <mxGeometry x="160" y="20" width="2900" height="540" as="geometry" />
         </mxCell>
 
-        <!-- L4-1 项目控制台 -->
+        <!-- L4-0 设计系统 (v1.2新增, v1.3保留) -->
+        <mxCell id="L4_design_sys" value="🎨 L4-0 设计系统&#xa;→ css/theme.js" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;verticalAlign=top;align=center;spacingTop=8;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1960" y="70" width="680" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="L4_ds_1" value="CSS变量/Design Tokens ✅ → :root定义(解决84处引用无定义)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1990" y="120" width="620" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="L4_ds_2" value="语义色板(涨/跌/风险/状态) ⏳ → 参考2bxtech语义色系统" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#82b366;fontSize=12;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="1990" y="158" width="620" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="L4_ds_3" value="字体排版系统 ⏳ → 等宽数字+无衬线UI" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#82b366;fontSize=12;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="1990" y="196" width="620" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="L4_ds_4" value="暗色/亮色主题规则 ⏳ → [data-theme]CSS变量覆盖" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#82b366;fontSize=12;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="1990" y="234" width="620" height="34" as="geometry" />
+        </mxCell>
+
+        <!-- L4-1 组件库 (v1.2新增, v1.3扩展+3组件) -->
+        <mxCell id="L4_component_lib" value="🧩 L4-1 组件库&#xa;→ components/" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;verticalAlign=top;align=center;spacingTop=8;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1960" y="290" width="680" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="L4_cl_1" value="原子组件(Button/Input/Badge/Tag) ⏳" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#82b366;fontSize=12;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="1990" y="340" width="290" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="L4_cl_2" value="分子组件(DataTable/SearchBar/FilterPanel) ⏳" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#82b366;fontSize=12;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="1990" y="378" width="290" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="L4_cl_3" value="组织组件(SideNav/Header/TabView) ✅" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1990" y="416" width="290" height="34" as="geometry" />
+        </mxCell>
+        <!-- v1.3 NEW: 3 new component types -->
+        <mxCell id="L4_cl_4" value="错误边界(ErrorBoundary) ⏳ 🆕" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#82b366;fontSize=12;fontStyle=1;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="2310" y="340" width="300" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="L4_cl_5" value="Loading骨架屏 ⏳ 🆕" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#82b366;fontSize=12;fontStyle=1;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="2310" y="378" width="300" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="L4_cl_6" value="Toast/Notification ⏳ 🆕" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#82b366;fontSize=12;fontStyle=1;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="2310" y="416" width="300" height="34" as="geometry" />
+        </mxCell>
+
+        <!-- L4-2 label for functional views -->
+        <mxCell id="lbl_l4_2" value="L4-2 功能视图（业务页面）" style="text;html=1;strokeColor=none;fillColor=#e8f5e9;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=12;fontStyle=1;fontColor=#22c55e;spacingLeft=6;spacingRight=6;" vertex="1" parent="1">
+          <mxGeometry x="190" y="50" width="220" height="24" as="geometry" />
+        </mxCell>
+
+        <!-- L4-2-1 项目控制台 -->
         <mxCell id="L4_project" value="📯 项目控制台&#xa;→ render-project.js" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;verticalAlign=top;align=center;spacingTop=8;fontSize=14;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="190" y="70" width="260" height="420" as="geometry" />
+          <mxGeometry x="190" y="70" width="260" height="460" as="geometry" />
         </mxCell>
         <mxCell id="L4_proj_1" value="架构蓝图 ✅" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="220" y="120" width="200" height="36" as="geometry" />
@@ -47,9 +93,9 @@
           <mxGeometry x="220" y="258" width="200" height="36" as="geometry" />
         </mxCell>
 
-        <!-- L4-2 可视化 -->
+        <!-- L4-2-2 可视化 -->
         <mxCell id="L4_visual" value="📈 可视化&#xa;→ (待建)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=2;verticalAlign=top;align=center;spacingTop=8;fontSize=14;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="480" y="70" width="260" height="420" as="geometry" />
+          <mxGeometry x="480" y="70" width="260" height="460" as="geometry" />
         </mxCell>
         <mxCell id="L4_vis_1" value="K线/走势图 ⏳" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#d6b656;fontSize=12;dashed=1;" vertex="1" parent="1">
           <mxGeometry x="510" y="120" width="200" height="36" as="geometry" />
@@ -67,9 +113,9 @@
           <mxGeometry x="510" y="304" width="200" height="36" as="geometry" />
         </mxCell>
 
-        <!-- L4-3 分析工具 -->
+        <!-- L4-2-3 分析工具 -->
         <mxCell id="L4_analysis" value="🔬 分析工具&#xa;→ (待建)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;verticalAlign=top;align=center;spacingTop=8;fontSize=14;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="770" y="70" width="260" height="420" as="geometry" />
+          <mxGeometry x="770" y="70" width="260" height="460" as="geometry" />
         </mxCell>
         <mxCell id="L4_ana_1" value="价格分析 ⏳" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#9673a6;fontSize=12;dashed=1;" vertex="1" parent="1">
           <mxGeometry x="800" y="120" width="200" height="36" as="geometry" />
@@ -90,9 +136,9 @@
           <mxGeometry x="800" y="364" width="200" height="36" as="geometry" />
         </mxCell>
 
-        <!-- L4-4 数据采集 -->
+        <!-- L4-2-4 数据采集 -->
         <mxCell id="L4_data" value="📊 数据采集&#xa;→ (待建)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;verticalAlign=top;align=center;spacingTop=8;fontSize=14;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="1060" y="70" width="260" height="420" as="geometry" />
+          <mxGeometry x="1060" y="70" width="260" height="460" as="geometry" />
         </mxCell>
         <mxCell id="L4_data_1" value="宏观数据 ⏳" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#6c8ebf;fontSize=12;dashed=1;" vertex="1" parent="1">
           <mxGeometry x="1090" y="120" width="200" height="36" as="geometry" />
@@ -113,9 +159,9 @@
           <mxGeometry x="1090" y="350" width="200" height="36" as="geometry" />
         </mxCell>
 
-        <!-- L4-5 转录库 -->
+        <!-- L4-2-5 转录库 -->
         <mxCell id="L4_transcript" value="📺 转录库&#xa;→ render-transcript.js + render-form.js" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;verticalAlign=top;align=center;spacingTop=8;fontSize=14;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="1350" y="70" width="280" height="420" as="geometry" />
+          <mxGeometry x="1350" y="70" width="280" height="460" as="geometry" />
         </mxCell>
         <mxCell id="L4_trans_1" value="总览 ✅" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="1380" y="120" width="220" height="36" as="geometry" />
@@ -132,14 +178,13 @@
         <mxCell id="L4_trans_5" value="观点追踪 ⏳" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#82b366;fontSize=12;dashed=1;" vertex="1" parent="1">
           <mxGeometry x="1380" y="318" width="220" height="36" as="geometry" />
         </mxCell>
-        <!-- v1.1 CHANGE: 自动转录 highlighted yellow -->
         <mxCell id="L4_trans_6" value="自动转录 ⏳ → L3转录引擎" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#82b366;fontSize=12;fontStyle=1;dashed=1;" vertex="1" parent="1">
           <mxGeometry x="1380" y="364" width="220" height="36" as="geometry" />
         </mxCell>
 
-        <!-- L4-6 研究笔记 -->
+        <!-- L4-2-6 研究笔记 -->
         <mxCell id="L4_notes" value="📝 研究笔记&#xa;→ (待建)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;verticalAlign=top;align=center;spacingTop=8;fontSize=14;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="1660" y="70" width="260" height="200" as="geometry" />
+          <mxGeometry x="1660" y="70" width="260" height="220" as="geometry" />
         </mxCell>
         <mxCell id="L4_note_1" value="交易日志 ⏳" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#b85450;fontSize=12;dashed=1;" vertex="1" parent="1">
           <mxGeometry x="1690" y="120" width="200" height="34" as="geometry" />
@@ -148,238 +193,270 @@
           <mxGeometry x="1690" y="164" width="200" height="34" as="geometry" />
         </mxCell>
 
-        <!-- v1.2 NEW: L4-0 设计系统 (yellow highlight) -->
-        <mxCell id="L4_design_sys" value="🎨 L4-0 设计系统&#xa;→ (待建 css/theme.js)&#xa;参考: 2bxtech CSS变量方案 / shadcn语义色板" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=3;verticalAlign=top;align=center;spacingTop=8;fontSize=14;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="1960" y="70" width="680" height="200" as="geometry" />
-        </mxCell>
-        <mxCell id="L4_ds_1" value="CSS变量/Design Tokens ⏳ → :root定义(当前84处引用无定义)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;dashed=1;" vertex="1" parent="1">
-          <mxGeometry x="1990" y="120" width="620" height="34" as="geometry" />
-        </mxCell>
-        <mxCell id="L4_ds_2" value="语义色板(涨/跌/风险/状态) ⏳ → 参考2bxtech语义色系统" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;dashed=1;" vertex="1" parent="1">
-          <mxGeometry x="1990" y="158" width="620" height="34" as="geometry" />
-        </mxCell>
-        <mxCell id="L4_ds_3" value="字体排版系统 ⏳ → 等宽数字+无衬线UI" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;dashed=1;" vertex="1" parent="1">
-          <mxGeometry x="1990" y="196" width="620" height="34" as="geometry" />
-        </mxCell>
-        <mxCell id="L4_ds_4" value="暗色/亮色主题规则 ⏳ → [data-theme]CSS变量覆盖" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;dashed=1;" vertex="1" parent="1">
-          <mxGeometry x="1990" y="234" width="620" height="34" as="geometry" />
-        </mxCell>
-
-        <!-- v1.2 NEW: L4-1 组件库 (yellow highlight) -->
-        <mxCell id="L4_component_lib" value="🧩 L4-1 组件库&#xa;→ (待建 components/)&#xa;参考: 原子设计(Atomic Design)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=3;verticalAlign=top;align=center;spacingTop=8;fontSize=14;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="1960" y="290" width="680" height="190" as="geometry" />
-        </mxCell>
-        <mxCell id="L4_cl_1" value="原子组件(Button/Input/Badge/Tag) ⏳" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;dashed=1;" vertex="1" parent="1">
-          <mxGeometry x="1990" y="340" width="620" height="34" as="geometry" />
-        </mxCell>
-        <mxCell id="L4_cl_2" value="分子组件(DataTable/SearchBar/FilterPanel) ⏳" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;dashed=1;" vertex="1" parent="1">
-          <mxGeometry x="1990" y="378" width="620" height="34" as="geometry" />
-        </mxCell>
-        <mxCell id="L4_cl_3" value="组织组件(SideNav/Header/TabView) ⏳" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;dashed=1;" vertex="1" parent="1">
-          <mxGeometry x="1990" y="416" width="620" height="34" as="geometry" />
-        </mxCell>
-
-        <!-- L4-2 label for existing functional views -->
-        <mxCell id="lbl_l4_2" value="L4-2 功能视图（业务页面）" style="text;html=1;strokeColor=none;fillColor=#e8f5e9;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=12;fontStyle=1;fontColor=#22c55e;spacingLeft=6;spacingRight=6;" vertex="1" parent="1">
-          <mxGeometry x="190" y="50" width="220" height="24" as="geometry" />
-        </mxCell>
-
-        <!-- L4-7 自动化 -->
+        <!-- L4-2-7 自动化 -->
         <mxCell id="L4_auto" value="🤖 自动化&#xa;→ (待建)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;verticalAlign=top;align=center;spacingTop=8;fontSize=14;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="1660" y="290" width="260" height="200" as="geometry" />
+          <mxGeometry x="1660" y="310" width="260" height="220" as="geometry" />
         </mxCell>
-        <!-- v1.1 CHANGE: 定时采集 highlighted yellow -->
         <mxCell id="L4_auto_1" value="定时采集 ⏳ → L3转录引擎" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#b85450;fontSize=12;fontStyle=1;dashed=1;" vertex="1" parent="1">
-          <mxGeometry x="1690" y="340" width="200" height="34" as="geometry" />
+          <mxGeometry x="1690" y="360" width="200" height="34" as="geometry" />
         </mxCell>
         <mxCell id="L4_auto_2" value="预警/提醒 ⏳" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#b85450;fontSize=12;dashed=1;" vertex="1" parent="1">
-          <mxGeometry x="1690" y="384" width="200" height="34" as="geometry" />
+          <mxGeometry x="1690" y="404" width="200" height="34" as="geometry" />
         </mxCell>
 
-        <!-- ===== L3 Layer Container ===== -->
-        <mxCell id="layer_l3" value="L3 Business Logic · 数据获取+缓存+聚合+计算+路由 · 禁止操作DOM" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dbeafe;strokeColor=#3b82f6;strokeWidth=2;verticalAlign=top;align=center;spacingTop=6;fontSize=13;fontStyle=1;dashed=1;opacity=50;" vertex="1" parent="1">
-          <mxGeometry x="160" y="540" width="2500" height="370" as="geometry" />
+        <!-- ===== L3 Layer Container (v1.3 RESTRUCTURED) ===== -->
+        <mxCell id="layer_l3" value="L3 Business Logic · 状态管理第一公民 + 数据获取/计算/写入/错误分离 · 禁止操作DOM" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dbeafe;strokeColor=#3b82f6;strokeWidth=2;verticalAlign=top;align=center;spacingTop=6;fontSize=13;fontStyle=1;dashed=1;opacity=50;" vertex="1" parent="1">
+          <mxGeometry x="160" y="580" width="2900" height="780" as="geometry" />
         </mxCell>
 
-        <!-- L3-1 数据服务层 -->
-        <mxCell id="L3_dataservice" value="数据服务层&#xa;→ data-service.js" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;verticalAlign=top;align=center;spacingTop=8;fontSize=14;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="190" y="590" width="340" height="290" as="geometry" />
+        <!-- v1.3 NEW: L3-1 状态管理 (第一公民, 从路由引擎独立) -->
+        <mxCell id="L3_state" value="🧠 L3-1 状态管理（第一公民）🆕&#xa;→ store/ (从core.js拆出)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=3;verticalAlign=top;align=center;spacingTop=8;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="190" y="630" width="360" height="360" as="geometry" />
         </mxCell>
-        <mxCell id="L3_ds_1" value="GitHub API 读取 ✅" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="220" y="640" width="280" height="34" as="geometry" />
+        <mxCell id="L3_st_1" value="AppState 全局状态 ✅ ← 从路由引擎独立" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="220" y="680" width="300" height="34" as="geometry" />
         </mxCell>
-        <mxCell id="L3_ds_2" value="jsDelivr CDN 缓存 ✅" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="220" y="684" width="280" height="34" as="geometry" />
+        <mxCell id="L3_st_2" value="主题状态(暗/亮切换) ✅ ← 从认证/主题拆出" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="220" y="724" width="300" height="34" as="geometry" />
         </mxCell>
-        <mxCell id="L3_ds_3" value="聚合计算(UP统计/分类统计) ✅" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="220" y="728" width="280" height="34" as="geometry" />
+        <mxCell id="L3_st_3" value="缓存状态(CDN/LocalStorage) ✅ ← 从数据服务拆出" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="220" y="768" width="300" height="34" as="geometry" />
         </mxCell>
-        <mxCell id="L3_ds_4" value="GitHub API 写入 ✅" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="220" y="772" width="280" height="34" as="geometry" />
+        <mxCell id="L3_st_4" value="错误状态 ⏳ 🆕 ← 配合L3-7错误处理" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="220" y="812" width="300" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="L3_st_5" value="UI状态(侧边栏/模态框) ✅ ← 从路由引擎独立" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="220" y="856" width="300" height="34" as="geometry" />
         </mxCell>
 
-        <!-- L3-2 路由引擎 -->
-        <mxCell id="L3_router" value="路由引擎&#xa;→ core.js (路由部分)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;verticalAlign=top;align=center;spacingTop=8;fontSize=14;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="560" y="590" width="300" height="290" as="geometry" />
+        <!-- v1.3 RESTRUCTURED: L3-2 数据适配 (从数据服务层拆出) -->
+        <mxCell id="L3_adapter" value="🔌 L3-2 数据适配&#xa;→ adapter/ (从data-service.js拆出)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=3;verticalAlign=top;align=center;spacingTop=8;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="580" y="630" width="360" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="L3_ad_1" value="GitHub API 读取 ✅" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="610" y="680" width="300" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="L3_ad_2" value="jsDelivr CDN 缓存策略 ✅" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="610" y="724" width="300" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="L3_ad_3" value="断线重连/重试策略 ⏳ 🆕" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="610" y="768" width="300" height="34" as="geometry" />
+        </mxCell>
+
+        <!-- v1.3 RESTRUCTURED: L3-3 业务计算 (从数据服务层拆出) -->
+        <mxCell id="L3_compute" value="⚙️ L3-3 业务计算&#xa;→ compute/ (从data-service.js拆出)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=3;verticalAlign=top;align=center;spacingTop=8;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="580" y="890" width="360" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="L3_co_1" value="聚合计算(UP统计/分类统计) ✅" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="610" y="940" width="300" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="L3_co_2" value="因子匹配/分类 ✅" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="610" y="984" width="300" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="L3_co_3" value="IC分析/回测 ⏳" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="610" y="1028" width="300" height="34" as="geometry" />
+        </mxCell>
+
+        <!-- L3-4 路由 (降级为基础设施, 保留视图切换) -->
+        <mxCell id="L3_router" value="🔀 L3-4 路由（降级为基础设施）&#xa;→ core.js (路由部分)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;verticalAlign=top;align=center;spacingTop=8;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="970" y="630" width="300" height="200" as="geometry" />
         </mxCell>
         <mxCell id="L3_rt_1" value="视图切换 ✅" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="590" y="640" width="240" height="34" as="geometry" />
+          <mxGeometry x="1000" y="680" width="240" height="34" as="geometry" />
         </mxCell>
-        <mxCell id="L3_rt_2" value="状态管理(AppState) ✅" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="590" y="684" width="240" height="34" as="geometry" />
+        <mxCell id="L3_rt_2" value="URL hash路由 ✅" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="724" width="240" height="34" as="geometry" />
         </mxCell>
-        <mxCell id="L3_rt_3" value="侧边栏导航 ✅" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="590" y="728" width="240" height="34" as="geometry" />
-        </mxCell>
+        <!-- 注释：侧边栏导航已移至L4-1组织组件 -->
 
-        <!-- L3-3 搜索引擎 -->
-        <mxCell id="L3_search" value="搜索引擎&#xa;→ (待从render-*.js拆出)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;verticalAlign=top;align=center;spacingTop=8;fontSize=14;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="890" y="590" width="300" height="290" as="geometry" />
+        <!-- L3-5 搜索引擎 -->
+        <mxCell id="L3_search" value="🔍 L3-5 搜索引擎&#xa;→ (待从render-*.js拆出)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;verticalAlign=top;align=center;spacingTop=8;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="970" y="860" width="300" height="270" as="geometry" />
         </mxCell>
         <mxCell id="L3_se_1" value="全文检索 ✅" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="920" y="640" width="240" height="34" as="geometry" />
+          <mxGeometry x="1000" y="910" width="240" height="34" as="geometry" />
         </mxCell>
         <mxCell id="L3_se_2" value="分类筛选 ✅" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="920" y="684" width="240" height="34" as="geometry" />
+          <mxGeometry x="1000" y="954" width="240" height="34" as="geometry" />
         </mxCell>
         <mxCell id="L3_se_3" value="排序/分页 ✅" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="920" y="728" width="240" height="34" as="geometry" />
+          <mxGeometry x="1000" y="998" width="240" height="34" as="geometry" />
         </mxCell>
 
-        <!-- L3-4 因子引擎 -->
-        <mxCell id="L3_factor" value="因子引擎&#xa;→ (待从render-transcript.js拆出)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;verticalAlign=top;align=center;spacingTop=8;fontSize=14;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="1220" y="590" width="300" height="290" as="geometry" />
+        <!-- L3-6 因子引擎 -->
+        <mxCell id="L3_factor" value="🧪 L3-6 因子引擎&#xa;→ (待从render-transcript.js拆出)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;verticalAlign=top;align=center;spacingTop=8;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1300" y="630" width="300" height="200" as="geometry" />
         </mxCell>
         <mxCell id="L3_fa_1" value="关键词匹配 ✅" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="1250" y="640" width="240" height="34" as="geometry" />
+          <mxGeometry x="1330" y="680" width="240" height="34" as="geometry" />
         </mxCell>
         <mxCell id="L3_fa_2" value="4类因子分类 ✅" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="1250" y="684" width="240" height="34" as="geometry" />
+          <mxGeometry x="1330" y="724" width="240" height="34" as="geometry" />
         </mxCell>
         <mxCell id="L3_fa_3" value="IC分析/回测 ⏳" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;dashed=1;" vertex="1" parent="1">
-          <mxGeometry x="1250" y="728" width="240" height="34" as="geometry" />
+          <mxGeometry x="1330" y="768" width="240" height="34" as="geometry" />
         </mxCell>
 
-        <!-- v1.1 NEW: L3-5 转录引擎 (yellow highlight) -->
-        <mxCell id="L3_trans_engine" value="转录引擎 🆕&#xa;→ (待建 transcript-engine.js)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=3;verticalAlign=top;align=center;spacingTop=8;fontSize=14;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="1550" y="590" width="300" height="290" as="geometry" />
+        <!-- L3-7 转录引擎 (v1.1新增) -->
+        <mxCell id="L3_trans_engine" value="🎙️ L3-7 转录引擎&#xa;→ (待建 transcript-engine.js)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;verticalAlign=top;align=center;spacingTop=8;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1300" y="860" width="300" height="270" as="geometry" />
         </mxCell>
-        <mxCell id="L3_te_1" value="音频抓取(yt-dlp) ⏳" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;dashed=1;" vertex="1" parent="1">
-          <mxGeometry x="1580" y="640" width="240" height="34" as="geometry" />
+        <mxCell id="L3_te_1" value="音频抓取(yt-dlp) ⏳" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#6c8ebf;fontSize=12;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="1330" y="910" width="240" height="34" as="geometry" />
         </mxCell>
-        <mxCell id="L3_te_2" value="ASR转写(Whisper) ⏳" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;dashed=1;" vertex="1" parent="1">
-          <mxGeometry x="1580" y="684" width="240" height="34" as="geometry" />
+        <mxCell id="L3_te_2" value="ASR转写(Whisper) ⏳" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#6c8ebf;fontSize=12;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="1330" y="954" width="240" height="34" as="geometry" />
         </mxCell>
-        <mxCell id="L3_te_3" value="任务调度(队列/重试) ⏳" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;dashed=1;" vertex="1" parent="1">
-          <mxGeometry x="1580" y="728" width="240" height="34" as="geometry" />
+        <mxCell id="L3_te_3" value="任务调度(队列/重试) ⏳" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#6c8ebf;fontSize=12;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="1330" y="998" width="240" height="34" as="geometry" />
         </mxCell>
-        <mxCell id="L3_te_4" value="结果上传(GitHub API) ⏳" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;dashed=1;" vertex="1" parent="1">
-          <mxGeometry x="1580" y="772" width="240" height="34" as="geometry" />
+        <mxCell id="L3_te_4" value="结果上传(GitHub API) ⏳" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#6c8ebf;fontSize=12;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="1330" y="1042" width="240" height="34" as="geometry" />
         </mxCell>
 
-        <!-- L3-6 认证/主题/引用 -->
-        <mxCell id="L3_other" value="认证/主题/引用&#xa;→ core.js(主题)+ref-system.js" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;verticalAlign=top;align=center;spacingTop=8;fontSize=14;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="1880" y="590" width="300" height="290" as="geometry" />
+        <!-- v1.3 NEW: L3-8 错误处理 -->
+        <mxCell id="L3_error" value="🛡️ L3-8 错误处理 🆕&#xa;→ error/ (参考2bxtech Circuit Breaker)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=3;verticalAlign=top;align=center;spacingTop=8;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1630" y="630" width="360" height="240" as="geometry" />
         </mxCell>
-        <mxCell id="L3_ot_1" value="SHA-256认证 ✅" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="1910" y="640" width="240" height="34" as="geometry" />
+        <mxCell id="L3_er_1" value="Circuit Breaker(熔断/恢复) ⏳ 🆕" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="1660" y="680" width="300" height="34" as="geometry" />
         </mxCell>
-        <mxCell id="L3_ot_2" value="暗色/亮色切换(状态) ✅ → CSS规则归属L4-0" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="1910" y="684" width="240" height="34" as="geometry" />
+        <mxCell id="L3_er_2" value="结构化Error(类型/严重度/可恢复) ⏳ 🆕" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="1660" y="724" width="300" height="34" as="geometry" />
         </mxCell>
-        <mxCell id="L3_ot_3" value="data-ref引用系统 ✅" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="1910" y="728" width="240" height="34" as="geometry" />
+        <mxCell id="L3_er_3" value="错误状态→L3-1状态管理联动 ⏳ 🆕" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="1660" y="768" width="300" height="34" as="geometry" />
+        </mxCell>
+
+        <!-- v1.3 RESTRUCTURED: L3-9 数据写入 (从数据服务层拆出) -->
+        <mxCell id="L3_writer" value="💾 L3-9 数据写入&#xa;→ writer/ (从data-service.js拆出)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=3;verticalAlign=top;align=center;spacingTop=8;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1630" y="890" width="360" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="L3_wr_1" value="GitHub API 写入 ✅" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1660" y="940" width="300" height="34" as="geometry" />
+        </mxCell>
+
+        <!-- L3-10 认证 (独立模块) -->
+        <mxCell id="L3_auth" value="🔐 L3-10 认证&#xa;→ auth.js (从core.js拆出)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=3;verticalAlign=top;align=center;spacingTop=8;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1630" y="1030" width="360" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="L3_au_1" value="SHA-256密码认证 ✅ ← 从认证/主题/引用拆出" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1660" y="1080" width="300" height="34" as="geometry" />
+        </mxCell>
+
+        <!-- L3-11 引用系统 (逻辑部分, DOM操作归L4-1) -->
+        <mxCell id="L3_ref" value="🔗 L3-11 引用系统&#xa;→ ref-logic.js (逻辑层, DOM归L4-1)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=3;verticalAlign=top;align=center;spacingTop=8;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="2030" y="630" width="360" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="L3_rf_1" value="data-ref数据关联逻辑 ✅ ← 从ref-system.js拆出DOM" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="2060" y="680" width="300" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="L3_rf_2" value="交叉引用解析 ⏳" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="2060" y="724" width="300" height="34" as="geometry" />
+        </mxCell>
+
+        <!-- L3 内部依赖说明 -->
+        <mxCell id="note_l3_flow" value="📦 L3数据流（v1.3确立）&#xa;L3-2数据适配 → L3-3业务计算 → L3-1状态管理 → L4消费&#xa;L3-8错误处理 横切所有模块&#xa;L3-10认证 是横切关注点" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dbeafe;strokeColor=#3b82f6;strokeWidth=2;verticalAlign=top;align=left;spacingTop=8;spacingLeft=12;spacingRight=12;spacingBottom=8;fontSize=12;overflow=fill;" vertex="1" parent="1">
+          <mxGeometry x="2030" y="860" width="360" height="120" as="geometry" />
         </mxCell>
 
         <!-- ===== L2 Layer Container ===== -->
         <mxCell id="layer_l2" value="L2 Data · 纯JSON数据 · GitHub CDN分发 · 只存原始数据不存计算结果" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ede9fe;strokeColor=#a78bfa;strokeWidth=2;verticalAlign=top;align=center;spacingTop=6;fontSize=13;fontStyle=1;dashed=1;opacity=50;" vertex="1" parent="1">
-          <mxGeometry x="160" y="930" width="2500" height="340" as="geometry" />
+          <mxGeometry x="160" y="1380" width="2900" height="420" as="geometry" />
         </mxCell>
 
         <!-- L2-1 转录库核心域 -->
         <mxCell id="L2_trans_domain" value="转录库核心域&#xa;→ data/*.json" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;verticalAlign=top;align=center;spacingTop=8;fontSize=14;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="190" y="980" width="800" height="260" as="geometry" />
+          <mxGeometry x="190" y="1430" width="800" height="340" as="geometry" />
         </mxCell>
         <mxCell id="L2_up" value="up_master.json ✅" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=12;fillColor=#ffffff;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="220" y="1030" width="140" height="60" as="geometry" />
+          <mxGeometry x="220" y="1480" width="140" height="60" as="geometry" />
         </mxCell>
         <mxCell id="L2_videos" value="transcript_videos.json ✅" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=12;fillColor=#ffffff;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="380" y="1030" width="170" height="60" as="geometry" />
+          <mxGeometry x="380" y="1480" width="170" height="60" as="geometry" />
         </mxCell>
         <mxCell id="L2_fulltext" value="fullText目录 ✅" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=12;fillColor=#ffffff;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="570" y="1030" width="130" height="60" as="geometry" />
+          <mxGeometry x="570" y="1480" width="130" height="60" as="geometry" />
         </mxCell>
         <mxCell id="L2_cat" value="category_tags.json ✅" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=12;fillColor=#ffffff;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="220" y="1120" width="150" height="60" as="geometry" />
+          <mxGeometry x="220" y="1570" width="150" height="60" as="geometry" />
         </mxCell>
         <mxCell id="L2_tasks" value="transcript_tasks.json ✅" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=12;fillColor=#ffffff;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="390" y="1120" width="170" height="60" as="geometry" />
+          <mxGeometry x="390" y="1570" width="170" height="60" as="geometry" />
         </mxCell>
         <mxCell id="L2_factors" value="factor_keywords.json ✅" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=12;fillColor=#ffffff;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="580" y="1120" width="170" height="60" as="geometry" />
+          <mxGeometry x="580" y="1570" width="170" height="60" as="geometry" />
         </mxCell>
         <mxCell id="L2_rel_1" value="videos.up_id → up_master._id (N:1)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#9673a6;" vertex="1" parent="1">
-          <mxGeometry x="770" y="1035" width="200" height="24" as="geometry" />
+          <mxGeometry x="770" y="1485" width="200" height="24" as="geometry" />
         </mxCell>
         <mxCell id="L2_rel_2" value="factors.up_id → up_master._id" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#9673a6;" vertex="1" parent="1">
-          <mxGeometry x="770" y="1060" width="200" height="24" as="geometry" />
+          <mxGeometry x="770" y="1510" width="200" height="24" as="geometry" />
         </mxCell>
         <mxCell id="L2_rel_3" value="factors.video_id → videos._id" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#9673a6;" vertex="1" parent="1">
-          <mxGeometry x="770" y="1085" width="200" height="24" as="geometry" />
+          <mxGeometry x="770" y="1535" width="200" height="24" as="geometry" />
         </mxCell>
         <mxCell id="L2_rel_4" value="tasks.up_id → up_master._id" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#9673a6;" vertex="1" parent="1">
-          <mxGeometry x="770" y="1110" width="200" height="24" as="geometry" />
+          <mxGeometry x="770" y="1560" width="200" height="24" as="geometry" />
         </mxCell>
 
         <!-- L2-2 项目管理域 -->
         <mxCell id="L2_proj_domain" value="项目管理域&#xa;→ data/*.json" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;verticalAlign=top;align=center;spacingTop=8;fontSize=14;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="1020" y="980" width="520" height="260" as="geometry" />
+          <mxGeometry x="1020" y="1430" width="520" height="340" as="geometry" />
         </mxCell>
         <mxCell id="L2_milestones" value="project_milestones.json ✅" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=12;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="1050" y="1030" width="200" height="60" as="geometry" />
+          <mxGeometry x="1050" y="1480" width="200" height="60" as="geometry" />
         </mxCell>
         <mxCell id="L2_ptasks" value="project_tasks.json ✅" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=12;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="1280" y="1030" width="200" height="60" as="geometry" />
+          <mxGeometry x="1280" y="1480" width="200" height="60" as="geometry" />
         </mxCell>
         <mxCell id="L2_errors" value="project_errors.json ✅" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=12;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="1050" y="1120" width="200" height="60" as="geometry" />
+          <mxGeometry x="1050" y="1570" width="200" height="60" as="geometry" />
         </mxCell>
         <mxCell id="L2_framework" value="framework_data.json ✅" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=12;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="1280" y="1120" width="200" height="60" as="geometry" />
+          <mxGeometry x="1280" y="1570" width="200" height="60" as="geometry" />
         </mxCell>
         <mxCell id="L2_rel_5" value="tasks.milestone_id → milestones._id" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#6c8ebf;" vertex="1" parent="1">
-          <mxGeometry x="1050" y="1195" width="220" height="20" as="geometry" />
+          <mxGeometry x="1050" y="1645" width="220" height="20" as="geometry" />
         </mxCell>
 
-        <!-- L2-3 规划中 -->
+        <!-- v1.3 NEW: L2-3 数据契约 -->
+        <mxCell id="L2_schema_domain" value="📋 L2-3 数据契约 🆕&#xa;→ schema/" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=3;verticalAlign=top;align=center;spacingTop=8;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1570" y="1430" width="480" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="L2_schema_1" value="JSON Schema定义 ⏳ 🆕 → 每个JSON文件对应schema" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="1600" y="1480" width="420" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="L2_schema_2" value="字段验证/迁移策略 ⏳ 🆕" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="1600" y="1518" width="420" height="34" as="geometry" />
+        </mxCell>
+
+        <!-- L2-4 规划中 -->
         <mxCell id="L2_plan_domain" value="规划中&#xa;→ (待建)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;strokeWidth=2;verticalAlign=top;align=center;spacingTop=8;fontSize=14;fontStyle=1;dashed=1;" vertex="1" parent="1">
-          <mxGeometry x="1570" y="980" width="280" height="260" as="geometry" />
+          <mxGeometry x="1570" y="1630" width="480" height="140" as="geometry" />
         </mxCell>
         <mxCell id="L2_plan_1" value="analysis_data.json ⏳" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=12;fillColor=#f5f5f5;strokeColor=#999999;fontSize=11;dashed=1;" vertex="1" parent="1">
-          <mxGeometry x="1600" y="1030" width="220" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="L2_plan_2" value="行情/因子数据 ⏳" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=12;fillColor=#f5f5f5;strokeColor=#999999;fontSize=11;dashed=1;" vertex="1" parent="1">
-          <mxGeometry x="1600" y="1120" width="220" height="60" as="geometry" />
+          <mxGeometry x="1600" y="1680" width="420" height="60" as="geometry" />
         </mxCell>
 
         <!-- ===== L1 Layer Container ===== -->
         <mxCell id="layer_l1" value="L1 Infrastructure · 部署/认证/更新/DNS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fef3c7;strokeColor=#f59e0b;strokeWidth=2;verticalAlign=top;align=center;spacingTop=6;fontSize=13;fontStyle=1;dashed=1;opacity=50;" vertex="1" parent="1">
-          <mxGeometry x="160" y="1290" width="2500" height="120" as="geometry" />
+          <mxGeometry x="160" y="1820" width="2900" height="120" as="geometry" />
         </mxCell>
         <mxCell id="L1_deploy" value="GitHub Pages → wudaoseng.com ✅" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#f59e0b;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="200" y="1340" width="280" height="50" as="geometry" />
+          <mxGeometry x="200" y="1870" width="280" height="50" as="geometry" />
         </mxCell>
         <mxCell id="L1_auth" value="SHA-256 密码保护 ✅" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#f59e0b;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="520" y="1340" width="220" height="50" as="geometry" />
+          <mxGeometry x="520" y="1870" width="220" height="50" as="geometry" />
         </mxCell>
         <mxCell id="L1_pipeline" value="Agent → GitHub API → Pages ✅" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#f59e0b;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="780" y="1340" width="280" height="50" as="geometry" />
+          <mxGeometry x="780" y="1870" width="280" height="50" as="geometry" />
         </mxCell>
         <mxCell id="L1_dns" value="阿里云DNS + HTTPS ✅" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#f59e0b;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="1100" y="1340" width="220" height="50" as="geometry" />
+          <mxGeometry x="1100" y="1870" width="220" height="50" as="geometry" />
         </mxCell>
         <mxCell id="L1_version" value="版本管理 ⏳" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#f59e0b;fontSize=12;dashed=1;" vertex="1" parent="1">
-          <mxGeometry x="1360" y="1340" width="180" height="50" as="geometry" />
+          <mxGeometry x="1360" y="1870" width="180" height="50" as="geometry" />
         </mxCell>
 
         <!-- ===== Layer Arrows ===== -->
@@ -393,36 +470,36 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
+        <!-- L4 internal arrows -->
+        <mxCell id="edge_l4_0_to_l4_2" value="设计系统供全部功能视图消费" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#82b366;endArrow=block;endFill=1;dashed=1;" edge="1" parent="1" source="L4_design_sys" target="L4_project">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_l4_1_to_l4_2" value="组件库供功能视图复用" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#82b366;endArrow=block;endFill=1;dashed=1;" edge="1" parent="1" source="L4_component_lib" target="L4_auto">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
         <!-- Warning -->
         <mxCell id="note_forbidden" value="⚠ 层级规则：L4禁止直接访问L2&#xa;L3禁止操作DOM&#xa;数据单向向下流动" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#e01b24;strokeWidth=2;verticalAlign=top;align=left;spacingTop=8;spacingLeft=12;spacingRight=12;spacingBottom=8;fontSize=12;overflow=fill;" vertex="1" parent="1">
-          <mxGeometry x="2220" y="590" width="320" height="100" as="geometry" />
+          <mxGeometry x="2430" y="630" width="320" height="100" as="geometry" />
         </mxCell>
 
         <!-- Legend -->
         <mxCell id="legend" value="图例" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;strokeWidth=1;verticalAlign=top;align=left;spacingTop=8;spacingLeft=12;spacingRight=12;spacingBottom=8;fontSize=12;overflow=fill;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="2220" y="720" width="320" height="130" as="geometry" />
+          <mxGeometry x="2430" y="760" width="320" height="130" as="geometry" />
         </mxCell>
-        <mxCell id="legend_1" value="✅ 已实现  ⏳ 规划中  🆕 v1.2新增" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontColor=#333333;" vertex="1" parent="1">
-          <mxGeometry x="2240" y="755" width="280" height="20" as="geometry" />
+        <mxCell id="legend_1" value="✅ 已实现  ⏳ 规划中  🆕 v1.3新增/重构" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="2450" y="795" width="280" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="legend_2" value="黄色底色 = v1.2变更部分" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontColor=#d6b656;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="2240" y="780" width="280" height="20" as="geometry" />
+        <mxCell id="legend_2" value="黄色底色 = v1.3变更部分" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontColor=#d6b656;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="2450" y="820" width="280" height="20" as="geometry" />
         </mxCell>
         <mxCell id="legend_3" value="实线=强依赖  虚线=弱依赖" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontColor=#666666;" vertex="1" parent="1">
-          <mxGeometry x="2240" y="805" width="280" height="20" as="geometry" />
+          <mxGeometry x="2450" y="845" width="280" height="20" as="geometry" />
         </mxCell>
 
-        <!-- v1.2: L4 internal dependency arrows -->
-        <mxCell id="edge_l4_0_to_l4_2" value="设计系统供全部功能视图消费" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#d6b656;endArrow=block;endFill=1;dashed=1;" edge="1" parent="1" source="L4_design_sys" target="L4_project">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="edge_l4_1_to_l4_2" value="组件库供功能视图复用" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#d6b656;endArrow=block;endFill=1;dashed=1;" edge="1" parent="1" source="L4_component_lib" target="L4_auto">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-
-        <!-- v1.2: Professional architecture reference note -->
-        <mxCell id="ref_arch_note" value="📐 专业架构参考（v1.2新增）&#xa;1. 2bxtech/financial-dashboard: 4层架构+Zustand+CSS语义色系统&#xa;2. shadcn/ui Trading方案: trade.up/down/neutral语义色+分层背景&#xa;3. 从原子到星辰: DataAdapter→StateMgmt→View(Atomic Design)&#xa;4. Bloomberg风格: IBM Plex Sans/Mono + oklch色空间&#xa;5. TradeView白皮书: React+Zustand+React Query+TailwindCSS&#xa;核心共识: 设计系统独立子层 / 逻辑与渲染严格分离 / 统一状态管理" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=2;verticalAlign=top;align=left;spacingTop=8;spacingLeft=12;spacingRight=12;spacingBottom=8;fontSize=11;overflow=fill;" vertex="1" parent="1">
-          <mxGeometry x="2220" y="860" width="420" height="160" as="geometry" />
+        <!-- v1.3: Architecture reference note -->
+        <mxCell id="ref_arch_note" value="📐 专业架构参考（v1.2引入, v1.3融合落地）&#xa;1. 2bxtech: 4层+7 Zustand切片+CSS语义色 → 状态管理独立+错误处理&#xa;2. shadcn Trading: trade.up/down语义色 → L4-0设计系统&#xa;3. 从原子到星辰: DataAdapter→StateMgmt→View → L3拆分适配/计算/状态&#xa;4. Bloomberg: IBM Plex+oklch色空间 → L4-0字体/色板&#xa;5. TradeView: React+Zustand+模块化 → L3-1状态管理第一公民" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dbeafe;strokeColor=#3b82f6;strokeWidth=2;verticalAlign=top;align=left;spacingTop=8;spacingLeft=12;spacingRight=12;spacingBottom=8;fontSize=11;overflow=fill;" vertex="1" parent="1">
+          <mxGeometry x="2430" y="910" width="420" height="140" as="geometry" />
         </mxCell>
 
       </root>
