@@ -74,7 +74,7 @@ function renderJiandaoSidebar() {
   // 首页
   html += '<div class="nav-item ' + (AppState.currentView === 'overview' ? 'active' : '') + '" onclick="showOverview()">';
   html += '<span class="nav-icon">🏠</span>';
-  html += '<span class="nav-text">总览</span>';
+  html += '<span class="nav-text">总览</span></div>';
   // 项目控制台入口
   html += '<div class="nav-item ' + (AppState.currentView === 'project' ? 'active' : '') + '" onclick="showProjectView()">';
   html += '<span class="nav-icon">📯</span>';
