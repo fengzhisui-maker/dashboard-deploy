@@ -1,0 +1,101 @@
+[
+  {
+    "_id": "ms_m1",
+    "_createTime": "2026-05-20T00:00:00+08:00",
+    "_updateTime": "2026-05-20T00:00:00+08:00",
+    "_creator": "system",
+    "name": "500视频转录+分类+基础看板",
+    "status": "done",
+    "target_date": "",
+    "completed_date": "2026-05-20",
+    "phase": "Phase 1"
+  },
+  {
+    "_id": "ms_m2",
+    "_createTime": "2026-05-20T00:00:00+08:00",
+    "_updateTime": "2026-05-20T00:00:00+08:00",
+    "_creator": "system",
+    "name": "部署到 wudaoseng.com",
+    "status": "done",
+    "target_date": "",
+    "completed_date": "2026-05-20",
+    "phase": "Phase 1"
+  },
+  {
+    "_id": "ms_m3",
+    "_createTime": "2026-05-21T00:00:00+08:00",
+    "_updateTime": "2026-05-21T00:00:00+08:00",
+    "_creator": "system",
+    "name": "密码保护+主题切换+7天缓存",
+    "status": "partial",
+    "target_date": "",
+    "completed_date": "",
+    "phase": "Phase 1"
+  },
+  {
+    "_id": "ms_m4",
+    "_createTime": "2026-05-21T00:00:00+08:00",
+    "_updateTime": "2026-05-21T00:00:00+08:00",
+    "_creator": "system",
+    "name": "转录库AI分析/因子提取交互",
+    "status": "todo",
+    "target_date": "",
+    "completed_date": "",
+    "phase": "Phase 2"
+  },
+  {
+    "_id": "ms_m5",
+    "_createTime": "2026-05-21T00:00:00+08:00",
+    "_updateTime": "2026-05-21T00:00:00+08:00",
+    "_creator": "system",
+    "name": "数据采集模块（Digital Oracle接入）",
+    "status": "todo",
+    "target_date": "",
+    "completed_date": "",
+    "phase": "Phase 2"
+  },
+  {
+    "_id": "ms_m6",
+    "_createTime": "2026-05-21T00:00:00+08:00",
+    "_updateTime": "2026-05-21T00:00:00+08:00",
+    "_creator": "system",
+    "name": "分析工具模块",
+    "status": "todo",
+    "target_date": "",
+    "completed_date": "",
+    "phase": "Phase 3"
+  },
+  {
+    "_id": "ms_m7",
+    "_createTime": "2026-05-21T00:00:00+08:00",
+    "_updateTime": "2026-05-21T00:00:00+08:00",
+    "_creator": "system",
+    "name": "可视化模块",
+    "status": "todo",
+    "target_date": "",
+    "completed_date": "",
+    "phase": "Phase 3"
+  },
+  {
+    "_id": "ms_m8",
+    "_createTime": "2026-05-21T00:00:00+08:00",
+    "_updateTime": "2026-05-21T00:00:00+08:00",
+    "_creator": "system",
+    "name": "研究笔记模块",
+    "status": "todo",
+    "target_date": "",
+    "completed_date": "",
+    "phase": "Phase 3"
+  },
+  {
+    "_id": "ms_m9",
+    "_createTime": "2026-05-21T00:00:00+08:00",
+    "_updateTime": "2026-05-21T00:00:00+08:00",
+    "_creator": "system",
+    "name": "自动化模块",
+    "status": "todo",
+    "target_date": "",
+    "completed_date": "",
+    "phase": "Phase 3"
+  }
+]
