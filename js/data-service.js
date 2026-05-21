@@ -1,386 +1,498 @@
 /* ================================================
-   金融研究仪表盘 - 数据服务层（逻辑层核心）
-   职责：Schema校验、数据转换、动态计算、统一接口
-   不暴露原始数据，只暴露加工后的干净数据
+   金融研究仪表盘 - 数据服务层 v2
+   通过GitHub API实时拉取数据
    ================================================ */
 
-var DataStore = (function() {
-  // 内部缓存
-  var _cache = {
-    upList: null,
-    categories: null,
-    videos: null,
-    catStats: null
-  };
-
-  // Schema定义
-  var REQUIRED_VIDEO_FIELDS = ['up', 'bvid', 'title', 'date'];
-  var OPTIONAL_VIDEO_FIELDS = ['category', 'fullText', 'preview'];
-
-  /* === 私有方法：Schema校验 === */
-  function validateVideo(v, index) {
-    var errors = [];
-    var clean = {};
+class DataStore {
+  constructor() {
+    // GitHub API配置
+    this.token = this._initToken();
     
-    // 必填字段
-    REQUIRED_VIDEO_FIELDS.forEach(function(field) {
-      if (!v[field]) {
-        errors.push('视频#' + index + ' 缺少必填字段: ' + field);
-      } else {
-        clean[field] = v[field];
+  _initToken() {
+    // Token从localStorage读取（登录后设置），或从URL参数
+    const stored = localStorage.getItem('wd_github_token');
+    if (stored) return stored;
+    // 首次使用：从密码验证成功后的session中获取
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlToken = urlParams.get('t');
+    if (urlToken) {
+      localStorage.setItem('wd_github_token', urlToken);
+      return urlToken;
+    }
+    return '';
+  }
+    this.owner = 'fengzhisui-maker';
+    this.repo = 'dashboard-deploy';
+    this.branch = 'main';
+    
+    // 缓存配置
+    this.cache = {};
+    this.cacheTime = {};
+    this.ttl = 60000; // 缓存1分钟
+    
+    // API基础路径
+    this.apiBase = 'https://api.github.com';
+    this.rawBase = 'https://raw.githubusercontent.com';
+  }
+  
+
+  // 设置Token（密码验证成功后调用）
+  setToken(token) {
+    this.token = token;
+    localStorage.setItem('wd_github_token', token);
+  }
+  
+  // 检查Token是否已设置
+  hasToken() {
+    return !!this.token;
+  }
+
+  /* === GitHub API 请求 === */
+  async githubGet(path) {
+    const url = `${this.apiBase}${path}`;
+    const response = await fetch(url, {
+      headers: {
+        'Authorization': `Bearer ${this.token}`,
+        'Accept': 'application/vnd.github.v3+json'
       }
     });
     
-    // 可选字段（提供默认值）
-    clean.category = v.category || '未分类';
-    clean.preview = v.preview || '';
-    clean.fullText = v.fullText || '';
-    
-    // 日期标准化（确保YYYY-MM-DD格式）
-    if (clean.date) {
-      clean.date = normalizeDate(clean.date);
+    if (!response.ok) {
+      throw new Error(`GitHub API错误: ${response.status} ${response.statusText}`);
     }
     
-    // 派生字段
-    clean.hasFullText = clean.fullText && clean.fullText.length > 0;
-    clean.previewText = clean.preview || (clean.fullText ? clean.fullText.slice(0, 200) : '');
-    
-    return { valid: errors.length === 0, errors: errors, data: clean };
+    return response.json();
   }
-
-  /* === 私有方法：日期标准化 === */
-  function normalizeDate(dateStr) {
-    if (!dateStr) return '';
-    // 已经是 YYYY-MM-DD 格式
-    if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return dateStr;
+  
+  async githubPut(path, content, sha, msg) {
+    const url = `${this.apiBase}${path}`;
+    const body = {
+      message: msg,
+      content: content, // Base64编码
+      sha: sha, // 更新时需要
+      branch: this.branch
+    };
     
-    // 尝试转换其他格式
-    var d = new Date(dateStr);
-    if (!isNaN(d.getTime())) {
-      return d.getFullYear() + '-' + 
-             String(d.getMonth() + 1).padStart(2, '0') + '-' + 
-             String(d.getDate()).padStart(2, '0');
-    }
-    return dateStr; // 无法转换则返回原值
-  }
-
-  /* === 私有方法：从VIDEOS动态计算UP主列表 === */
-  function computeUpList() {
-    var videos = getRawVideos();
-    var upMap = {};
-    
-    videos.forEach(function(v) {
-      if (!v.up) return;
-      
-      if (!upMap[v.up]) {
-        upMap[v.up] = {
-          name: v.up,
-          platform: v.platform || 'bilibili',
-          total: 0,
-          latest: v.date || '',
-          categories: {}
-        };
-      }
-      
-      // 累计视频数
-      upMap[v.up].total++;
-      
-      // 更新最新日期
-      if (v.date && v.date > upMap[v.up].latest) {
-        upMap[v.up].latest = v.date;
-      }
-      
-      // 累计分类
-      if (v.category) {
-        var catList = v.category.split(/[,，]/).map(function(c) { return c.trim(); });
-        catList.forEach(function(cat) {
-          if (cat) {
-            upMap[v.up].categories[cat] = (upMap[v.up].categories[cat] || 0) + 1;
-          }
-        });
-      }
+    const response = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${this.token}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
     });
     
-    // 转换为数组并排序（按名称）
-    return Object.keys(upMap).sort().map(function(name) {
-      return upMap[name];
-    });
-  }
-
-  /* === 私有方法：从VIDEOS动态计算分类统计 === */
-  function computeCatStats() {
-    var videos = getRawVideos();
-    var catMap = {};
-    
-    videos.forEach(function(v) {
-      if (!v.category) return;
-      
-      // 支持逗号分隔的多分类
-      var catList = v.category.split(/[,，]/).map(function(c) { return c.trim(); });
-      catList.forEach(function(cat) {
-        if (cat) {
-          catMap[cat] = (catMap[cat] || 0) + 1;
-        }
-      });
-    });
-    
-    // 按数量降序排列
-    return Object.entries(catMap)
-      .sort(function(a, b) { return b[1] - a[1]; })
-      .reduce(function(acc, pair) {
-        acc[pair[0]] = pair[1];
-        return acc;
-      }, {});
-  }
-
-  /* === 私有方法：获取原始视频数据 === */
-  function getRawVideos() {
-    if (_cache.videos !== null) return _cache.videos;
-    
-    if (typeof VIDEOS === 'undefined' || !Array.isArray(VIDEOS)) {
-      _cache.videos = [];
-      return [];
+    if (!response.ok) {
+      throw new Error(`GitHub API写入错误: ${response.status}`);
     }
     
-    // 校验并清理数据
-    var validVideos = [];
-    var errorLog = [];
-    
-    VIDEOS.forEach(function(v, index) {
-      var result = validateVideo(v, index);
-      if (result.valid) {
-        validVideos.push(result.data);
-      } else {
-        errorLog.push(result.errors.join(', '));
-      }
+    return response.json();
+  }
+  
+  async githubDelete(path, sha, msg) {
+    const url = `${this.apiBase}${path}`;
+    const response = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${this.token}`,
+        'Accept': 'application/vnd.github.v3+json'
+      },
+      body: JSON.stringify({
+        message: msg,
+        sha: sha,
+        branch: this.branch
+      })
     });
     
-    // 记录错误（供调试）
-    if (errorLog.length > 0) {
-      console.warn('[DataStore] 视频数据校验跳过 ' + errorLog.length + ' 条:', errorLog.slice(0, 5));
+    if (!response.ok) {
+      throw new Error(`GitHub API删除错误: ${response.status}`);
     }
     
-    _cache.videos = validVideos;
-    return _cache.videos;
+    return response.json();
   }
-
-  /* === 公共接口：获取UP主列表 === */
-  function getUpList() {
-    if (_cache.upList === null) {
-      // 从VIDEOS动态计算（唯一数据源）
-      _cache.upList = computeUpList();
-      // UP_STATS仅补充VIDEOS中没有的字段（如platform覆盖、avatar等）
-      if (typeof UP_STATS !== 'undefined') {
-        _cache.upList.forEach(function(up) {
-          if (UP_STATS[up.name]) {
-            // 只用UP_STATS补充，不用它覆盖计算结果
-            if (UP_STATS[up.name].platform) up.platform = UP_STATS[up.name].platform;
-          }
-        });
+  
+  async getFileSha(path) {
+    try {
+      const data = await this.githubGet(`/repos/${this.owner}/${this.repo}/contents/${path}?ref=${this.branch}`);
+      return data.sha;
+    } catch (e) {
+      return null; // 文件不存在
+    }
+  }
+  
+  /* === 数据获取 === */
+  async fetchJSON(path, skipCache = false) {
+    const now = Date.now();
+    
+    // 检查缓存
+    if (!skipCache && this.cache[path] && this.cacheTime[path]) {
+      if (now - this.cacheTime[path] < this.ttl) {
+        return this.cache[path];
       }
     }
-    return _cache.upList;
-  }
-
-  /* === 公共接口：获取UP主详情 === */
-  function getUpInfo(name) {
-    var list = getUpList();
-    return list.find(function(up) { return up.name === name; }) || null;
-  }
-
-  /* === 公共接口：获取所有视频（支持过滤） === */
-  function getVideos(filters) {
-    var videos = getRawVideos();
     
-    if (!filters) return videos.slice(); // 返回副本
+    // 从GitHub获取
+    const url = `${this.rawBase}/${this.owner}/${this.repo}/${this.branch}/${path}`;
+    const response = await fetch(url);
     
-    return videos.filter(function(v) {
-      if (filters.up && v.up !== filters.up) return false;
-      if (filters.category && !v.category.includes(filters.category)) return false;
-      if (filters.fromDate && v.date < filters.fromDate) return false;
-      if (filters.toDate && v.date > filters.toDate) return false;
-      if (filters.search) {
-        var s = filters.search.toLowerCase();
-        if (!v.title.toLowerCase().includes(s) && 
-            !v.fullText.toLowerCase().includes(s)) return false;
-      }
-      return true;
-    });
+    if (!response.ok) {
+      throw new Error(`获取数据失败: ${path} (${response.status})`);
+    }
+    
+    const data = await response.json();
+    
+    // 更新缓存
+    this.cache[path] = data;
+    this.cacheTime[path] = now;
+    
+    return data;
   }
-
-  /* === 公共接口：获取单个视频详情 === */
-  function getVideoDetail(bvid) {
-    var videos = getRawVideos();
-    return videos.find(function(v) { return v.bvid === bvid; }) || null;
+  
+  async refresh() {
+    // 清除所有缓存，强制重新加载
+    this.cache = {};
+    this.cacheTime = {};
   }
-
-  /* === 公共接口：获取所有唯一分类 === */
-  function getCategories() {
-    if (_cache.categories === null) {
-      var catSet = {};
-      var videos = getRawVideos();
-      videos.forEach(function(v) {
+  
+  /* === 数据查询API === */
+  
+  // 获取UP主列表
+  async getUpMaster() {
+    return this.fetchJSON('data/up_master.json');
+  }
+  
+  // 通过ID获取UP主
+  async getUpById(_id) {
+    const ups = await this.getUpMaster();
+    return ups.find(u => u._id === _id) || null;
+  }
+  
+  // 获取视频列表（不含fullText）
+  async getVideos(upId = null) {
+    const videos = await this.fetchJSON('data/transcript_videos.json');
+    
+    if (upId) {
+      return videos.filter(v => v.up_id === upId);
+    }
+    return videos;
+  }
+  
+  // 获取单个视频
+  async getVideoById(_id) {
+    const videos = await this.getVideos();
+    return videos.find(v => v._id === _id) || null;
+  }
+  
+  // 按需获取fullText
+  async getVideoFullText(videoId) {
+    const video = await this.getVideoById(videoId);
+    if (!video) return null;
+    
+    const upIdShort = video.up_id.slice(0, 8);
+    const path = `data/transcript_videos_fulltext/${upIdShort}/${videoId}.json`;
+    
+    try {
+      const data = await this.fetchJSON(path);
+      return data.fullText || '';
+    } catch (e) {
+      console.warn(`fullText不存在: ${videoId}`, e);
+      return '';
+    }
+  }
+  
+  // 按分类筛选
+  async getVideosByCategory(category) {
+    const videos = await this.getVideos();
+    return videos.filter(v => v.category === category);
+  }
+  
+  // 获取分类标签
+  async getCategoryTags() {
+    return this.fetchJSON('data/category_tags.json');
+  }
+  
+  // 获取转录任务
+  async getTasks() {
+    return this.fetchJSON('data/transcript_tasks.json');
+  }
+  
+  // 获取因子关键词
+  async getFactorKeywords() {
+    return this.fetchJSON('data/factor_keywords.json');
+  }
+  
+  // 获取里程碑
+  async getMilestones() {
+    return this.fetchJSON('data/project_milestones.json');
+  }
+  
+  // 获取项目任务
+  async getProjectTasks() {
+    return this.fetchJSON('data/project_tasks.json');
+  }
+  
+  // 获取错误日志
+  async getErrors() {
+    return this.fetchJSON('data/project_errors.json');
+  }
+  
+  /* === 计算字段/聚合 === */
+  
+  // 动态计算UP主统计
+  async getUpStats() {
+    const ups = await this.getUpMaster();
+    const videos = await this.getVideos();
+    const cats = await this.getCategoryTags();
+    
+    return ups.map(up => {
+      const upVideos = videos.filter(v => v.up_id === up._id);
+      
+      // 分类统计
+      const categories = {};
+      upVideos.forEach(v => {
         if (v.category) {
-          v.category.split(/[,，]/).forEach(function(c) {
-            c = c.trim();
-            if (c) catSet[c] = true;
-          });
+          categories[v.category] = (categories[v.category] || 0) + 1;
         }
       });
-      _cache.categories = Object.keys(catSet).sort();
-    }
-    return _cache.categories;
+      
+      // 最新日期
+      const dates = upVideos.map(v => v.publish_date).filter(d => d).sort();
+      const latest = dates.length > 0 ? dates[dates.length - 1] : '';
+      
+      return {
+        _id: up._id,
+        name: up.name,
+        platform: up.platform,
+        avatar_url: up.avatar_url,
+        status: up.status,
+        total: upVideos.length,
+        latest: latest,
+        categories: categories
+      };
+    });
   }
-
-  /* === 公共接口：获取分类统计 === */
-  function getCatStats() {
-    if (_cache.catStats === null) {
-      // 从VIDEOS动态计算（唯一数据源）
-      _cache.catStats = computeCatStats();
-    }
-    return _cache.catStats;
+  
+  // 动态计算分类统计
+  async getCategoryStats() {
+    const videos = await this.getVideos();
+    const catStats = {};
+    
+    videos.forEach(v => {
+      if (v.category) {
+        catStats[v.category] = (catStats[v.category] || 0) + 1;
+      }
+    });
+    
+    return catStats;
   }
-
-  /* === 公共接口：获取统计数据汇总 === */
-  function getStatsSummary() {
-    var videos = getRawVideos();
-    var upList = getUpList();
+  
+  // 统计汇总
+  async getStatsSummary() {
+    const videos = await this.getVideos();
+    const ups = await this.getUpStats();
+    const catStats = await this.getCategoryStats();
     
-    var macroCount = videos.filter(function(v) { 
-      return v.category && v.category.includes('宏观'); 
-    }).length;
+    let macroCount = 0;
+    let commodityCount = 0;
     
-    var commCount = videos.filter(function(v) { 
-      return v.category && (v.category.includes('大宗') || v.category.includes('期货')); 
-    }).length;
+    Object.keys(catStats).forEach(cat => {
+      if (cat.includes('宏观')) macroCount += catStats[cat];
+      if (cat.includes('大宗') || cat.includes('期货')) commodityCount += catStats[cat];
+    });
     
     return {
       totalVideos: videos.length,
-      totalUps: upList.length,
+      totalUps: ups.length,
       macroCount: macroCount,
-      commodityCount: commCount,
-      categories: getCategories(),
-      catStats: getCatStats()
+      commodityCount: commodityCount
     };
   }
-
-  /* === 公共接口：获取项目数据 === */
-  function getProjectData() {
-    if (typeof PROJECT === 'undefined') return null;
-    return PROJECT;
-  }
-
-  /* === 公共接口：获取框架数据 === */
-  function getFrameworkData() {
-    if (typeof FRAMEWORK === 'undefined') return null;
-    return FRAMEWORK;
-  }
-
-  /* === 公共接口：获取模块详情 === */
-  function getModuleDetails() {
-    if (typeof MODULE_DETAILS === 'undefined') return null;
-    return MODULE_DETAILS;
-  }
-
-  /* === 公共接口：获取代码地图 === */
-  function getCodeMap() {
-    if (typeof CODE_MAP === 'undefined') return null;
-    return CODE_MAP;
-  }
-
-  /* === 公共接口：获取待处理队列 === */
-  function getPendingQueue() {
-    if (typeof PENDING_QUEUE === 'undefined') return [];
-    return PENDING_QUEUE;
-  }
-
-  /* === 公共接口：因子统计 === */
-  function getFactorStats() {
-    var fts = [
-      { name: '宏观因子', type: 'macro', keywords: ['PMI', 'CPI', 'PPI', 'GDP', 'M2', '社融', '利率', '降息', '加息', '通胀', '通缩', '汇率', '人民币', '美元'] },
-      { name: '供需因子', type: 'supply', keywords: ['产量', '产能', '库存', '开工率', '进口', '出口', '消费', '需求', '供给', '减产', '增产', '检修', '淡季', '旺季', '补库', '去库', '基差', '升水', '贴水'] },
-      { name: '资金因子', type: 'capital', keywords: ['持仓', '多头', '空头', '净多', '净空', '增仓', '减仓', '主力', '向北', '融资', '券商', '成交量'] },
-      { name: '情绪因子', type: 'sentiment', keywords: ['恐慌', '贪婪', '乐观', '悲观', '超买', '超卖', '背离', '突破', '支撑', '阻力', '回调', '反弹', '趋势', '震荡'] }
-    ];
+  
+  // 全文搜索
+  async searchVideos(keyword) {
+    if (!keyword || keyword.length < 2) return [];
     
-    var videos = getRawVideos();
-    var factorMap = {};
+    const videos = await this.getVideos();
+    const kw = keyword.toLowerCase();
     
-    fts.forEach(function(ft) {
-      ft.keywords.forEach(function(kw) {
-        var count = 0;
-        var sources = [];
-        
-        videos.forEach(function(v) {
-          if (v.fullText && v.fullText.includes(kw)) {
-            count++;
-            if (sources.length < 3) sources.push(v.title.slice(0, 20));
-          }
-        });
-        
-        if (count > 0) {
-          factorMap[kw] = {
-            keyword: kw,
-            count: count,
-            type: ft.type,
-            typeName: ft.name,
-            sources: sources
-          };
-        }
-      });
-    });
-    
-    // 按提及次数降序排列
-    return Object.values(factorMap).sort(function(a, b) {
-      return b.count - a.count;
+    return videos.filter(v => {
+      if (v.title && v.title.toLowerCase().includes(kw)) return true;
+      if (v.preview && v.preview.toLowerCase().includes(kw)) return true;
+      return false;
     });
   }
-
-  /* === 公共接口：清除缓存（用于数据更新后） === */
-  function clearCache() {
-    _cache = {
-      upList: null,
-      categories: null,
-      videos: null,
-      catStats: null
+  
+  /* === 数据写入 === */
+  
+  // 写入数据到GitHub
+  async writeData(path, data, commitMsg) {
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+    const sha = await this.getFileSha(path);
+    
+    const result = await this.githubPut(
+      `/repos/${this.owner}/${this.repo}/contents/${path}`,
+      content,
+      sha,
+      commitMsg
+    );
+    
+    // 清除相关缓存
+    delete this.cache[path];
+    delete this.cacheTime[path];
+    
+    return result;
+  }
+  
+  // 添加UP主
+  async addUpMaster(upData) {
+    const ups = await this.getUpMaster();
+    
+    // 生成新ID
+    const newId = 'up_' + Math.random().toString(36).slice(2, 12);
+    const now = new Date().toISOString();
+    
+    const newUp = {
+      _id: newId,
+      _createTime: now,
+      _updateTime: now,
+      _creator: 'manual',
+      name: upData.name,
+      platform: upData.platform || 'bilibili',
+      platform_uid: upData.platform_uid || '',
+      avatar_url: upData.avatar_url || '',
+      status: 'active',
+      auto_track: upData.auto_track !== false
     };
+    
+    ups.push(newUp);
+    
+    await this.writeData('data/up_master.json', ups, `添加UP主: ${upData.name}`);
+    
+    return newUp;
   }
+  
+  // 添加转录任务
+  async addTask(taskData) {
+    const tasks = await this.getTasks();
+    
+    const newId = 'task_' + Math.random().toString(36).slice(2, 12);
+    const now = new Date().toISOString();
+    
+    const newTask = {
+      _id: newId,
+      _createTime: now,
+      _updateTime: now,
+      _creator: 'manual',
+      task_type: taskData.task_type || 'initial',
+      action: taskData.action || 'add_up',
+      platform: taskData.platform || 'bilibili',
+      up_id: taskData.up_id,
+      up_url: taskData.up_url || '',
+      limit_count: taskData.limit_count || 500,
+      limit_days: taskData.limit_days || 365,
+      auto_track: taskData.auto_track !== false,
+      status: 'pending',
+      videos_total: 0,
+      videos_done: 0,
+      videos_skip: 0,
+      videos_fail: 0
+    };
+    
+    tasks.push(newTask);
+    
+    await this.writeData('data/transcript_tasks.json', tasks, `添加任务: ${taskData.up_id}`);
+    
+    return newTask;
+  }
+  
+  // 更新任务状态
+  async updateTask(taskId, updates) {
+    const tasks = await this.getTasks();
+    const idx = tasks.findIndex(t => t._id === taskId);
+    
+    if (idx === -1) {
+      throw new Error(`任务不存在: ${taskId}`);
+    }
+    
+    // 合并更新
+    tasks[idx] = {
+      ...tasks[idx],
+      ...updates,
+      _updateTime: new Date().toISOString()
+    };
+    
+    await this.writeData('data/transcript_tasks.json', tasks, `更新任务: ${taskId}`);
+    
+    return tasks[idx];
+  }
+  
+  // 添加视频
+  async addVideo(videoData) {
+    const videos = await this.getVideos();
+    
+    const newId = 'vid_' + Math.random().toString(36).slice(2, 12);
+    const now = new Date().toISOString();
+    
+    const newVideo = {
+      _id: newId,
+      _createTime: now,
+      _updateTime: now,
+      _creator: 'manual',
+      source_id: videoData.source_id,
+      title: videoData.title,
+      publish_date: videoData.publish_date,
+      category: videoData.category || '',
+      up_id: videoData.up_id,
+      filename: videoData.filename || '',
+      preview: videoData.preview || ''
+    };
+    
+    videos.push(newVideo);
+    
+    await this.writeData('data/transcript_videos.json', videos, `添加视频: ${videoData.title}`);
+    
+    return newVideo;
+  }
+}
 
-  /* === 公共接口：导出API === */
-  return {
-    getUpList: getUpList,
-    getUpInfo: getUpInfo,
-    getVideos: getVideos,
-    getVideoDetail: getVideoDetail,
-    getCategories: getCategories,
-    getCatStats: getCatStats,
-    getStatsSummary: getStatsSummary,
-    getProjectData: getProjectData,
-    getFrameworkData: getFrameworkData,
-    getModuleDetails: getModuleDetails,
-    getCodeMap: getCodeMap,
-    getPendingQueue: getPendingQueue,
-    getFactorStats: getFactorStats,
-    clearCache: clearCache
+// 全局实例
+const DataStore = new DataStore();
+
+// 全局实例
+const DataStore = new DataStore();
+
+// 刷新按钮功能
+function addRefreshButton() {
+  const topbarRight = document.querySelector('.topbar-right');
+  if (!topbarRight) return;
+  
+  if (document.getElementById('refreshBtn')) return;
+  
+  const btn = document.createElement('button');
+  btn.id = 'refreshBtn';
+  btn.className = 'btn btn-o';
+  btn.innerHTML = '🔄 刷新';
+  btn.title = '清除缓存并重新加载数据';
+  btn.onclick = async function() {
+    btn.disabled = true;
+    btn.innerHTML = '⏳ 刷新中...';
+    
+    try {
+      await DataStore.refresh();
+      if (typeof FormState !== 'undefined' && FormState.currentTable) {
+        await renderFormTable();
+      } else if (typeof AppState !== 'undefined' && AppState.currentTab) {
+        render(AppState.currentTab);
+      }
+      showToast('数据已刷新');
+    } catch (e) {
+      showToast('刷新失败: ' + e.message);
+    }
+    
+    btn.disabled = false;
+    btn.innerHTML = '🔄 刷新';
   };
-})();
-
-// ================================================
-// 兼容旧接口（过渡期使用，警告deprecated）
-// ================================================
-function getUpList() { 
-  console.warn('[Deprecated] 请使用 DataStore.getUpList()');
-  return DataStore.getUpList().map(function(u) { return u.name; });
-}
-function getUpInfo(name) { 
-  console.warn('[Deprecated] 请使用 DataStore.getUpInfo(name)');
-  return DataStore.getUpInfo(name);
-}
-function getVideos() { 
-  console.warn('[Deprecated] 请使用 DataStore.getVideos()');
-  return DataStore.getVideos();
-}
-function getCatStats() { 
-  console.warn('[Deprecated] 请使用 DataStore.getCatStats()');
-  return DataStore.getCatStats();
+  
+  topbarRight.insertBefore(btn, topbarRight.firstChild);
 }
