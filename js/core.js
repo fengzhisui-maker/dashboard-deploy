@@ -75,6 +75,10 @@ function renderJiandaoSidebar() {
   html += '<div class="nav-item ' + (AppState.currentView === 'overview' ? 'active' : '') + '" onclick="showOverview()">';
   html += '<span class="nav-icon">🏠</span>';
   html += '<span class="nav-text">总览</span>';
+  // 项目控制台入口
+  html += '<div class="nav-item ' + (AppState.currentView === 'project' ? 'active' : '') + '" onclick="showProjectView()">';
+  html += '<span class="nav-icon">📯</span>';
+  html += '<span class="nav-text">项目控制台</span>';
   html += '</div>';
   
   // 数据表导航（使用render-form.js中的TABLE_CONFIG）
@@ -121,6 +125,35 @@ function toggleNavGroup(groupId) {
 }
 
 /* === 视图切换 === */
+function showProjectView() {
+  AppState.currentView = 'project';
+  
+  // 更新侧边栏高亮
+  document.querySelectorAll('.nav-item, .nav-child-item').forEach(el => el.classList.remove('active'));
+  var navItems = document.querySelectorAll('.nav-item');
+  navItems.forEach(function(el) {
+    if (el.getAttribute('onclick') === 'showProjectView()') el.classList.add('active');
+  });
+  
+  // 隐藏侧边栏详情区
+  var formSidebar = document.getElementById('formSidebar');
+  var formDetail = document.getElementById('formDetail');
+  if (formSidebar) formSidebar.style.display = 'none';
+  if (formDetail) formDetail.classList.remove('show');
+  
+  // 显示主内容区
+  document.getElementById('mainContent').style.display = '';
+  document.getElementById('formContent').style.display = 'none';
+  
+  // 更新顶部标题
+  document.getElementById('topTitle').textContent = '项目控制台';
+  
+  // 渲染项目视图
+  if (typeof rProject === 'function') {
+    rProject();
+  }
+}
+
 function showOverview() {
   AppState.currentView = 'overview';
   
