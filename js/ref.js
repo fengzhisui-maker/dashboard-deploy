@@ -145,7 +145,26 @@ export function initRefSystem() {
   });
 }
 
+// 初始化引用系统（为data-ref元素绑定交互）
+export function initRefSystem() {
+  document.querySelectorAll('[data-ref]').forEach(el => {
+    if (!el.dataset.refBound) {
+      el.dataset.refBound = 'true';
+      el.style.cursor = 'pointer';
+      el.title = '点击复制引用';
+      el.addEventListener('click', function(e) {
+        const ref = this.dataset.ref;
+        if (ref) {
+          const context = generateContext(ref);
+          copyToClipboard(context);
+        }
+      });
+    }
+  });
+}
+
 export default {
+  initRefSystem,
   generateContext,
   parseRef,
   isValidRef,
