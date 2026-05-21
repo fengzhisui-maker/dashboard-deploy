@@ -6,9 +6,7 @@
 <title>金融研究仪表盘</title>
 
 <!-- CSS模块 -->
-<link rel="stylesheet" href="css/core.css">
-<link rel="stylesheet" href="css/components.css">
-<link rel="stylesheet" href="css/blueprint.css">
+<link rel="stylesheet" href="css/jiandao.css">
 
 <!-- 密码模块 - 已隔离，不要移动或修改 -->
 <script>
@@ -83,71 +81,48 @@
   </div>
 </div>
 
-<!-- 侧边栏 -->
-<div class="sidebar">
-  <div class="s-logo">
-    <h1>📊 金融研究仪表盘</h1>
-    <p>wudaoseng.com</p>
+<!-- 简道云风格布局 -->
+<div class="app-container">
+  
+  <!-- 侧边栏 -->
+  <div class="sidebar" id="sidebar">
+    <!-- 由core.js渲染 -->
   </div>
-  <div class="s-nav">
-    <div class="s-section">核心模块</div>
-    <div class="s-item" data-ref="nav-transcript" onclick="setMod('transcript')">
-      <span class="ic">🎤</span>转录库
+  
+  <!-- 主内容区 -->
+  <div class="main-wrapper">
+    <!-- 顶部栏 -->
+    <div class="topbar">
+      <h2 id="topTitle">总览</h2>
+      <div class="topbar-right">
+        <!-- 刷新按钮由data-service.js动态添加 -->
+      </div>
     </div>
-    <div class="s-item active" data-ref="nav-project" onclick="setMod('project')">
-      <span class="ic">📋</span>项目控制台
-    </div>
-    <div class="s-section">扩展模块</div>
-    <div class="s-item off" data-ref="nav-data" title="开发中">
-      <span class="ic">📡</span>数据采集
-    </div>
-    <div class="s-item off" data-ref="nav-analysis" title="开发中">
-      <span class="ic">🔬</span>分析工具
-    </div>
-    <div class="s-item off" data-ref="nav-visual" title="开发中">
-      <span class="ic">📈</span>可视化
-    </div>
-    <div class="s-item off" data-ref="nav-notes" title="开发中">
-      <span class="ic">📝</span>研究笔记
-    </div>
-    <div class="s-item off" data-ref="nav-auto" title="开发中">
-      <span class="ic">⚙️</span>自动化
-    </div>
-  </div>
-</div>
-
-<!-- 主内容区 -->
-<div class="main">
-  <div class="topbar">
-    <h2 id="topTitle">转录库</h2>
-    <div class="topbar-right">
-      <button class="theme-btn" onclick="toggleTheme()" title="切换主题" id="themeBtn">🌙</button>
-      <button class="btn btn-o" onclick="exportData()">📥 导出</button>
-      <button class="btn btn-p" onclick="swTab('tasks')">➕ 新建任务</button>
+    
+    <!-- 内容区 -->
+    <div class="content-wrapper">
+      
+      <!-- 主内容（总览/旧版视图） -->
+      <div id="mainContent" class="content">
+        <div id="tc-overview"></div>
+      </div>
+      
+      <!-- 数据表内容区 -->
+      <div id="formContent" class="content form-content" style="display:none">
+        <!-- 由render-form.js渲染 -->
+      </div>
+      
     </div>
   </div>
   
-  <div class="content">
-    <!-- Tabs -->
-    <div class="tabs" id="tabs">
-      <div class="tab active" data-t="overview" onclick="swTab(this)">概览</div>
-      <div class="tab" data-t="ups" onclick="swTab(this)">UP主管理</div>
-      <div class="tab" data-t="tasks" onclick="swTab(this)">转录任务</div>
-      <div class="tab" data-t="browse" onclick="swTab(this)">内容浏览</div>
-      <div class="tab" data-t="factors" onclick="swTab(this)">因子提取</div>
-    </div>
-    
-    <!-- Tab Contents -->
-    <div id="tc-overview"></div>
-    <div id="tc-ups" style="display:none"></div>
-    <div id="tc-tasks" style="display:none"></div>
-    <div id="tc-browse" style="display:none"></div>
-    <div id="tc-factors" style="display:none"></div>
-    <div id="tc-project" style="display:none"></div>
-  </div>
 </div>
 
 <!-- 详情侧边栏 -->
+<div class="detail-panel" id="formDetail">
+  <!-- 由render-form.js渲染 -->
+</div>
+
+<!-- 旧版详情侧边栏（保留用于兼容） -->
 <div class="detail" id="detail">
   <div class="dh">
     <h3 id="detTitle">详情</h3>
@@ -157,22 +132,16 @@
 </div>
 
 <!-- 数据文件 -->
-<script src="project_data.js"></script>
 <script src="framework_data.js"></script>
 <script src="module_details.js"></script>
-<script src="pending_queue.js"></script>
 <script src="code_map.js"></script>
-<script src="videos_data.js"></script>
-<script src="up_stats.js"></script>
-<script src="cat_stats.js"></script>
 
 <!-- JS模块 -->
 <script src="js/data-service.js"></script>
 <script src="js/core.js"></script>
 <script src="js/ref-system.js"></script>
 <script src="js/render-transcript.js"></script>
-<script src="js/render-project.js"></script>
-<script src="js/add-up-form.js"></script>
+<script src="js/render-form.js"></script>
 
 </body>
 </html>
