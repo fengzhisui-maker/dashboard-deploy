@@ -1,0 +1,216 @@
+/* ================================================
+   金融研究仪表盘 - 设计系统 v1.3
+   L4-0: CSS变量/主题切换/字体/语义色板
+   ================================================ */
+
+/* === 暗色主题 (默认) === */
+:root,
+[data-theme="dark"] {
+  /* 背景色 */
+  --bg: #0d1117;
+  --bg2: #161b22;
+  --bg3: #21262d;
+  --bg4: #30363d;
+  
+  /* 文字色 */
+  --t1: #e6edf3;
+  --t2: #c9d1d9;
+  --t3: #8b949e;
+  --t4: #6e7681;
+  
+  /* 边框色 */
+  --border: #30363d;
+  --border2: #21262d;
+  
+  /* 主色调 */
+  --accent: #58a6ff;
+  --accent2: #3fb950;
+  --accent3: #f78166;
+  
+  /* 金融语义色 */
+  --up: #3fb950;       /* 涨绿 */
+  --down: #f85149;     /* 跌红 */
+  --risk: #d29922;     /* 风险黄 */
+  --info: #58a6ff;     /* 信息蓝 */
+  --warn: #d29922;     /* 警告黄 */
+  --danger: #f85149;   /* 危险红 */
+  --success: #3fb950;  /* 成功绿 */
+  
+  /* 分类色 */
+  --cat-macro: #d29922;   /* 宏观-黄 */
+  --cat-comm: #a371f7;   /* 大宗-紫 */
+  --cat-stock: #3fb950;  /* 股票-绿 */
+  --cat-mix: #f78166;    /* 混合-橙 */
+  --cat-other: #8b949e;  /* 其他-灰 */
+  
+  /* 组件色 */
+  --card-bg: #161b22;
+  --hover-bg: #21262d;
+  --selected-bg: #1f3a5f;
+  
+  /* 阴影 */
+  --shadow: rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 1px 2px var(--shadow);
+  --shadow-md: 0 4px 12px var(--shadow);
+  --shadow-lg: 0 8px 24px var(--shadow);
+}
+
+/* === 亮色主题 === */
+[data-theme="light"] {
+  /* 背景色 */
+  --bg: #ffffff;
+  --bg2: #f6f8fa;
+  --bg3: #f0f2f5;
+  --bg4: #e8eaed;
+  
+  /* 文字色 */
+  --t1: #1f2328;
+  --t2: #57606a;
+  --t3: #8b949e;
+  --t4: #afb8c1;
+  
+  /* 边框色 */
+  --border: #d0d7de;
+  --border2: #e8eaed;
+  
+  /* 主色调 */
+  --accent: #0969da;
+  --accent2: #1a7f37;
+  --accent3: #cf222e;
+  
+  /* 金融语义色 */
+  --up: #1a7f37;       /* 涨绿 */
+  --down: #cf222e;     /* 跌红 */
+  --risk: #9a6700;     /* 风险黄 */
+  --info: #0969da;     /* 信息蓝 */
+  --warn: #9a6700;     /* 警告黄 */
+  --danger: #cf222e;   /* 危险红 */
+  --success: #1a7f37;  /* 成功绿 */
+  
+  /* 分类色 */
+  --cat-macro: #9a6700;   /* 宏观-黄 */
+  --cat-comm: #8250df;   /* 大宗-紫 */
+  --cat-stock: #1a7f37;  /* 股票-绿 */
+  --cat-mix: #bc4c00;    /* 混合-橙 */
+  --cat-other: #8b949e;  /* 其他-灰 */
+  
+  /* 组件色 */
+  --card-bg: #ffffff;
+  --hover-bg: #f6f8fa;
+  --selected-bg: #dbeafe;
+  
+  /* 阴影 */
+  --shadow: rgba(0, 0, 0, 0.1);
+  --shadow-sm: 0 1px 2px var(--shadow);
+  --shadow-md: 0 4px 12px var(--shadow);
+  --shadow-lg: 0 8px 24px var(--shadow);
+}
+
+/* === 字体系统 === */
+:root {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", "Fira Code", Consolas, monospace;
+  
+  /* 字号 */
+  --fs-xs: 11px;
+  --fs-sm: 12px;
+  --fs-base: 13px;
+  --fs-md: 14px;
+  --fs-lg: 16px;
+  --fs-xl: 18px;
+  --fs-2xl: 24px;
+  
+  /* 行高 */
+  --lh-tight: 1.25;
+  --lh-normal: 1.5;
+  --lh-relaxed: 1.75;
+  
+  /* 字重 */
+  --fw-normal: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  
+  /* 间距 */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  
+  /* 圆角 */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  
+  /* 动画 */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
+  --transition-slow: 0.4s ease;
+}
+
+/* === 基础重置 === */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  line-height: var(--lh-normal);
+  color: var(--t1);
+  background: var(--bg);
+}
+
+/* === 滚动条样式 === */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg2);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg4);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--t4);
+}
+
+/* === 选中样式 === */
+::selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* === 动画 === */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
