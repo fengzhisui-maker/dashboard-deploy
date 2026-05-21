@@ -1,0 +1,79 @@
+[
+  {
+    "_id": "pt_01",
+    "_createTime": "2026-05-21T00:00:00+08:00",
+    "_updateTime": "2026-05-21T00:00:00+08:00",
+    "_creator": "system",
+    "title": "P0模块化拆分（CSS/JS/HTML分离）",
+    "status": "done",
+    "type": "架构",
+    "milestone_id": "ms_m3",
+    "blocked_reason": ""
+  },
+  {
+    "_id": "pt_02",
+    "_createTime": "2026-05-21T00:00:00+08:00",
+    "_updateTime": "2026-05-21T00:00:00+08:00",
+    "_creator": "system",
+    "title": "数据层按简道云标准重构（多表+系统字段+关联）",
+    "status": "inProgress",
+    "type": "架构",
+    "milestone_id": "ms_m3",
+    "blocked_reason": ""
+  },
+  {
+    "_id": "pt_03",
+    "_createTime": "2026-05-21T00:00:00+08:00",
+    "_updateTime": "2026-05-21T00:00:00+08:00",
+    "_creator": "system",
+    "title": "转录库模块：AI分析接入",
+    "status": "backlog",
+    "type": "功能",
+    "milestone_id": "ms_m4",
+    "blocked_reason": ""
+  },
+  {
+    "_id": "pt_04",
+    "_createTime": "2026-05-21T00:00:00+08:00",
+    "_updateTime": "2026-05-21T00:00:00+08:00",
+    "_creator": "system",
+    "title": "转录库模块：因子提取交互",
+    "status": "backlog",
+    "type": "功能",
+    "milestone_id": "ms_m4",
+    "blocked_reason": ""
+  },
+  {
+    "_id": "pt_05",
+    "_createTime": "2026-05-21T00:00:00+08:00",
+    "_updateTime": "2026-05-21T00:00:00+08:00",
+    "_creator": "system",
+    "title": "数据采集模块：Digital Oracle数据接入",
+    "status": "backlog",
+    "type": "功能",
+    "milestone_id": "ms_m5",
+    "blocked_reason": ""
+  },
+  {
+    "_id": "pt_06",
+    "_createTime": "2026-05-21T00:00:00+08:00",
+    "_updateTime": "2026-05-21T00:00:00+08:00",
+    "_creator": "system",
+    "title": "yfinance/curl_cffi编译超时",
+    "status": "backlog",
+    "type": "技术",
+    "milestone_id": "",
+    "blocked_reason": "云电脑编译环境限制"
+  },
+  {
+    "_id": "pt_07",
+    "_createTime": "2026-05-21T00:00:00+08:00",
+    "_updateTime": "2026-05-21T00:00:00+08:00",
+    "_creator": "system",
+    "title": "提交UP主弹窗误报失败",
+    "status": "backlog",
+    "type": "前端",
+    "milestone_id": "",
+    "blocked_reason": "alert误判"
+  }
+]
