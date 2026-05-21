@@ -167,20 +167,16 @@ var DataStore = (function() {
   /* === 公共接口：获取UP主列表 === */
   function getUpList() {
     if (_cache.upList === null) {
-      // 优先使用 UP_STATS（如果有）
+      // 从VIDEOS动态计算（唯一数据源）
+      _cache.upList = computeUpList();
+      // UP_STATS仅补充VIDEOS中没有的字段（如platform覆盖、avatar等）
       if (typeof UP_STATS !== 'undefined') {
-        _cache.upList = Object.keys(UP_STATS).map(function(name) {
-          return {
-            name: name,
-            platform: UP_STATS[name].platform || 'bilibili',
-            total: UP_STATS[name].total || 0,
-            latest: UP_STATS[name].latest || '',
-            categories: UP_STATS[name].categories || {}
-          };
-        }).sort(function(a, b) { return a.name.localeCompare(b.name); });
-      } else {
-        // 从VIDEOS动态计算
-        _cache.upList = computeUpList();
+        _cache.upList.forEach(function(up) {
+          if (UP_STATS[up.name]) {
+            // 只用UP_STATS补充，不用它覆盖计算结果
+            if (UP_STATS[up.name].platform) up.platform = UP_STATS[up.name].platform;
+          }
+        });
       }
     }
     return _cache.upList;
@@ -239,12 +235,8 @@ var DataStore = (function() {
   /* === 公共接口：获取分类统计 === */
   function getCatStats() {
     if (_cache.catStats === null) {
-      // 优先使用 CAT_STATS（如果有）
-      if (typeof CAT_STATS !== 'undefined') {
-        _cache.catStats = CAT_STATS;
-      } else {
-        _cache.catStats = computeCatStats();
-      }
+      // 从VIDEOS动态计算（唯一数据源）
+      _cache.catStats = computeCatStats();
     }
     return _cache.catStats;
   }
