@@ -1,0 +1,132 @@
+[
+  {
+    "_id": "cat_e7311e7d1f96",
+    "_createTime": "2026-05-20T00:00:00+08:00",
+    "_updateTime": "2026-05-21T15:00:00+08:00",
+    "_creator": "system",
+    "name": "交易心得",
+    "parent_id": "",
+    "level": 1,
+    "sort_order": 1
+  },
+  {
+    "_id": "cat_a16b803915d5",
+    "_createTime": "2026-05-20T00:00:00+08:00",
+    "_updateTime": "2026-05-21T15:00:00+08:00",
+    "_creator": "system",
+    "name": "其他/综合",
+    "parent_id": "",
+    "level": 1,
+    "sort_order": 2
+  },
+  {
+    "_id": "cat_2fb5e0ef4326",
+    "_createTime": "2026-05-20T00:00:00+08:00",
+    "_updateTime": "2026-05-21T15:00:00+08:00",
+    "_creator": "system",
+    "name": "农产品",
+    "parent_id": "",
+    "level": 1,
+    "sort_order": 3
+  },
+  {
+    "_id": "cat_74d1a1997792",
+    "_createTime": "2026-05-20T00:00:00+08:00",
+    "_updateTime": "2026-05-21T15:00:00+08:00",
+    "_creator": "system",
+    "name": "原油",
+    "parent_id": "",
+    "level": 1,
+    "sort_order": 4
+  },
+  {
+    "_id": "cat_624accb14271",
+    "_createTime": "2026-05-20T00:00:00+08:00",
+    "_updateTime": "2026-05-21T15:00:00+08:00",
+    "_creator": "system",
+    "name": "大宗商品/期货",
+    "parent_id": "",
+    "level": 1,
+    "sort_order": 5
+  },
+  {
+    "_id": "cat_c3b7a2a7e492",
+    "_createTime": "2026-05-20T00:00:00+08:00",
+    "_updateTime": "2026-05-21T15:00:00+08:00",
+    "_creator": "system",
+    "name": "宏观",
+    "parent_id": "",
+    "level": 1,
+    "sort_order": 6
+  },
+  {
+    "_id": "cat_9adc1b52876e",
+    "_createTime": "2026-05-20T00:00:00+08:00",
+    "_updateTime": "2026-05-21T15:00:00+08:00",
+    "_creator": "system",
+    "name": "宏观经济",
+    "parent_id": "",
+    "level": 1,
+    "sort_order": 7
+  },
+  {
+    "_id": "cat_5fba368db6cb",
+    "_createTime": "2026-05-20T00:00:00+08:00",
+    "_updateTime": "2026-05-21T15:00:00+08:00",
+    "_creator": "system",
+    "name": "持仓分析",
+    "parent_id": "",
+    "level": 1,
+    "sort_order": 8
+  },
+  {
+    "_id": "cat_e56b4a1ec017",
+    "_createTime": "2026-05-20T00:00:00+08:00",
+    "_updateTime": "2026-05-21T15:00:00+08:00",
+    "_creator": "system",
+    "name": "期货综合",
+    "parent_id": "",
+    "level": 1,
+    "sort_order": 9
+  },
+  {
+    "_id": "cat_5f232f2c5bde",
+    "_createTime": "2026-05-20T00:00:00+08:00",
+    "_updateTime": "2026-05-21T15:00:00+08:00",
+    "_creator": "system",
+    "name": "股票/板块",
+    "parent_id": "",
+    "level": 1,
+    "sort_order": 10
+  },
+  {
+    "_id": "cat_fe2e6403f26f",
+    "_createTime": "2026-05-20T00:00:00+08:00",
+    "_updateTime": "2026-05-21T15:00:00+08:00",
+    "_creator": "system",
+    "name": "贵金属",
+    "parent_id": "",
+    "level": 1,
+    "sort_order": 11
+  },
+  {
+    "_id": "cat_b53a298f73cf",
+    "_createTime": "2026-05-20T00:00:00+08:00",
+    "_updateTime": "2026-05-21T15:00:00+08:00",
+    "_creator": "system",
+    "name": "金融史",
+    "parent_id": "",
+    "level": 1,
+    "sort_order": 12
+  },
+  {
+    "_id": "cat_384b4a92c919",
+    "_createTime": "2026-05-20T00:00:00+08:00",
+    "_updateTime": "2026-05-21T15:00:00+08:00",
+    "_creator": "system",
+    "name": "黑色系",
+    "parent_id": "",
+    "level": 1,
+    "sort_order": 13
+  }
+]
