@@ -122,29 +122,6 @@ export function formatRefText(ref, context = null) {
 }
 
 
-// 初始化引用系统（DOM事件绑定）
-export function initRefSystem() {
-  // 为所有带data-ref属性的元素绑定点击事件
-  document.querySelectorAll('[data-ref]').forEach(el => {
-    if (!el.dataset.refBound) {
-      el.dataset.refBound = 'true';
-      el.addEventListener('click', function(e) {
-        const ref = this.dataset.ref;
-        if (ref) {
-          const context = generateContext(ref);
-          copyToClipboard(context).then(ok => {
-            if (ok) {
-              const { ToastState } = await import('./store/state.js').catch(() => ({}));
-              // 简单提示
-              console.log('引用已复制:', ref);
-            }
-          });
-        }
-      });
-    }
-  });
-}
-
 // 初始化引用系统（为data-ref元素绑定交互）
 export function initRefSystem() {
   document.querySelectorAll('[data-ref]').forEach(el => {
