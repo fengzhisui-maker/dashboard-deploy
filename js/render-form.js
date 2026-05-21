@@ -146,7 +146,6 @@ const TABLE_CONFIG = {
 };
 
 // UP主名称缓存
-var _formUpNameCache = {};
 
 /* === 渲染侧边栏 === */
 function renderFormSidebar() {
@@ -245,7 +244,7 @@ async function renderFormTable() {
     if (FormState.currentTable.tableName === 'transcript_videos') {
       const ups = await DataStore.getUpMaster();
       ups.forEach(up => {
-        _formUpNameCache[up._id] = up.name;
+        _upNameCache[up._id] = up.name;
       });
     }
     
@@ -410,9 +409,9 @@ function formatFieldValue(field, value, table) {
     if (link.labelTemplate) {
       // 外部链接
       return '<a href="' + link.labelTemplate.replace('{value}', value) + '" target="_blank" class="link-cell">' + esc(String(value)) + '</a>';
-    } else if (field === 'up_id' && _formUpNameCache[value]) {
+    } else if (field === 'up_id' && _upNameCache[value]) {
       // UP主名称显示
-      return '<span class="link-cell" onclick="jumpToUpMaster(\'' + value + '\')">' + esc(_formUpNameCache[value]) + '</span>';
+      return '<span class="link-cell" onclick="jumpToUpMaster(\'' + value + '\')">' + esc(_upNameCache[value]) + '</span>';
     } else {
       return '<span class="link-cell" onclick="jumpToLink(\'' + link.target + '\', \'' + value + '\')">' + esc(String(value)) + '</span>';
     }
