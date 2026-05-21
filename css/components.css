@@ -1,0 +1,447 @@
+/* ================================================
+   金融研究仪表盘 - 组件样式表
+   包含：卡片、标签、表单、弹窗等UI组件
+   ================================================ */
+
+/* === UP主卡片 === */
+.up-g {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.up-c {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  transition: background 0.2s, border 0.2s;
+}
+
+.up-h {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.up-n {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.up-d {
+  font-size: 10px;
+  color: var(--t4);
+}
+
+/* === 标签 === */
+.tag {
+  font-size: 9px;
+  padding: 2px 7px;
+  border-radius: 8px;
+  display: inline-block;
+  margin: 2px;
+}
+
+.t-macro {
+  color: var(--cat-macro);
+  background: color-mix(in srgb, var(--cat-macro) 12%, transparent);
+}
+
+.t-comm {
+  color: var(--cat-comm);
+  background: color-mix(in srgb, var(--cat-comm) 12%, transparent);
+}
+
+.t-stock {
+  color: var(--cat-stock);
+  background: color-mix(in srgb, var(--cat-stock) 12%, transparent);
+}
+
+.t-other {
+  color: var(--cat-other);
+  background: color-mix(in srgb, var(--cat-other) 12%, transparent);
+}
+
+.t-mix {
+  color: var(--cat-mix);
+  background: color-mix(in srgb, var(--cat-mix) 12%, transparent);
+}
+
+/* === 平台标签 === */
+.plat-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 9px;
+  padding: 2px 7px;
+  border-radius: 3px;
+  margin-right: 4px;
+}
+
+.plat-tag.bili {
+  background: #fb7299;
+  background: rgba(251, 114, 153, 0.15);
+  color: #fb7299;
+}
+
+.plat-tag.yt {
+  background: #ff0000;
+  background: rgba(255, 0, 0, 0.12);
+  color: #ff4444;
+}
+
+.plat-tag.other {
+  background: rgba(100, 100, 100, 0.15);
+  color: var(--t4);
+}
+
+/* === 平台筛选器 === */
+.plat-filter {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.plat-filter button {
+  padding: 4px 12px;
+  border-radius: 5px;
+  font-size: 11px;
+  border: 1px solid var(--border);
+  background: var(--bg3);
+  color: var(--t3);
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.plat-filter button.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.plat-filter button:hover:not(.active) {
+  border-color: var(--accent);
+}
+
+/* === 筛选栏 === */
+.fbar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.fbar select,
+.fbar input {
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  color: var(--t1);
+  padding: 6px 10px;
+  border-radius: 5px;
+  font-size: 11px;
+  transition: background 0.2s, border 0.2s;
+}
+
+.fbar input {
+  flex: 1;
+  min-width: 180px;
+}
+
+.fbar select:focus,
+.fbar input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+/* === 视频列表 === */
+.vl {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.vi {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.vi:hover {
+  border-color: var(--accent);
+  background: var(--hover-bg);
+}
+
+.vi .vh {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.vi .vt {
+  font-size: 12px;
+  font-weight: 500;
+  flex: 1;
+}
+
+.vi .vm {
+  display: flex;
+  gap: 10px;
+  font-size: 10px;
+  color: var(--t4);
+  align-items: center;
+}
+
+.vi .vp {
+  font-size: 11px;
+  color: var(--t2);
+  line-height: 1.6;
+  margin-top: 8px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s;
+}
+
+.vi.open .vp {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+/* === 详情侧边栏 === */
+.detail {
+  position: fixed;
+  top: 0;
+  right: -560px;
+  width: 560px;
+  height: 100vh;
+  background: var(--bg2);
+  border-left: 1px solid var(--border);
+  z-index: 100;
+  transition: right 0.3s, background 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+
+.detail.show {
+  right: 0;
+}
+
+.detail .dh {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.detail .dh h3 {
+  font-size: 13px;
+  font-weight: 600;
+  flex: 1;
+  margin-right: 8px;
+}
+
+.detail .db {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+.detail .dm {
+  margin-bottom: 12px;
+}
+
+.detail .dm span {
+  font-size: 10px;
+  color: var(--t4);
+  margin-right: 12px;
+}
+
+.detail .dc {
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--t2);
+  white-space: pre-wrap;
+}
+
+/* === 分页 === */
+.pag {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 14px;
+}
+
+.pb {
+  padding: 5px 10px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--t2);
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.pb.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+/* === 添加UP主弹窗 === */
+.add-up-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.15s;
+}
+
+.add-up-panel {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  width: 90%;
+  max-width: 480px;
+  animation: slideUp 0.2s;
+}
+
+.add-up-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.add-up-title {
+  font-size: 16px;
+  font-weight: 700;
+  flex: 1;
+}
+
+.add-up-body {
+  padding: 20px;
+}
+
+.add-up-field {
+  margin-bottom: 14px;
+}
+
+.add-up-field label {
+  display: block;
+  font-size: 11px;
+  color: var(--t3);
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.add-up-field input,
+.add-up-field select {
+  width: 100%;
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  color: var(--t1);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  box-sizing: border-box;
+}
+
+.add-up-field input:focus,
+.add-up-field select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.add-up-footer {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.add-up-footer .btn {
+  padding: 7px 18px;
+}
+
+/* === 待处理队列 === */
+.pending-section {
+  margin-top: 16px;
+}
+
+.pending-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-bottom: 6px;
+  font-size: 11px;
+}
+
+.pending-item .plat-tag {
+  flex-shrink: 0;
+}
+
+.pending-status {
+  font-size: 9px;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.pending-status.queued {
+  background: rgba(234, 179, 8, 0.15);
+  color: var(--warn);
+}
+
+.pending-status.processing {
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+
+.pending-status.done {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+}
+
+.pending-status.error {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.task-progress {
+  height: 4px;
+  background: var(--bg3);
+  border-radius: 2px;
+  margin: 6px 0 2px;
+  overflow: hidden;
+}
+
+.task-progress-bar {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.3s;
+}
+
+.task-progress-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  color: var(--t4);
+}
