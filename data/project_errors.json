@@ -1,0 +1,41 @@
+[
+  {
+    "_id": "err_01",
+    "_createTime": "2026-05-21T00:00:00+08:00",
+    "_updateTime": "2026-05-21T00:00:00+08:00",
+    "_creator": "system",
+    "error_date": "2026-05-21",
+    "error_type": "架构",
+    "severity": "high",
+    "title": "密码模块间歇性失效",
+    "desc": "密码JS与业务JS耦合在同一个script块，排在4.8MB videos_data.js后面",
+    "fix": "密码逻辑独立到head的script",
+    "lesson": "关键模块必须隔离"
+  },
+  {
+    "_id": "err_02",
+    "_createTime": "2026-05-21T00:00:00+08:00",
+    "_updateTime": "2026-05-21T00:00:00+08:00",
+    "_creator": "system",
+    "error_date": "2026-05-21",
+    "error_type": "数据",
+    "severity": "high",
+    "title": "videos_data.js损坏为单字符';'",
+    "desc": "上传820条记录时文件被截断为';'",
+    "fix": "从本地原始文件重建",
+    "lesson": "大文件上传需分片或校验"
+  },
+  {
+    "_id": "err_03",
+    "_createTime": "2026-05-21T00:00:00+08:00",
+    "_updateTime": "2026-05-21T00:00:00+08:00",
+    "_creator": "system",
+    "error_date": "2026-05-21",
+    "error_type": "数据",
+    "severity": "medium",
+    "title": "日期格式化月日互换",
+    "desc": "20260520被解析为2026-20-05而非2026-05-20",
+    "fix": "修正Python日期拼接顺序",
+    "lesson": "日期格式必须用标准库解析，不手动拼接"
+  }
+]
