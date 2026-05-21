@@ -18,7 +18,7 @@ class DataStoreClass {
     
     // API基础路径
     this.apiBase = 'https://api.github.com';
-    this.rawBase = 'https://raw.githubusercontent.com';
+    this.rawBase = 'https://cdn.jsdelivr.net/gh/' + this.owner + '/' + this.repo + '@' + this.branch;
   }
   
   _initToken() {
@@ -130,7 +130,7 @@ class DataStoreClass {
       }
     }
     
-    const url = `${this.rawBase}/${this.owner}/${this.repo}/${this.branch}/${path}`;
+    const url = `${this.rawBase}/${path}`;
     const response = await fetch(url);
     
     if (!response.ok) {
@@ -427,38 +427,3 @@ class DataStoreClass {
 
 // 全局实例
 var DataStore = new DataStoreClass();
-
-// 刷新按钮功能
-function addRefreshButton() {
-  var topbarRight = document.querySelector('.topbar-right');
-  if (!topbarRight) return;
-  
-  if (document.getElementById('refreshBtn')) return;
-  
-  var btn = document.createElement('button');
-  btn.id = 'refreshBtn';
-  btn.className = 'btn btn-o';
-  btn.innerHTML = '🔄 刷新';
-  btn.title = '清除缓存并重新加载数据';
-  btn.onclick = async function() {
-    btn.disabled = true;
-    btn.innerHTML = '⏳ 刷新中...';
-    
-    try {
-      await DataStore.refresh();
-      if (typeof FormState !== 'undefined' && FormState.currentTable) {
-        await renderFormTable();
-      } else if (typeof AppState !== 'undefined' && AppState.currentTab) {
-        render(AppState.currentTab);
-      }
-      showToast('数据已刷新');
-    } catch (e) {
-      showToast('刷新失败: ' + e.message);
-    }
-    
-    btn.disabled = false;
-    btn.innerHTML = '🔄 刷新';
-  };
-  
-  topbarRight.insertBefore(btn, topbarRight.firstChild);
-}
