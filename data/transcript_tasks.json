@@ -1,0 +1,40 @@
+[
+  {
+    "_id": "task_24945daa2238",
+    "_createTime": "2026-05-20T00:00:00+08:00",
+    "_updateTime": "2026-05-20T12:00:00+08:00",
+    "_creator": "system",
+    "task_type": "initial",
+    "action": "add_up",
+    "platform": "bilibili",
+    "up_id": "up_3d80ddbb83fd",
+    "up_url": "https://space.bilibili.com/",
+    "limit_count": 500,
+    "limit_days": 365,
+    "auto_track": true,
+    "status": "done",
+    "videos_total": 500,
+    "videos_done": 500,
+    "videos_skip": 0,
+    "videos_fail": 0
+  },
+  {
+    "_id": "task_dc2303d0a1c0",
+    "_createTime": "2026-05-20T16:44:00+08:00",
+    "_updateTime": "2026-05-21T05:33:00+08:00",
+    "_creator": "system",
+    "task_type": "initial",
+    "action": "add_up",
+    "platform": "bilibili",
+    "up_id": "up_45f731ffbc41",
+    "up_url": "https://space.bilibili.com/1473394951",
+    "limit_count": 320,
+    "limit_days": 365,
+    "auto_track": true,
+    "status": "done",
+    "videos_total": 320,
+    "videos_done": 178,
+    "videos_skip": 142,
+    "videos_fail": 0
+  }
+]
