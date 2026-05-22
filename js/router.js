@@ -6,6 +6,7 @@
 import { AppState, ToastState } from './store/state.js';
 import { renderTranscriptView } from './views/transcript.js';
 import { renderPlaceholderView } from './views/placeholder.js';
+import { renderBlueprintView } from './views/blueprint.js';
 
 // 视图映射
 const VIEW_RENDERERS = {
@@ -15,7 +16,8 @@ const VIEW_RENDERERS = {
   analysis: () => renderPlaceholderView('analysis'),
   collection: () => renderPlaceholderView('collection'),
   notes: () => renderPlaceholderView('notes'),
-  automation: () => renderPlaceholderView('automation')
+  automation: () => renderPlaceholderView('automation'),
+  blueprint: renderBlueprintView
 };
 
 // 视图标题
@@ -26,7 +28,8 @@ const VIEW_TITLES = {
   analysis: '分析工具',
   collection: '数据采集',
   notes: '研究笔记',
-  automation: '自动化'
+  automation: '自动化',
+  blueprint: '架构蓝图'
 };
 
 // 视图图标
@@ -37,7 +40,8 @@ const VIEW_ICONS = {
   analysis: '🔍',
   collection: '🗂️',
   notes: '📝',
-  automation: '⚡'
+  automation: '⚡',
+  blueprint: '📐'
 };
 
 // 路由初始化
