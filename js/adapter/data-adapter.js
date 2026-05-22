@@ -266,22 +266,22 @@ export const BlueprintAPI = {
   // 版本变更日志
   getChangelog(version) {
     const changelogs = {
-      v1.0: [
+      'v1.0': [
         { type: 'add', desc: '初始四层架构设计' },
         { type: 'add', desc: 'L1数据层基础结构' },
         { type: 'add', desc: '转录库核心模块' }
       ],
-      v1.1: [
+      'v1.1': [
         { type: 'add', desc: 'ES Module模块化重构' },
         { type: 'update', desc: '视图层解耦为独立模块' },
         { type: 'add', desc: '路由系统v2' }
       ],
-      v1.2: [
+      'v1.2': [
         { type: 'add', desc: 'DataAdapter数据适配层' },
         { type: 'add', desc: 'GitHub API集成' },
         { type: 'update', desc: 'CDN缓存策略优化' }
       ],
-      v1.3: [
+      'v1.3': [
         { type: 'add', desc: '架构蓝图模块' },
         { type: 'add', desc: '交互原型图展示' },
         { type: 'add', desc: 'ER数据模型' },
