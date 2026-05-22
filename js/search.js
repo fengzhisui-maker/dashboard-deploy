@@ -82,18 +82,10 @@ export function applySort(videos) {
   const dir = AppState.sortDir === 'desc' ? -1 : 1;
   
   return [...videos].sort((a, b) => {
-    let va = a[field] || '';
-    let vb = b[field] || '';
-    
-    // 日期排序
-    if (field === 'publish_date') {
-      va = va ? va.localeCompare(vb) : 0;
-      vb = vb ? vb.localeCompare(va) : 0;
-    }
-    
-    if (va < vb) return -1 * dir;
-    if (va > vb) return 1 * dir;
-    return 0;
+    const va = a[field] || '';
+    const vb = b[field] || '';
+    // YYYY-MM-DD可直接字符串比较，localeCompare返回-1/0/1
+    return va.localeCompare(vb) * dir;
   });
 }
 
