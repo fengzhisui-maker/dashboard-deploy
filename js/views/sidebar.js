@@ -21,6 +21,12 @@ const NAV_CONFIG = [
     type: 'item'
   },
   {
+    id: 'blueprint',
+    name: '架构蓝图',
+    icon: '📐',
+    type: 'item'
+  },
+  {
     id: 'visualization',
     name: '数据可视化',
     icon: '📊',
