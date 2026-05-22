@@ -6,8 +6,9 @@
 // 应用全局状态
 export const AppState = {
   // 视图状态
-  currentView: 'transcript',    // 'transcript' | 'project' | 'visualization' | 'analysis' | 'collection' | 'notes' | 'automation'
+  currentView: 'transcript',    // 'transcript' | 'project' | 'blueprint' | 'visualization' | 'analysis' | 'collection' | 'notes' | 'automation'
   currentTab: 'overview',       // 转录库子标签: 'overview' | 'upmanage' | 'browse' | 'factor'
+  currentBlueprintTab: 'architecture', // 蓝图子标签: 'architecture' | 'prototype' | 'datamodel' | 'adr'
   currentPage: 1,
   pageSize: 20,
   
