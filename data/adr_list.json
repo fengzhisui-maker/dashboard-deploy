@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ADR-001",
+    "title": "采用ES Module模块化架构",
+    "status": "accepted",
+    "context": "仪表盘代码规模增长，需要更好的代码组织方式。考虑过立即执行函数(IIFE)和全局变量方案，最终选择ES Module。",
+    "decision": "使用原生ES Module import/export，不引入打包工具。通过CDN或GitHub直接加载，保持部署简单性。",
+    "consequences": "1. 浏览器原生支持，无需编译\n2. 静态分析友好\n3. 加载顺序需严格管理\n4. 不支持旧版浏览器",
+    "date": "2024-06-15",
+    "author": "系统架构"
+  },
+  {
+    "id": "ADR-002",
+    "title": "数据层与展示层分离",
+    "status": "accepted",
+    "context": "当前代码中数据获取和DOM操作混在一起，维护困难。需要建立清晰的分层架构。",
+    "decision": "建立L1-L4分层架构：L1数据层→L2服务层→L3逻辑层→L4展示层。严禁跨层调用。",
+    "consequences": "1. 职责清晰，易于维护\n2. 便于单元测试\n3. 代码行数增加\n4. 需要更多文件管理",
+    "date": "2024-08-20",
+    "author": "系统架构"
+  },
+  {
+    "id": "ADR-003",
+    "title": "使用GitHub作为数据源",
+    "status": "accepted",
+    "context": "数据文件需要版本控制和协作编辑能力。本地文件方案无法满足需求。",
+    "decision": "使用GitHub仓库存储数据文件，通过GitHub API读取，CDN(jsDelivr)缓存。",
+    "consequences": "1. 数据版本控制\n2. 多设备同步\n3. 需要GitHub Token\n4. API调用限制",
+    "date": "2024-09-10",
+    "author": "系统架构"
+  },
+  {
+    "id": "ADR-004",
+    "title": "引入蓝图模块",
+    "status": "proposed",
+    "context": "系统复杂度增加，需要统一展示架构设计、原型图、数据模型和决策记录。",
+    "decision": "新增「📐 蓝图」模块，包含4个Tab：架构图、原型图、数据模型、决策记录。",
+    "consequences": "1. 架构可视化\n2. 便于新人 onboarding\n3. 需要维护额外文件\n4. Draw.io渲染复杂度",
+    "date": "2025-05-22",
+    "author": "系统架构"
+  }
+]
