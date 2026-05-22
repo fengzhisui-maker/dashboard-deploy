@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net">
+  <diagram name="数据模型ER图" id="er-v1">
+    <mxGraphModel dx="1200" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1a1a2e;fontColor=#e6edf3;fontSize=12;fontStyle=1;strokeColor=#30363d;align=center;" id="c1" parent="1" vertex="1" value="up_master
+UP主表">
+          <mxGeometry x="50" y="80" width="260" height="36" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1a3a1a;fontColor=#7ee787;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c2" parent="1" vertex="1" value="<b>_id</b> <font color='#6e7681'>string</font> <font color='#7ee787'>🔑 PK</font> <font color='#484f58'>up_xxxx</font>">
+          <mxGeometry x="50" y="116" width="260" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#161b22;fontColor=#6e7681;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c3" parent="1" vertex="1" value="<b>_createTime</b> <font color='#6e7681'>datetime</font> <font color='#6e7681'>系统</font> <font color='#484f58'>ISO8601</font>">
+          <mxGeometry x="50" y="140" width="260" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#161b22;fontColor=#6e7681;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c4" parent="1" vertex="1" value="<b>_updateTime</b> <font color='#6e7681'>datetime</font> <font color='#6e7681'>系统</font> <font color='#484f58'>ISO8601</font>">
+          <mxGeometry x="50" y="164" width="260" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#161b22;fontColor=#6e7681;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c5" parent="1" vertex="1" value="<b>_creator</b> <font color='#6e7681'>string</font> <font color='#6e7681'>系统</font> <font color='#484f58'>system</font>">
+          <mxGeometry x="50" y="188" width="260" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0d1117;fontColor=#c9d1d9;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c6" parent="1" vertex="1" value="<b>name</b> <font color='#6e7681'>string</font> <font color='#c9d1d9'>业务</font> <font color='#484f58'>UP主名称</font>">
+          <mxGeometry x="50" y="212" width="260" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0d1117;fontColor=#c9d1d9;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c7" parent="1" vertex="1" value="<b>platform</b> <font color='#6e7681'>string</font> <font color='#c9d1d9'>业务</font> <font color='#484f58'>bilibili/youtube</font>">
+          <mxGeometry x="50" y="236" width="260" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0d1117;fontColor=#c9d1d9;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c8" parent="1" vertex="1" value="<b>platform_uid</b> <font color='#6e7681'>string</font> <font color='#c9d1d9'>业务</font> <font color='#484f58'>平台UID</font>">
+          <mxGeometry x="50" y="260" width="260" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0d1117;fontColor=#c9d1d9;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c9" parent="1" vertex="1" value="<b>avatar_url</b> <font color='#6e7681'>string</font> <font color='#c9d1d9'>业务</font> <font color='#484f58'>头像路径</font>">
+          <mxGeometry x="50" y="284" width="260" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0d1117;fontColor=#c9d1d9;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c10" parent="1" vertex="1" value="<b>status</b> <font color='#6e7681'>string</font> <font color='#c9d1d9'>业务</font> <font color='#484f58'>active/paused</font>">
+          <mxGeometry x="50" y="308" width="260" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0d1117;fontColor=#c9d1d9;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c11" parent="1" vertex="1" value="<b>auto_track</b> <font color='#6e7681'>boolean</font> <font color='#c9d1d9'>业务</font> <font color='#484f58'>是否自动追踪</font>">
+          <mxGeometry x="50" y="332" width="260" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1a1a2e;fontColor=#e6edf3;fontSize=12;fontStyle=1;strokeColor=#30363d;align=center;" id="c12" parent="1" vertex="1" value="transcript_videos
+视频转录表">
+          <mxGeometry x="380" y="30" width="300" height="36" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1a3a1a;fontColor=#7ee787;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c13" parent="1" vertex="1" value="<b>_id</b> <font color='#6e7681'>string</font> <font color='#7ee787'>🔑 PK</font> <font color='#484f58'>vid_xxxx</font>">
+          <mxGeometry x="380" y="66" width="300" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#161b22;fontColor=#6e7681;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c14" parent="1" vertex="1" value="<b>_createTime</b> <font color='#6e7681'>datetime</font> <font color='#6e7681'>系统</font> <font color='#484f58'>ISO8601</font>">
+          <mxGeometry x="380" y="90" width="300" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#161b22;fontColor=#6e7681;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c15" parent="1" vertex="1" value="<b>_updateTime</b> <font color='#6e7681'>datetime</font> <font color='#6e7681'>系统</font> <font color='#484f58'>ISO8601</font>">
+          <mxGeometry x="380" y="114" width="300" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#161b22;fontColor=#6e7681;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c16" parent="1" vertex="1" value="<b>_creator</b> <font color='#6e7681'>string</font> <font color='#6e7681'>系统</font> <font color='#484f58'>system</font>">
+          <mxGeometry x="380" y="138" width="300" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#3a2a1a;fontColor=#ffa657;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c17" parent="1" vertex="1" value="<b>source_id</b> <font color='#6e7681'>string</font> <font color='#ffa657'>🔗 外部ID</font> <font color='#484f58'>BV号</font>">
+          <mxGeometry x="380" y="162" width="300" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0d1117;fontColor=#c9d1d9;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c18" parent="1" vertex="1" value="<b>title</b> <font color='#6e7681'>string</font> <font color='#c9d1d9'>业务</font> <font color='#484f58'>视频标题</font>">
+          <mxGeometry x="380" y="186" width="300" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0d1117;fontColor=#c9d1d9;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c19" parent="1" vertex="1" value="<b>publish_date</b> <font color='#6e7681'>date</font> <font color='#c9d1d9'>业务</font> <font color='#484f58'>CST发布日期</font>">
+          <mxGeometry x="380" y="210" width="300" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1a1a3a;fontColor=#79c0ff;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c20" parent="1" vertex="1" value="<b>category</b> <font color='#6e7681'>string</font> <font color='#79c0ff'>🔗 FK→category</font> <font color='#484f58'>分类名</font>">
+          <mxGeometry x="380" y="234" width="300" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1a1a3a;fontColor=#79c0ff;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c21" parent="1" vertex="1" value="<b>up_id</b> <font color='#6e7681'>string</font> <font color='#79c0ff'>🔗 FK→up_master</font> <font color='#484f58'>所属UP主</font>">
+          <mxGeometry x="380" y="258" width="300" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0d1117;fontColor=#c9d1d9;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c22" parent="1" vertex="1" value="<b>filename</b> <font color='#6e7681'>string</font> <font color='#c9d1d9'>业务</font> <font color='#484f58'>转录文件名</font>">
+          <mxGeometry x="380" y="282" width="300" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0d1117;fontColor=#c9d1d9;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c23" parent="1" vertex="1" value="<b>preview</b> <font color='#6e7681'>text</font> <font color='#c9d1d9'>业务</font> <font color='#484f58'>前N条转录预览</font>">
+          <mxGeometry x="380" y="306" width="300" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1a1a2e;fontColor=#e6edf3;fontSize=12;fontStyle=1;strokeColor=#30363d;align=center;" id="c24" parent="1" vertex="1" value="category_tags
+分类标签表">
+          <mxGeometry x="750" y="80" width="240" height="36" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1a3a1a;fontColor=#7ee787;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c25" parent="1" vertex="1" value="<b>_id</b> <font color='#6e7681'>string</font> <font color='#7ee787'>🔑 PK</font> <font color='#484f58'>cat_xxxx</font>">
+          <mxGeometry x="750" y="116" width="240" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#161b22;fontColor=#6e7681;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c26" parent="1" vertex="1" value="<b>_createTime</b> <font color='#6e7681'>datetime</font> <font color='#6e7681'>系统</font> <font color='#484f58'>ISO8601</font>">
+          <mxGeometry x="750" y="140" width="240" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#161b22;fontColor=#6e7681;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c27" parent="1" vertex="1" value="<b>_updateTime</b> <font color='#6e7681'>datetime</font> <font color='#6e7681'>系统</font> <font color='#484f58'>ISO8601</font>">
+          <mxGeometry x="750" y="164" width="240" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#161b22;fontColor=#6e7681;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c28" parent="1" vertex="1" value="<b>_creator</b> <font color='#6e7681'>string</font> <font color='#6e7681'>系统</font> <font color='#484f58'>system</font>">
+          <mxGeometry x="750" y="188" width="240" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0d1117;fontColor=#c9d1d9;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c29" parent="1" vertex="1" value="<b>name</b> <font color='#6e7681'>string</font> <font color='#c9d1d9'>业务</font> <font color='#484f58'>分类名称</font>">
+          <mxGeometry x="750" y="212" width="240" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1a1a3a;fontColor=#79c0ff;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c30" parent="1" vertex="1" value="<b>parent_id</b> <font color='#6e7681'>string</font> <font color='#79c0ff'>🔗 FK→self</font> <font color='#484f58'>父分类</font>">
+          <mxGeometry x="750" y="236" width="240" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0d1117;fontColor=#c9d1d9;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c31" parent="1" vertex="1" value="<b>level</b> <font color='#6e7681'>int</font> <font color='#c9d1d9'>业务</font> <font color='#484f58'>层级</font>">
+          <mxGeometry x="750" y="260" width="240" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0d1117;fontColor=#c9d1d9;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c32" parent="1" vertex="1" value="<b>sort_order</b> <font color='#6e7681'>int</font> <font color='#c9d1d9'>业务</font> <font color='#484f58'>排序</font>">
+          <mxGeometry x="750" y="284" width="240" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1a1a2e;fontColor=#e6edf3;fontSize=12;fontStyle=1;strokeColor=#30363d;align=center;" id="c33" parent="1" vertex="1" value="factor_keywords
+因子关键词表">
+          <mxGeometry x="750" y="380" width="280" height="36" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1a3a1a;fontColor=#7ee787;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c34" parent="1" vertex="1" value="<b>_id</b> <font color='#6e7681'>string</font> <font color='#7ee787'>🔑 PK</font> <font color='#484f58'>fk_xxxx</font>">
+          <mxGeometry x="750" y="416" width="280" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#161b22;fontColor=#6e7681;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c35" parent="1" vertex="1" value="<b>_createTime</b> <font color='#6e7681'>datetime</font> <font color='#6e7681'>系统</font> <font color='#484f58'>ISO8601</font>">
+          <mxGeometry x="750" y="440" width="280" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#161b22;fontColor=#6e7681;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c36" parent="1" vertex="1" value="<b>_updateTime</b> <font color='#6e7681'>datetime</font> <font color='#6e7681'>系统</font> <font color='#484f58'>ISO8601</font>">
+          <mxGeometry x="750" y="464" width="280" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#161b22;fontColor=#6e7681;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c37" parent="1" vertex="1" value="<b>_creator</b> <font color='#6e7681'>string</font> <font color='#6e7681'>系统</font> <font color='#484f58'>system</font>">
+          <mxGeometry x="750" y="488" width="280" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0d1117;fontColor=#c9d1d9;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c38" parent="1" vertex="1" value="<b>keyword</b> <font color='#6e7681'>string</font> <font color='#c9d1d9'>业务</font> <font color='#484f58'>关键词</font>">
+          <mxGeometry x="750" y="512" width="280" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0d1117;fontColor=#c9d1d9;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c39" parent="1" vertex="1" value="<b>type</b> <font color='#6e7681'>string</font> <font color='#c9d1d9'>业务</font> <font color='#484f58'>macro/commodity/capital/technical</font>">
+          <mxGeometry x="750" y="536" width="280" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0d1117;fontColor=#c9d1d9;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c40" parent="1" vertex="1" value="<b>related_variety</b> <font color='#6e7681'>string</font> <font color='#c9d1d9'>业务</font> <font color='#484f58'>关联品种</font>">
+          <mxGeometry x="750" y="560" width="280" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0d1117;fontColor=#c9d1d9;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c41" parent="1" vertex="1" value="<b>priority</b> <font color='#6e7681'>string</font> <font color='#c9d1d9'>业务</font> <font color='#484f58'>high/mid/low</font>">
+          <mxGeometry x="750" y="584" width="280" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1a1a2e;fontColor=#e6edf3;fontSize=12;fontStyle=1;strokeColor=#30363d;align=center;" id="c42" parent="1" vertex="1" value="transcript_videos_fulltext
+全文转录（按UP主分目录）">
+          <mxGeometry x="380" y="380" width="300" height="36" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1a3a1a;fontColor=#7ee787;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c43" parent="1" vertex="1" value="<b>_id</b> <font color='#6e7681'>string</font> <font color='#7ee787'>🔑 PK=vid_id</font> <font color='#484f58'>vid_xxxx</font>">
+          <mxGeometry x="380" y="416" width="300" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0d1117;fontColor=#c9d1d9;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c44" parent="1" vertex="1" value="<b>fullText</b> <font color='#6e7681'>text</font> <font color='#c9d1d9'>业务</font> <font color='#484f58'>完整转录文本</font>">
+          <mxGeometry x="380" y="440" width="300" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1a1a2e;fontColor=#e6edf3;fontSize=12;fontStyle=1;strokeColor=#30363d;align=center;" id="c45" parent="1" vertex="1" value="project_milestones
+里程碑表">
+          <mxGeometry x="50" y="480" width="260" height="36" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1a3a1a;fontColor=#7ee787;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c46" parent="1" vertex="1" value="<b>_id</b> <font color='#6e7681'>string</font> <font color='#7ee787'>🔑 PK</font> <font color='#484f58'>ms_xxxx</font>">
+          <mxGeometry x="50" y="516" width="260" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#161b22;fontColor=#6e7681;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c47" parent="1" vertex="1" value="<b>_createTime</b> <font color='#6e7681'>datetime</font> <font color='#6e7681'>系统</font> <font color='#484f58'>ISO8601</font>">
+          <mxGeometry x="50" y="540" width="260" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#161b22;fontColor=#6e7681;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c48" parent="1" vertex="1" value="<b>_updateTime</b> <font color='#6e7681'>datetime</font> <font color='#6e7681'>系统</font> <font color='#484f58'>ISO8601</font>">
+          <mxGeometry x="50" y="564" width="260" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#161b22;fontColor=#6e7681;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c49" parent="1" vertex="1" value="<b>_creator</b> <font color='#6e7681'>string</font> <font color='#6e7681'>系统</font> <font color='#484f58'>system</font>">
+          <mxGeometry x="50" y="588" width="260" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0d1117;fontColor=#c9d1d9;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c50" parent="1" vertex="1" value="<b>name</b> <font color='#6e7681'>string</font> <font color='#c9d1d9'>业务</font> <font color='#484f58'>里程碑名称</font>">
+          <mxGeometry x="50" y="612" width="260" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0d1117;fontColor=#c9d1d9;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c51" parent="1" vertex="1" value="<b>status</b> <font color='#6e7681'>string</font> <font color='#c9d1d9'>业务</font> <font color='#484f58'>done/in_progress/planned</font>">
+          <mxGeometry x="50" y="636" width="260" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0d1117;fontColor=#c9d1d9;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c52" parent="1" vertex="1" value="<b>target_date</b> <font color='#6e7681'>date</font> <font color='#c9d1d9'>业务</font> <font color='#484f58'>目标日期</font>">
+          <mxGeometry x="50" y="660" width="260" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0d1117;fontColor=#c9d1d9;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c53" parent="1" vertex="1" value="<b>completed_date</b> <font color='#6e7681'>date</font> <font color='#c9d1d9'>业务</font> <font color='#484f58'>完成日期</font>">
+          <mxGeometry x="50" y="684" width="260" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0d1117;fontColor=#c9d1d9;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c54" parent="1" vertex="1" value="<b>phase</b> <font color='#6e7681'>string</font> <font color='#c9d1d9'>业务</font> <font color='#484f58'>阶段</font>">
+          <mxGeometry x="50" y="708" width="260" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1a1a2e;fontColor=#e6edf3;fontSize=12;fontStyle=1;strokeColor=#30363d;align=center;" id="c55" parent="1" vertex="1" value="project_tasks
+任务表">
+          <mxGeometry x="380" y="500" width="280" height="36" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1a3a1a;fontColor=#7ee787;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c56" parent="1" vertex="1" value="<b>_id</b> <font color='#6e7681'>string</font> <font color='#7ee787'>🔑 PK</font> <font color='#484f58'>pt_xxxx</font>">
+          <mxGeometry x="380" y="536" width="280" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#161b22;fontColor=#6e7681;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c57" parent="1" vertex="1" value="<b>_createTime</b> <font color='#6e7681'>datetime</font> <font color='#6e7681'>系统</font> <font color='#484f58'>ISO8601</font>">
+          <mxGeometry x="380" y="560" width="280" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#161b22;fontColor=#6e7681;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c58" parent="1" vertex="1" value="<b>_updateTime</b> <font color='#6e7681'>datetime</font> <font color='#6e7681'>系统</font> <font color='#484f58'>ISO8601</font>">
+          <mxGeometry x="380" y="584" width="280" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#161b22;fontColor=#6e7681;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c59" parent="1" vertex="1" value="<b>_creator</b> <font color='#6e7681'>string</font> <font color='#6e7681'>系统</font> <font color='#484f58'>system</font>">
+          <mxGeometry x="380" y="608" width="280" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0d1117;fontColor=#c9d1d9;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c60" parent="1" vertex="1" value="<b>title</b> <font color='#6e7681'>string</font> <font color='#c9d1d9'>业务</font> <font color='#484f58'>任务标题</font>">
+          <mxGeometry x="380" y="632" width="280" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0d1117;fontColor=#c9d1d9;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c61" parent="1" vertex="1" value="<b>status</b> <font color='#6e7681'>string</font> <font color='#c9d1d9'>业务</font> <font color='#484f58'>done/in_progress/blocked</font>">
+          <mxGeometry x="380" y="656" width="280" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0d1117;fontColor=#c9d1d9;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c62" parent="1" vertex="1" value="<b>type</b> <font color='#6e7681'>string</font> <font color='#c9d1d9'>业务</font> <font color='#484f58'>架构/功能/Bug</font>">
+          <mxGeometry x="380" y="680" width="280" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1a1a3a;fontColor=#79c0ff;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c63" parent="1" vertex="1" value="<b>milestone_id</b> <font color='#6e7681'>string</font> <font color='#79c0ff'>🔗 FK→milestone</font> <font color='#484f58'>所属里程碑</font>">
+          <mxGeometry x="380" y="704" width="280" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0d1117;fontColor=#c9d1d9;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c64" parent="1" vertex="1" value="<b>blocked_reason</b> <font color='#6e7681'>string</font> <font color='#c9d1d9'>业务</font> <font color='#484f58'>阻塞原因</font>">
+          <mxGeometry x="380" y="728" width="280" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1a1a2e;fontColor=#e6edf3;fontSize=12;fontStyle=1;strokeColor=#30363d;align=center;" id="c65" parent="1" vertex="1" value="project_errors
+错误记录表">
+          <mxGeometry x="750" y="620" width="260" height="36" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1a3a1a;fontColor=#7ee787;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c66" parent="1" vertex="1" value="<b>_id</b> <font color='#6e7681'>string</font> <font color='#7ee787'>🔑 PK</font> <font color='#484f58'>err_xxxx</font>">
+          <mxGeometry x="750" y="656" width="260" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#161b22;fontColor=#6e7681;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c67" parent="1" vertex="1" value="<b>_createTime</b> <font color='#6e7681'>datetime</font> <font color='#6e7681'>系统</font> <font color='#484f58'>ISO8601</font>">
+          <mxGeometry x="750" y="680" width="260" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#161b22;fontColor=#6e7681;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c68" parent="1" vertex="1" value="<b>_updateTime</b> <font color='#6e7681'>datetime</font> <font color='#6e7681'>系统</font> <font color='#484f58'>ISO8601</font>">
+          <mxGeometry x="750" y="704" width="260" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#161b22;fontColor=#6e7681;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c69" parent="1" vertex="1" value="<b>_creator</b> <font color='#6e7681'>string</font> <font color='#6e7681'>系统</font> <font color='#484f58'>system</font>">
+          <mxGeometry x="750" y="728" width="260" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0d1117;fontColor=#c9d1d9;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c70" parent="1" vertex="1" value="<b>error_date</b> <font color='#6e7681'>date</font> <font color='#c9d1d9'>业务</font> <font color='#484f58'>错误日期</font>">
+          <mxGeometry x="750" y="752" width="260" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0d1117;fontColor=#c9d1d9;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c71" parent="1" vertex="1" value="<b>error_type</b> <font color='#6e7681'>string</font> <font color='#c9d1d9'>业务</font> <font color='#484f58'>架构/功能/Bug</font>">
+          <mxGeometry x="750" y="776" width="260" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0d1117;fontColor=#c9d1d9;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c72" parent="1" vertex="1" value="<b>severity</b> <font color='#6e7681'>string</font> <font color='#c9d1d9'>业务</font> <font color='#484f58'>high/mid/low</font>">
+          <mxGeometry x="750" y="800" width="260" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0d1117;fontColor=#c9d1d9;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c73" parent="1" vertex="1" value="<b>title</b> <font color='#6e7681'>string</font> <font color='#c9d1d9'>业务</font> <font color='#484f58'>错误标题</font>">
+          <mxGeometry x="750" y="824" width="260" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0d1117;fontColor=#c9d1d9;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c74" parent="1" vertex="1" value="<b>desc</b> <font color='#6e7681'>text</font> <font color='#c9d1d9'>业务</font> <font color='#484f58'>描述</font>">
+          <mxGeometry x="750" y="848" width="260" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0d1117;fontColor=#c9d1d9;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c75" parent="1" vertex="1" value="<b>fix</b> <font color='#6e7681'>text</font> <font color='#c9d1d9'>业务</font> <font color='#484f58'>修复方案</font>">
+          <mxGeometry x="750" y="872" width="260" height="24" as="geometry"/>
+                <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0d1117;fontColor=#c9d1d9;fontSize=10;strokeColor=#30363d;align=left;spacingLeft=8;" id="c76" parent="1" vertex="1" value="<b>lesson</b> <font color='#6e7681'>text</font> <font color='#c9d1d9'>业务</font> <font color='#484f58'>教训</font>">
+          <mxGeometry x="750" y="896" width="260" height="24" as="geometry"/>
+                <mxCell style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#79c0ff;strokeWidth=2;fontColor=#79c0ff;fontSize=10;endArrow=none;startArrow=diamondThin;startFill=1;" id="c77" parent="1" vertex="1" value="1:N"/>
+                <mxCell id="rel1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#79c0ff;strokeWidth=2;fontColor=#79c0ff;fontSize=10;endArrow=none;startArrow=diamondThin;startFill=1;" value="1:N up_id" edge="1" parent="1" source="c1" target="c12">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+                <mxCell id="rel2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#79c0ff;strokeWidth=2;fontColor=#79c0ff;fontSize=10;endArrow=none;startArrow=diamondThin;startFill=1;" value="N:1 category" edge="1" parent="1" source="c20" target="c33">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+                <mxCell id="rel3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#ffa657;strokeWidth=2;fontColor=#ffa657;fontSize=10;dashed=1;endArrow=none;startArrow=oval;startFill=1;" value="1:1 fullText" edge="1" parent="1" source="c12" target="c55">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+                <mxCell id="rel4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#79c0ff;strokeWidth=2;fontColor=#79c0ff;fontSize=10;endArrow=none;startArrow=diamondThin;startFill=1;" value="1:N" edge="1" parent="1" source="c77" target="c88">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+                <mxCell id="title1" value="金融研究仪表盘 - 数据模型 ER图 v1.0" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=18;fontStyle=1;fontColor=#e6edf3;" vertex="1" parent="1">
+          <mxGeometry x="300" y="10" width="400" height="40" as="geometry"/>
+        </mxCell>
+                <mxCell id="legend1" value="&lt;b&gt;图例&lt;/b&gt;&lt;br&gt;🟢 PK 主键 (系统ID _id)&lt;br&gt;🔵 FK 外键 (关联其他表)&lt;br&gt;🟠 外部ID (source_id/BV号)&lt;br&gt;⚪ 系统字段 (_createTime等)&lt;br&gt;⬜ 业务字段 (name/title等)&lt;br&gt;&lt;br&gt;&lt;b&gt;系统字段规则&lt;/b&gt;&lt;br&gt;· _id: 全局唯一，前缀标识类型&lt;br&gt;· _createTime/_updateTime: ISO8601&lt;br&gt;· _creator: 创建来源&lt;br&gt;&lt;br&gt;&lt;b&gt;关联规则&lt;/b&gt;&lt;br&gt;· 系统ID(_id) ↔ 外部ID(source_id) 严格分离&lt;br&gt;· 表间通过_id关联，不用source_id" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#161b22;fontColor=#8b949e;fontSize=11;strokeColor=#30363d;align=left;spacingLeft=10;verticalAlign=top;spacingTop=5;" vertex="1" parent="1">
+          <mxGeometry x="50" y="380" width="260" height="250" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
